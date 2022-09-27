@@ -25,7 +25,7 @@
         <!-- /.card-header -->
         <!-- form start -->
 
-        <form method="POST" action="{{route('doctors.update' , $row[0]->id)}}" enctype="multipart/form-data">
+        <form method="POST" action="{{route('doctors.update' , $row->userId)}}" enctype="multipart/form-data">
             {{ method_field('put') }}
             @include('doctors.form')
             <div class="card-footer">

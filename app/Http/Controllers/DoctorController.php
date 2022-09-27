@@ -18,7 +18,7 @@ class DoctorController extends Controller
             ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
-            ->select('users.*','doctors.title')
+            ->select('users.*', 'doctors.title')
             ->paginate(10);
         return view('doctors.index', compact('rows'));
     }
@@ -88,22 +88,28 @@ class DoctorController extends Controller
         }
     }
 
-    public function edit($id,Request $request){
+    public function edit($id, Request $request)
+    {
         $row = DB::table('users')
-            ->join('doctors','doctors.user_id','=','users.id')
-            ->where('users.id','=',$id)
-            ->select('users.*','doctors.*')
-            ->get();
-        return view('doctors.edit',compact('row'));
+            ->join('doctors', 'doctors.user_id', '=', 'users.id')
+            ->where('users.id', '=', $id)
+            ->select('users.*', 'users.id as userId', 'doctors.*')
+            ->first();
+        return view('doctors.edit', compact('row'));
     }
 
-    public function update($id,Request $request){
-
+    public function update(Request $request, $id)
+    {
+        $row = DB::table('users')
+            ->join('doctors', 'doctors.user_id', '=', 'users.id')
+            ->where('users.id', '=', $id)
+            ->select('users.*', 'users.id as userId', 'doctors.*')
+            ->first();
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
-            'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
-            'password' => ['min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
-            'password_confirmation' => ['min:8'],
+            'email' => ['required', 'string', 'email', 'max:191', 'unique:users,email,'.$row->userId],
+            'password' => ['nullable', 'min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
+            'password_confirmation' => ['nullable', 'min:8'],
             'phone' => ['required', 'numeric', 'digits:11'],
             'title' => ['required', 'string', 'max:191'],
             'degree' => ['required', 'string', 'max:191'],
@@ -113,5 +119,51 @@ class DoctorController extends Controller
             'bio' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
+        if ($request->hasFile('image') && (isset($request->password) && $request->password != "")) {
+            $user = DB::table('users')->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'profile_photo_path' => $this->storeImage($request),
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+        }
+        if (!$request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
+            $user = DB::table('users')->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+        }
+        if ($request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
+            $user = DB::table('users')->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'profile_photo_path' => $this->storeImage($request),
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+        }
+        if (!$request->hasFile('image') && (isset($request->password) && $request->password != "")) {
+            $user = DB::table('users')->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+        }
+
+        if ($user){
+            toastr()->success('Successfully Updated');
+            return redirect()->route('doctors.index');
+        }
+
     }
 }
