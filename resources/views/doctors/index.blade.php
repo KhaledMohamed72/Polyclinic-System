@@ -49,14 +49,15 @@
                                 <i class="fas fa-pencil-alt">
                                 </i>
                                 </a>
-                                <a class="btn btn-danger btn-sm" href="{{route('doctors.destroy',$row->id)}}" title="Delete">
+                                <form action="{{route('doctors.destroy',$row->id)}}" method="POST" style="display: contents;">
+                                    {{ csrf_field() }}
+                                    {{ method_field('delete') }}
+
+                                <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
                                     <i class="fas fa-trash">
                                     </i>
-                                </a>
-{{--                                <a class="btn btn-danger btn-sm" href="{{route('Doctors.destroy','id')}}">
-                                <i class="fas fa-trash">
-                                </i>Delete
-                                </a>--}}
+                                </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

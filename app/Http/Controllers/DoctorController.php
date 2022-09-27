@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Doctor;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -85,6 +86,9 @@ class DoctorController extends Controller
         if ($user && $doctor && $role_user) {
             toastr()->success('Successfully Created');
             return redirect()->route('doctors.index');
+        }else{
+            toastr()->error('Something went wrong!');
+            return redirect()->route('doctors.index');
         }
     }
 
@@ -119,8 +123,9 @@ class DoctorController extends Controller
             'bio' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
+
         if ($request->hasFile('image') && (isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->update([
+            $user = DB::table('users')->where('id','=',$id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -131,7 +136,7 @@ class DoctorController extends Controller
             ]);
         }
         if (!$request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->update([
+            $user = DB::table('users')->where('id','=',$id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -139,8 +144,9 @@ class DoctorController extends Controller
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
         }
+
         if ($request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->update([
+            $user = DB::table('users')->where('id','=',$id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -149,8 +155,9 @@ class DoctorController extends Controller
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
         }
+
         if (!$request->hasFile('image') && (isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->update([
+            $user = DB::table('users')->where('id','=',$id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -159,11 +166,32 @@ class DoctorController extends Controller
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
         }
-
-        if ($user){
+        $doctor = DB::table('doctors')->where('user_id','=',$id)->update([
+            'title' => $request->title,
+            'degree' => $request->degree,
+            'specialist' => $request->specialist,
+            'slot_time' => $request->slot_time,
+            'fees' => $request->fees,
+            'bio' => $request->bio,
+        ]);
+        if ($user && $doctor){
             toastr()->success('Successfully Updated');
+            return redirect()->route('doctors.index');
+        }else{
+            toastr()->error('Something went wrong!');
             return redirect()->route('doctors.index');
         }
 
+    }
+
+    public function destroy($id){
+        $user = User::where('id','=',$id)->delete();
+        if ($user){
+            toastr()->success('Successfully Deleted');
+            return redirect()->route('doctors.index');
+        }else{
+            toastr()->error('Something went wrong!');
+            return redirect()->route('doctors.index');
+        }
     }
 }
