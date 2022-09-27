@@ -18,9 +18,10 @@ class DatabaseSeeder extends Seeder
     {
         // Clinic::factory(3)->has(User::factory(10))->create();
 
-
         $this->call(ClinicSeeder::class);
         $this->call(EntrustSeeder::class);
+        $this->call(DoctorSeeder::class);
         $this->call(SuperUserSeeder::class);
+        $this->call(UserTypesSeeder::class);
     }
 }

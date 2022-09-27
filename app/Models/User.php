@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -22,6 +23,15 @@ class User extends Authenticatable
     use EntrustUserWithPermissionsTrait;
     use belongsToClinic;
 
+public function doctor(){
+    return $this->hasOne(Doctor::class);
+}
+/*    public function doctorInfo(){
+        return $this->join('doctors','doctors.user_id','=','users.id')
+            ->join('role_user','role_user.user_id','=','doctors.user_id')
+            ->join('roles','roles.id','=','role_user.role_id')->get();
+
+    }*/
     /**
      * The attributes that are mass assignable.
      *

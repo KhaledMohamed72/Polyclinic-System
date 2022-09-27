@@ -30,7 +30,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ (request()->is('doctors')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-md"></i>
                         <p>
                             Doctors
@@ -39,13 +39,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/charts/chartjs.html" class="nav-link">
+                            <a href="{{route('doctors.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Doctors List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
+                            <a href="{{route('doctors.create')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add New Doctor</p>
                             </a>

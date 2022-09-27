@@ -23,5 +23,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/logout', [\App\Http\Controllers\UserController::class,'logout'])->name('logout');
     Route::get('/dashboard',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
     Route::get('/',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
-    Route::resource('users',\App\Http\Controllers\UserController::class);
+    Route::resource('doctors',\App\Http\Controllers\DoctorController::class);
 });

@@ -17,13 +17,16 @@ class EntrustSeeder extends Seeder
     {
         $adminRole = Role::create(['name' => 'admin']);
         $recepRole = Role::create(['name' => 'recep']);
+        $doctorRole = Role::create(['name' => 'doctor']);
         $patientRole = Role::create(['name' => 'patient']);
 
-        $admin = User::create(['clinic_id' => 1, 'name' => 'admin', 'email' => 'admin@clinic.com', 'password' => bcrypt(123123123)]);
+        $admin = User::create(['clinic_id' => 1, 'name' => 'admin', 'email' => 'admin@clinic.com','phone'=>'12312312312', 'password' => bcrypt(123123123)]);
         $admin->attachRole($adminRole);
-        $receptionist = User::create(['clinic_id' => 1, 'name' => 'receptionist', 'email' => 'receptionist@clinic.com', 'password' => bcrypt(123123123)]);
+        $receptionist = User::create(['clinic_id' => 1, 'name' => 'receptionist', 'email' => 'receptionist@clinic.com', 'phone'=>'12312312312','password' => bcrypt(123123123)]);
         $receptionist->attachRole($recepRole);
-        $patient = User::create(['clinic_id' => 1, 'name' => 'patient', 'email' => 'patient@clinic.com', 'password' => bcrypt(123123123)]);
+        $doctor = User::create(['clinic_id' => 1, 'name' => 'Doctor', 'email' => 'doctor@clinic.com', 'phone'=>'12312312312','password' => bcrypt(123123123)]);
+        $doctor->attachRole($doctorRole);
+        $patient = User::create(['clinic_id' => 1, 'name' => 'patient', 'email' => 'patient@clinic.com', 'phone'=>'12312312312','password' => bcrypt(123123123)]);
         $patient->attachRole($patientRole);
     }
 }
