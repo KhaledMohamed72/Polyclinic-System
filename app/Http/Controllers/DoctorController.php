@@ -98,6 +98,7 @@ class DoctorController extends Controller
     }
 
     public function update($id,Request $request){
+
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
             'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
