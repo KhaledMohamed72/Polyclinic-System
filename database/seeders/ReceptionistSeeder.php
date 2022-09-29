@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Clinic;
+use App\Models\Receptionist;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ClinicSeeder extends Seeder
+class ReceptionistSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,12 +15,9 @@ class ClinicSeeder extends Seeder
      */
     public function run()
     {
-        Clinic::create([
-            'name' => 'itg',
-            'domain' => 'itg',
-            'phone' => '01128206779',
-            'active' => '1',
-            'type' => '1'
+        Receptionist::create([
+            'clinic_id' => 1,
+            'user_id' => 2,
         ]);
     }
 }

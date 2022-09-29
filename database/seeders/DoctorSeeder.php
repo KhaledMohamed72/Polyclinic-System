@@ -18,6 +18,7 @@ class DoctorSeeder extends Seeder
         Doctor::create([
             'clinic_id' => 1,
             'user_id' => 3,
+            'receptionist_id' => 1,
             'title' => 'Dr',
             'degree' => 'Test degree',
             'specialist' => 'Test specialist',

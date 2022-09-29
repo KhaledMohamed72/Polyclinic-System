@@ -1,3 +1,4 @@
+@php $user = auth()->user(); @endphp
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{route('home')}}" class="brand-link">
@@ -11,7 +12,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{asset('assets/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{!empty(auth()->user()->profile_photo_path) ? asset('assets/images/users/'.auth()->user()->profile_photo_path) : asset('assets/dist/img/noimage.png')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{auth()->user()->name}}</a>
@@ -29,8 +30,9 @@
                         Dashboard
                     </a>
                 </li>
+                @ability('admin,recep','')
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ (request()->is('doctors')) ? 'active' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->routeIS('doctors.*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-md"></i>
                         <p>
                             Doctors
@@ -44,40 +46,22 @@
                                 <p>Doctors List</p>
                             </a>
                         </li>
+                        @role('admin')
                         <li class="nav-item">
                             <a href="{{route('doctors.create')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add New Doctor</p>
                             </a>
                         </li>
+                        @endrole
                     </ul>
                 </li>
+                @endability
+
+                @if($user->hasRole('admin'))
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-user-check"></i>
-                        <p>
-                            Patients
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="pages/charts/chartjs.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Patients List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add New Patient</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
+                    <a href="#" class="nav-link {{ (request()->routeIs('receptionists.*')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-md"></i>
                         <p>
                             Receptionists
                             <i class="right fas fa-angle-left"></i>
@@ -85,19 +69,20 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/charts/chartjs.html" class="nav-link">
+                            <a href="{{route('receptionists.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Receptionists</p>
+                                <p>Receptionists List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
+                            <a href="{{route('receptionists.create')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add Receptionist</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-calendar"></i>

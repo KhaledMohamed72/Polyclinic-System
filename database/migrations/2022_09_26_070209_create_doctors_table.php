@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('receptionist_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
             $table->string('degree');
             $table->string('specialist');
-            $table->text('bio');
+            $table->text('bio')->nullable();
             $table->float('fees');
             $table->tinyInteger('slot_time');
             $table->timestamps();

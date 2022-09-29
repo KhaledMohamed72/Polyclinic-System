@@ -5,9 +5,9 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Doctors    @endsection
-@section('header-title')    Doctors    @endsection
-@section('header-title-one')    Doctors    @endsection
+@section('title')   Receptionists    @endsection
+@section('header-title')    Receptionists    @endsection
+@section('header-title-one')    Receptionists    @endsection
 @section('header-title-two')    Main   @endsection
 
 @section('content')
@@ -16,9 +16,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        @if(auth()->user()->hasRole('admin'))
-                        <a href="{{route('doctors.create')}}" class="btn btn-block bg-gradient-success">Add New Doctor</a>
-                        @endif
+                        <a href="{{route('receptionists.create')}}" class="btn btn-block bg-gradient-success">Add Receptionist</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -27,8 +25,7 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Title</th>
-                            <th>Doctor Name</th>
+                            <th>Receptionist Name</th>
                             <th>Contact No</th>
                             <th>Email</th>
                             <th>Action</th>
@@ -38,21 +35,19 @@
                         @foreach($rows as $row)
                         <tr>
                             <td>{{$row->id}}</td>
-                            <td>{{$row->title ?? 'No Title'}}</td>
                             <td>{{$row->name}}</td>
                             <td>{{$row->phone ?? 'No Contact'}}</td>
                             <td>{{$row->email}}</td>
                             <td class="project-actions text-left">
-                                <a class="btn btn-primary btn-sm" href="{{route('doctors.show',$row->id)}}" title="View">
+                                <a class="btn btn-primary btn-sm" href="{{route('receptionists.show',$row->id)}}" title="View">
                                 <i class="fas fa-eye">
                                 </i>
                                 </a>
-                                @if(auth()->user()->hasRole('admin'))
-                                <a class="btn btn-info btn-sm" href="{{route('doctors.edit',$row->id)}}" title="Edit">
+                                <a class="btn btn-info btn-sm" href="{{route('receptionists.edit',$row->id)}}" title="Edit">
                                 <i class="fas fa-pencil-alt">
                                 </i>
                                 </a>
-                                <form action="{{route('doctors.destroy',$row->id)}}" method="POST" style="display: contents;">
+                                <form action="{{route('receptionists.destroy',$row->id)}}" method="POST" style="display: contents;">
                                     {{ csrf_field() }}
                                     {{ method_field('delete') }}
                                 <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
@@ -60,7 +55,6 @@
                                     </i>
                                 </button>
                                 </form>
-                                @endif
                             </td>
                         </tr>
                         @endforeach

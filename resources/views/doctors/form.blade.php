@@ -122,22 +122,39 @@
         @php $input = 'bio' @endphp
         <div class="col-md-6">
 
-                <label for="exampleInput{{$input}}">Short Biography</label>
-                <textarea id="summernote" name="{{$input}}">
+            <label for="exampleInput{{$input}}">Short Biography</label>
+            <textarea id="summernote" name="{{$input}}">
 
               </textarea>
+            @error($input)<span class="invalid-feedback"
+                                role="alert"><strong>{{ $message }}</strong></span>@enderror
+        </div>
+        @php $input = 'receptionist' @endphp
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Receptionist</label>
+                <select name="{{$input}}" class="form-control select2" style="width: 100%;">
+                    <option selected="selected">Select Receptionist</option>
+                    @foreach($receptionists_rows as $receptionist)
+                        <option value="{{$receptionist->id}}" {{ (isset($row) && $receptionist->id == $row->receptionist_id ? 'selected' : '') }}>{{$receptionist->name}}</option>
+                    @endforeach
+                </select>
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
-
+        </div>
+    </div>
+    <div class="row">
         @php $input = 'image' @endphp
         <div class="col-md-6">
             <div class="form-group">
                 <p><label for="exampleInput{{$input}}">Profile Photo</label></p>
 
                 <img class="rounded-circle" src="
-                {{isset($row) && $row->profile_photo_path != '' ? asset('images/users/'.$row->profile_photo_path) : asset('assets/dist/img/noimage.png')}}" style="width: 20%;margin-left: 100px;" id="profile_display"
-                     onclick="triggerClick()" data-toggle="tooltip" data-placement="top" title="Click to Upload Profile Photo"
+                {{isset($row) && $row->profile_photo_path != '' ? asset('images/users/'.$row->profile_photo_path) : asset('assets/dist/img/noimage.png')}}"
+                     style="width: 20%;margin-left: 100px;" id="profile_display"
+                     onclick="triggerClick()" data-toggle="tooltip" data-placement="top"
+                     title="Click to Upload Profile Photo"
                      data-original-title="Click to Upload Profile Photo">
                 <input type="file" name="{{$input}}" tabindex="8" id="profile_photo" style="display:none;"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
