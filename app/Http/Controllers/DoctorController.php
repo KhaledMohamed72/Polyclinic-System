@@ -107,6 +107,7 @@ class DoctorController extends Controller
             'slot_time' => ['required', 'numeric'],
             'fees' => ['required', 'numeric'],
             'bio' => ['nullable', 'string'],
+            'receptionist' => ['required', 'integer'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
         // insert general info into users table

@@ -83,6 +83,32 @@
                     </ul>
                 </li>
                 @endif
+
+                @if($user->hasRole(['admin','recep','doctor']))
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ (request()->routeIs('patients.*')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-plus"></i>
+                        <p>
+                            Patients
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('patients.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Patients List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('patients.create')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add New Patient</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-calendar"></i>

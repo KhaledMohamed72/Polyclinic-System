@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Doctor;
+use App\Models\Patient;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DoctorSeeder extends Seeder
+class PatientSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,16 +15,13 @@ class DoctorSeeder extends Seeder
      */
     public function run()
     {
-        Doctor::create([
+        Patient::create([
             'clinic_id' => 1,
-            'user_id' => 3,
+            'user_id' => 4,
+            'doctor_id' => 3,
             'receptionist_id' => 2,
-            'title' => 'Dr',
-            'degree' => 'Test degree',
-            'specialist' => 'Test specialist',
-            'bio' => 'Bio test',
-            'fees' => 50.5,
-            'slot_time' => 30
+            'gender' => 'male',
+            'age' => 22
         ]);
     }
 }

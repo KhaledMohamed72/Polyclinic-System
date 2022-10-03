@@ -25,4 +25,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/',[\App\Http\Controllers\HomeController::class,'index']);
     Route::resource('/doctors',\App\Http\Controllers\DoctorController::class);
     Route::resource('/receptionists',\App\Http\Controllers\ReceptionistController::class);
+    Route::resource('/patients',\App\Http\Controllers\PatientController::class);
 });
