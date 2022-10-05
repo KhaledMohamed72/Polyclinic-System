@@ -15,6 +15,9 @@ class DoctorController extends Controller
 
     public function index()
     {
+        // check if the clinic is single or multiple doctors
+        $doctors = Doctor::all()->count();
+        $clinicType = $this->getClinic()->type;
         // filter doctors according to role of current auth user
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('users')
@@ -35,7 +38,7 @@ class DoctorController extends Controller
                 ->paginate(10);
         }
         if (auth()->user()->hasRole(['admin', 'recep'])) {
-            return view('doctors.index', compact('rows'));
+            return view('doctors.index', compact('rows','clinicType','doctors'));
         } else {
             toastr()->error('Something went wrong!');
             return redirect()->route('home');
@@ -300,5 +303,21 @@ class DoctorController extends Controller
             toastr()->error('Something went wrong!');
             return redirect()->route('doctors.index');
         }
+    }
+
+    public function scheduleCreate($id){
+        $row = DB::table('users')
+            ->join('doctors','doctors.user_id','=','users.id')
+            ->join('doctor_schedules','doctor_schedules.user_id','=','doctors.user_id')
+            ->where('users.clinic_id','=',$this->getClinic()->id)
+            ->where('users.id','=',$id)
+            ->select('users.name as name','users.id as userId','doctor_schedules.*')
+            ->get();
+        $userId = $id;
+        return view('doctors.schedule-create',compact('row','userId'));
+    }
+
+    public function scheduleStore($id){
+
     }
 }

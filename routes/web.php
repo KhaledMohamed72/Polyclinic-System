@@ -24,6 +24,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/dashboard',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
     Route::get('/',[\App\Http\Controllers\HomeController::class,'index']);
     Route::resource('/doctors',\App\Http\Controllers\DoctorController::class);
+    Route::get('/doctors/schedule_create/{doctor}',[\App\Http\Controllers\DoctorController::class,'scheduleCreate'])->name('schedule-create');
+    Route::post('/doctors/scheduleStore/{doctor}',[\App\Http\Controllers\DoctorController::class,'scheduleStore'])->name('schedule-store');
     Route::resource('/receptionists',\App\Http\Controllers\ReceptionistController::class);
     Route::resource('/patients',\App\Http\Controllers\PatientController::class);
 });

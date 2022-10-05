@@ -27,7 +27,7 @@
         </form>
     </div>
 @endsection
-@section('scripts')
+@section('scripts')a
     <!-- Select2 -->
     <script src="{{asset('assets/plugins/select2/js/select2.full.min.js')}}"></script>
     <!-- Summernote -->

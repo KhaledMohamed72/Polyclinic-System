@@ -16,7 +16,12 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        <a href="{{route('receptionists.create')}}" class="btn btn-block bg-gradient-success">Add Receptionist</a>
+                        @if(auth()->user()->hasRole('admin'))
+                            @if(($clinicType == 0 && $receptionists < 1) || $clinicType == 1)
+                                <a href="{{route('receptionists.create')}}" class="btn btn-block bg-gradient-success">Add
+                                    New Doctor</a>
+                            @endif
+                        @endif
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -33,30 +38,38 @@
                         </thead>
                         <tbody>
                         @foreach($rows as $row)
-                        <tr>
-                            <td>{{$row->id}}</td>
-                            <td>{{$row->name}}</td>
-                            <td>{{$row->phone ?? 'No Contact'}}</td>
-                            <td>{{$row->email}}</td>
-                            <td class="project-actions text-left">
-                                <a class="btn btn-primary btn-sm" href="{{route('receptionists.show',$row->id)}}" title="View">
-                                <i class="fas fa-eye">
-                                </i>
-                                </a>
-                                <a class="btn btn-info btn-sm" href="{{route('receptionists.edit',$row->id)}}" title="Edit">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                </a>
-                                <form action="{{route('receptionists.destroy',$row->id)}}" method="POST" style="display: contents;">
-                                    {{ csrf_field() }}
-                                    {{ method_field('delete') }}
-                                <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                </button>
-                                </form>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{$row->id}}</td>
+                                <td>{{$row->name}}</td>
+                                <td>{{$row->phone ?? 'No Contact'}}</td>
+                                <td>{{$row->email}}</td>
+                                <td class="project-actions text-left">
+                                    <a class="btn btn-primary btn-sm" href="{{route('receptionists.show',$row->id)}}"
+                                       title="View">
+                                        <i class="fas fa-eye">
+                                        </i>
+                                    </a>
+                                    <a class="btn btn-info btn-sm" href="{{route('receptionists.edit',$row->id)}}"
+                                       title="Edit">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                    </a>
+                                    @if(auth()->user()->hasRole('admin'))
+                                        @if(($clinicType == 0 && $receptionists < 1) || $clinicType == 1)
+                                            <form action="{{route('receptionists.destroy',$row->id)}}" method="POST"
+                                                  style="display: contents;">
+                                                {{ csrf_field() }}
+                                                {{ method_field('delete') }}
+                                                <button type="submit" class="btn btn-danger btn-sm" href="#"
+                                                        title="Delete">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>

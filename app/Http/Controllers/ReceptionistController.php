@@ -13,6 +13,9 @@ class ReceptionistController extends Controller
 {
     public function index()
     {
+        // check if the clinic is single or multiple receptionist
+        $receptionists = Receptionist::all()->count();
+        $clinicType = $this->getClinic()->type;
         $rows = DB::table('users')
             ->join('receptionists', 'receptionists.user_id', '=', 'users.id')
             ->join('role_user', 'role_user.user_id', '=', 'receptionists.user_id')
@@ -21,7 +24,7 @@ class ReceptionistController extends Controller
             ->select('users.*')
             ->paginate(10);
         if (auth()->user()->hasRole('admin')) {
-            return view('receptionists.index', compact('rows'));
+            return view('receptionists.index', compact('rows','clinicType','receptionists'));
         }else{
             toastr()->error('Something went wrong!');
             return redirect()->route('home');

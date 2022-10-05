@@ -17,7 +17,10 @@
                 <div class="card-header">
                     <div class="col-md-2 float-right">
                         @if(auth()->user()->hasRole('admin'))
-                        <a href="{{route('doctors.create')}}" class="btn btn-block bg-gradient-success">Add New Doctor</a>
+                            @if(($clinicType == 0 && $doctors < 1) || $clinicType == 1)
+                                <a href="{{route('doctors.create')}}" class="btn btn-block bg-gradient-success">Add New
+                                    Doctor</a>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -36,33 +39,46 @@
                         </thead>
                         <tbody>
                         @foreach($rows as $row)
-                        <tr>
-                            <td>{{$row->id}}</td>
-                            <td>{{$row->title ?? 'No Title'}}</td>
-                            <td>{{$row->name}}</td>
-                            <td>{{$row->phone ?? 'No Contact'}}</td>
-                            <td>{{$row->email}}</td>
-                            <td class="project-actions text-left">
-                                <a class="btn btn-primary btn-sm" href="{{route('doctors.show',$row->id)}}" title="View">
-                                <i class="fas fa-eye">
-                                </i>
-                                </a>
-                                @if(auth()->user()->hasRole('admin'))
-                                <a class="btn btn-info btn-sm" href="{{route('doctors.edit',$row->id)}}" title="Edit">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                </a>
-                                <form action="{{route('doctors.destroy',$row->id)}}" method="POST" style="display: contents;">
-                                    {{ csrf_field() }}
-                                    {{ method_field('delete') }}
-                                <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                </button>
-                                </form>
-                                @endif
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{$row->id}}</td>
+                                <td>{{$row->title ?? 'No Title'}}</td>
+                                <td>{{$row->name}}</td>
+                                <td>{{$row->phone ?? 'No Contact'}}</td>
+                                <td>{{$row->email}}</td>
+                                <td class="project-actions text-left">
+                                    <a class="btn btn-primary btn-sm" href="{{route('doctors.show',$row->id)}}"
+                                       title="View">
+                                        <i class="fas fa-eye">
+                                        </i>
+                                    </a>
+                                    @if(auth()->user()->hasRole(['admin','recep']))
+                                        <a class="btn btn-dark btn-sm" href="{{route('schedule-create',$row->id)}}"
+                                           title="Doctor days and time availability">
+                                            <i class="fas fa-calendar-alt">
+                                            </i>
+                                        </a>
+                                    @endif
+                                    @if(auth()->user()->hasRole('admin'))
+                                        <a class="btn btn-info btn-sm" href="{{route('doctors.edit',$row->id)}}"
+                                           title="Edit">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                        </a>
+                                        @if(($clinicType == 1))
+                                            <form action="{{route('doctors.destroy',$row->id)}}" method="POST"
+                                                  style="display: contents;">
+                                                {{ csrf_field() }}
+                                                {{ method_field('delete') }}
+                                                <button type="submit" class="btn btn-danger btn-sm" href="#"
+                                                        title="Delete">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
