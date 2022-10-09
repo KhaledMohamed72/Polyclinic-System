@@ -68,76 +68,18 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <strong>Saturday</strong>
+                    @foreach($schedule_rows as $row)
+                    <strong>{{$row->day_of_week}}</strong>
 
                     <p class="text-muted text-center">
                         <span class="badge mr-3 bg-primary">From</span>
-                        10:00AM
+                        {{date("g:i A", strtotime($row->start_time))}}
                     </p>
                     <p class="text-muted text-center">
                         <span class="badge ml-3 mr-3 bg-info">To</span>
-                        06:00PM
+                        {{date("g:i A", strtotime($row->end_time))}}
                     </p>
-                    <strong></i>Sunday</strong>
-
-                    <p class="text-muted text-center">
-                        <span class="badge mr-3 bg-primary">From</span>
-                        10:00AM
-                    </p>
-                    <p class="text-muted text-center">
-                        <span class="badge ml-3 mr-3 bg-info">To</span>
-                        06:00PM
-                    </p>
-                    <strong></i>Monday</strong>
-
-                    <p class="text-muted text-center">
-                        <span class="badge mr-3 bg-primary">From</span>
-                        10:00AM
-                    </p>
-                    <p class="text-muted text-center">
-                        <span class="badge ml-3 mr-3 bg-info">To</span>
-                        06:00PM
-                    </p>
-                    <strong></i>Tuesday</strong>
-
-                    <p class="text-muted text-center">
-                        <span class="badge mr-3 bg-primary">From</span>
-                        10:00AM
-                    </p>
-                    <p class="text-muted text-center">
-                        <span class="badge ml-3 mr-3 bg-info">To</span>
-                        06:00PM
-                    </p>
-                    <strong></i>Wednesday</strong>
-
-                    <p class="text-muted text-center">
-                        <span class="badge mr-3 bg-primary">From</span>
-                        10:00AM
-                    </p>
-                    <p class="text-muted text-center">
-                        <span class="badge ml-3 mr-3 bg-info">To</span>
-                        06:00PM
-                    </p>
-                    <strong></i>Thursday</strong>
-
-                    <p class="text-muted text-center">
-                        <span class="badge mr-3 bg-primary">From</span>
-                        10:00AM
-                    </p>
-                    <p class="text-muted text-center">
-                        <span class="badge ml-3 mr-3 bg-info">To</span>
-                        06:00PM
-                    </p>
-                    <strong></i>Friday</strong>
-
-                    <p class="text-muted text-center">
-                        <span class="badge mr-3 bg-primary">From</span>
-                        10:00AM
-                    </p>
-                    <p class="text-muted text-center">
-                        <span class="badge ml-3 mr-3 bg-info">To</span>
-                        06:00PM
-                    </p>
+                    @endforeach
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -221,20 +163,20 @@
                                 <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
                                    href="#custom-content-below-appointment" role="tab"
                                    aria-controls="custom-content-below-appointment" aria-selected="true">
-                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Appointment List&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
+                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Appointment List&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-content-below-prescription-tab" data-toggle="pill"
                                    href="#custom-content-below-prescription" role="tab"
                                    aria-controls="custom-content-below-prescription" aria-selected="false">
-                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Prescription List&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Prescription List&ensp;&ensp;&ensp;&ensp;&ensp;
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-content-below-invoices-tab" data-toggle="pill"
                                    href="#custom-content-below-invoices" role="tab"
                                    aria-controls="custom-content-below-invoices" aria-selected="false">
-                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Invoices&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                                    &ensp;&ensp;&ensp;&ensp;Invoices&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
                                 </a>
                             </li>
                         @endif

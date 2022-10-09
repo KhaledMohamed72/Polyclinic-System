@@ -6,12 +6,14 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use App\Models\Receptionist;
 use App\Models\User;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DoctorController extends Controller
 {
+    use GeneralTrait;
 
     public function index()
     {
@@ -38,7 +40,7 @@ class DoctorController extends Controller
                 ->paginate(10);
         }
         if (auth()->user()->hasRole(['admin', 'recep'])) {
-            return view('doctors.index', compact('rows','clinicType','doctors'));
+            return view('doctors.index', compact('rows', 'clinicType', 'doctors'));
         } else {
             toastr()->error('Something went wrong!');
             return redirect()->route('home');
@@ -144,7 +146,9 @@ class DoctorController extends Controller
             'user_id' => $user_id,
             'role_id' => $role_id->id
         ]);
-        if ($user && $doctor && $role_user) {
+        // insert doctor schedule
+        $doctorSchedule = $this->insertWeeksDays($this->getClinic()->id, $user_id);
+        if ($user && $doctor && $role_user && $doctorSchedule) {
             toastr()->success('Successfully Created');
             return redirect()->route('doctors.index');
         } else {
@@ -158,6 +162,7 @@ class DoctorController extends Controller
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
+            ->where('users.clinic_id' , $this->getClinic()->id)
             ->select('users.*', 'users.id as userId', 'doctors.*')
             ->first();
         $receptionists_rows = DB::table('users')
@@ -289,12 +294,21 @@ class DoctorController extends Controller
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
+            ->where('users.clinic_id','=',$this->getClinic()->id)
             ->select('users.*', 'users.id as userId', 'doctors.*')
             ->first();
-
+        $schedule_rows = DB::table('users')
+            ->join('doctors', 'doctors.user_id', '=', 'users.id')
+            ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
+            ->where('users.id', '=', $id)
+            ->where('doctor_schedules.day_attendance','=','1')
+            ->orderBy('doctor_schedules.id','asc')
+            ->select('doctor_schedules.*')
+            ->get();
         if ($row) {
             if (auth()->user()->hasRole(['admin', 'recep'])) {
-                return view('doctors.show', compact('row'));
+                return view('doctors.show', compact('row','schedule_rows'));
             } else {
                 toastr()->warning('You can not allowed for this route !');
                 return redirect()->route('doctors.index');
@@ -305,19 +319,47 @@ class DoctorController extends Controller
         }
     }
 
-    public function scheduleCreate($id){
+    public function scheduleCreate($id)
+    {
         $row = DB::table('users')
-            ->join('doctors','doctors.user_id','=','users.id')
-            ->join('doctor_schedules','doctor_schedules.user_id','=','doctors.user_id')
-            ->where('users.clinic_id','=',$this->getClinic()->id)
-            ->where('users.id','=',$id)
-            ->select('users.name as name','users.id as userId','doctor_schedules.*')
+            ->join('doctors', 'doctors.user_id', '=', 'users.id')
+            ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
+            ->where('users.id', '=', $id)
+            ->orderBy('doctor_schedules.id','asc')
+            ->select('users.name as name', 'users.id as userId', 'doctor_schedules.*', 'doctors.title as title')
             ->get();
-        $userId = $id;
-        return view('doctors.schedule-create',compact('row','userId'));
+        return view('doctors.schedule-create', compact('row'));
     }
 
-    public function scheduleStore($id){
-
+    public function scheduleUpdate($id,Request $request)
+    {
+        $row = DB::table('users')
+            ->join('doctors', 'doctors.user_id', '=', 'users.id')
+            ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
+            ->where('users.id', '=', $id)
+            ->orderBy('doctor_schedules.id','asc')
+            ->select('users.name as name', 'users.id as userId', 'doctor_schedules.*', 'doctors.title as title','doctor_schedules.id as schedule_id')
+            ->get();
+        for ($i = 0; $i < 7; $i++) {
+            $this->validate($request, [
+                'day_of_week['.$i.']' => ['string', 'max:191'],
+                'start_time['.$i.']' => ['required_with:day_of_week['.$i.'],on'],
+                'end_time['.$i.']' => ['required_with:start_time['.$i.']'],
+            ]);
+            $updateSchedule = DB::table('doctor_schedules')
+                ->where('id','=',$row[$i]->schedule_id)
+                ->update([
+                    'day_attendance' => isset($request->day_of_week[$i]) ? $request->day_of_week[$i] : 0,
+                    'start_time' => $request->start_time[$i],
+                    'end_time' => $request->end_time[$i],
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
+        }
+        if ($updateSchedule){
+            toastr()->success('Successfully Updated');
+            return redirect()->route('doctors.index');
+        }
     }
 }

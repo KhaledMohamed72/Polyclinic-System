@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('day_of_week');
-            $table->string('start_time');
-            $table->string('end_time');
+            $table->string('day_of_week')->nullable();
+            $table->boolean('day_attendance')->default(0);
+            $table->string('start_time')->nullable();
+            $table->string('end_time')->nullable();
             $table->timestamps();
         });
     }

@@ -32,12 +32,12 @@
                 <i class="far fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a href="{{route('logout')}}" class="dropdown-item">
+                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
-                                LogOut
+                                {{ __('Logout') }}
                                 <span class="float-right text-sm text-danger"><i class="fas fa-sign-out-alt"></i></span>
                             </h3>
                         </div>
@@ -46,6 +46,9 @@
                 </a>
             </div>
         </li>
+        <form method="get" id="logout-form" action="{{route('logout')}}">
+            @csrf
+        </form>
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-comments"></i>
