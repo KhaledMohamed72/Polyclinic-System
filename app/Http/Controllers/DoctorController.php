@@ -10,6 +10,7 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class DoctorController extends Controller
 {
@@ -162,7 +163,7 @@ class DoctorController extends Controller
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
-            ->where('users.clinic_id' , $this->getClinic()->id)
+            ->where('users.clinic_id', $this->getClinic()->id)
             ->select('users.*', 'users.id as userId', 'doctors.*')
             ->first();
         $receptionists_rows = DB::table('users')
@@ -213,26 +214,26 @@ class DoctorController extends Controller
                 ->where('id', '=', $id)
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'phone' => $request->phone,
-                'profile_photo_path' => $this->storeImage($request),
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'phone' => $request->phone,
+                    'profile_photo_path' => $this->storeImage($request),
+                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
         }
         if (!$request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
             $user = DB::table('users')
                 ->where('id', '=', $id)
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
         }
         if ($request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
             if (!empty($row->profile_photo_path)) {
@@ -242,38 +243,38 @@ class DoctorController extends Controller
                 ->where('id', '=', $id)
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'profile_photo_path' => $this->storeImage($request),
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'profile_photo_path' => $this->storeImage($request),
+                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
         }
         if (!$request->hasFile('image') && (isset($request->password) && $request->password != "")) {
             $user = DB::table('users')
                 ->where('id', '=', $id)
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'phone' => $request->phone,
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'phone' => $request->phone,
+                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
         }
         $doctor = DB::table('doctors')
             ->where('user_id', '=', $id)
             ->where('doctors.clinic_id', '=', $this->getClinic()->id)
             ->update([
-            'title' => $request->title,
-            'degree' => $request->degree,
-            'specialist' => $request->specialist,
-            'slot_time' => $request->slot_time,
-            'fees' => $request->fees,
-            'bio' => $request->bio,
-        ]);
+                'title' => $request->title,
+                'degree' => $request->degree,
+                'specialist' => $request->specialist,
+                'slot_time' => $request->slot_time,
+                'fees' => $request->fees,
+                'bio' => $request->bio,
+            ]);
         if ($user || $doctor) {
             toastr()->success('Successfully Updated');
             return redirect()->route('doctors.index');
@@ -310,7 +311,7 @@ class DoctorController extends Controller
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
-            ->where('users.clinic_id','=',$this->getClinic()->id)
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->select('users.*', 'users.id as userId', 'doctors.*')
             ->first();
         $schedule_rows = DB::table('users')
@@ -318,13 +319,13 @@ class DoctorController extends Controller
             ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->where('users.id', '=', $id)
-            ->where('doctor_schedules.day_attendance','=','1')
-            ->orderBy('doctor_schedules.id','asc')
+            ->where('doctor_schedules.day_attendance', '=', '1')
+            ->orderBy('doctor_schedules.id', 'asc')
             ->select('doctor_schedules.*')
             ->get();
         if ($row) {
             if (auth()->user()->hasRole(['admin', 'recep'])) {
-                return view('doctors.show', compact('row','schedule_rows'));
+                return view('doctors.show', compact('row', 'schedule_rows'));
             } else {
                 toastr()->warning('You can not allowed for this route !');
                 return redirect()->route('doctors.index');
@@ -342,38 +343,44 @@ class DoctorController extends Controller
             ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->where('users.id', '=', $id)
-            ->orderBy('doctor_schedules.id','asc')
+            ->orderBy('doctor_schedules.id', 'asc')
             ->select('users.name as name', 'users.id as userId', 'doctor_schedules.*', 'doctors.title as title')
             ->get();
         return view('doctors.schedule-create', compact('row'));
     }
 
-    public function scheduleUpdate($id,Request $request)
+    public function scheduleUpdate($id, Request $request)
     {
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->where('users.id', '=', $id)
-            ->orderBy('doctor_schedules.id','asc')
-            ->select('users.name as name', 'users.id as userId', 'doctor_schedules.*', 'doctors.title as title','doctor_schedules.id as schedule_id')
+            ->orderBy('doctor_schedules.id', 'asc')
+            ->select('users.name as name', 'users.id as userId', 'doctor_schedules.*', 'doctors.title as title', 'doctor_schedules.id as schedule_id')
             ->get();
         for ($i = 0; $i < 7; $i++) {
-            $this->validate($request, [
-                'day_of_week['.$i.']' => ['string', 'max:191'],
-                'start_time['.$i.']' => ['required_with:day_of_week['.$i.'],on'],
-                'end_time['.$i.']' => ['required_with:start_time['.$i.']'],
-            ]);
-            $updateSchedule = DB::table('doctor_schedules')
-                ->where('id','=',$row[$i]->schedule_id)
-                ->update([
-                    'day_attendance' => isset($request->day_of_week[$i]) ? $request->day_of_week[$i] : 0,
-                    'start_time' => $request->start_time[$i],
-                    'end_time' => $request->end_time[$i],
-                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                ]);
-        }
-        if ($updateSchedule){
+            if(isset($request->day_of_week[$i])){
+                if ($request->day_of_week[$i] == 1 && $request->first_start_time[$i] == '') {
+                    return Redirect::back()->with('error', 'You must fill time of the day you have checked !');
+                } if ($request->first_start_time[$i] != '' && $request->first_end_time[$i] == '') {
+                    return Redirect::back()->with('error', 'You must complete time "To" of the day you have checked !');
+                }
+            }
+
+                $updateSchedule = DB::table('doctor_schedules')
+                    ->where('id', '=', $row[$i]->schedule_id)
+                    ->update([
+                        'day_attendance' => isset($request->day_of_week[$i]) ? $request->day_of_week[$i] : 0,
+                        'first_start_time' => $request->first_start_time[$i],
+                        'first_end_time' => $request->first_end_time[$i],
+                        'second_start_time' => $request->second_start_time[$i],
+                        'second_end_time' => $request->second_end_time[$i],
+                        'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    ]);
+            }
+
+        if ($updateSchedule) {
             toastr()->success('Successfully Updated');
             return redirect()->route('doctors.index');
         }

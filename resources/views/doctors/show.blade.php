@@ -72,13 +72,25 @@
                     <strong>{{$row->day_of_week}}</strong>
 
                     <p class="text-muted text-center">
+                        <p class=""><bold>First Period</bold></p>
                         <span class="badge mr-3 bg-primary">From</span>
-                        {{date("g:i A", strtotime($row->start_time))}}
+                        {{date("g:i A", strtotime($row->first_start_time))}}
                     </p>
                     <p class="text-muted text-center">
                         <span class="badge ml-3 mr-3 bg-info">To</span>
-                        {{date("g:i A", strtotime($row->end_time))}}
+                        {{date("g:i A", strtotime($row->first_end_time))}}
                     </p>
+                    @if($row->second_start_time != '')
+                            <p class="text-muted text-center">
+                            <p class=""><bold>Second Period</bold></p>
+                            <span class="badge mr-3 bg-primary">From</span>
+                            {{date("g:i A", strtotime($row->second_start_time))}}
+                            </p>
+                            <p class="text-muted text-center">
+                                <span class="badge ml-3 mr-3 bg-info">To</span>
+                                {{date("g:i A", strtotime($row->second_end_time))}}
+                            </p>
+                        @endif
                     @endforeach
                 </div>
                 <!-- /.card-body -->

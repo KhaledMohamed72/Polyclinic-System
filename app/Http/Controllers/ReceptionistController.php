@@ -165,7 +165,7 @@ class ReceptionistController extends Controller
                 'phone' => $request->phone,
                 'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
+                ]);
         }
         if ($request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
             if (!empty($row->profile_photo_path)){

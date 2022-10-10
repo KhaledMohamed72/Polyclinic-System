@@ -19,8 +19,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('day_of_week')->nullable();
             $table->boolean('day_attendance')->default(0);
-            $table->string('start_time')->nullable();
-            $table->string('end_time')->nullable();
+            $table->string('first_start_time')->nullable();
+            $table->string('first_end_time')->nullable();
+            $table->string('second_start_time')->nullable();
+            $table->string('second_end_time')->nullable();
             $table->timestamps();
         });
     }

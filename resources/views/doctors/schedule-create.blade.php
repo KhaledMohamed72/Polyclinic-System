@@ -28,7 +28,13 @@
 @section('header-title-two')    Create Schedule   @endsection
 
 @section('content')
-
+    @if (\Session::has('success'))
+        <div class="alert alert-success">
+            <ul>
+                <li>{!! \Session::get('error') !!}</li>
+            </ul>
+        </div>
+    @endif
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title"> {{isset($row[0]) ? $row[0]->title.'.'.$row[0]->name.' ' : 'Doctor'}}Schedule </h3>
@@ -36,8 +42,8 @@
         <!-- /.card-header -->
         <!-- form start -->
         <form method="POST" action="{{route('schedule-update',$row[0]->user_id)}}">
-            @csrf
-            <!-- iCheck -->
+        @csrf
+        <!-- iCheck -->
             <div class="card-body">
                 <!-- Minimal style -->
                 @for($i=0;$i<7;$i++)
@@ -54,35 +60,118 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4 col-sm-8">
+                            <div class="card card-primary card-outline card-tabs">
+                                <div class="card-header p-0 pt-1 border-bottom-0">
+                                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                                        @if(\Jenssegers\Agent\Facades\Agent::isMobile())
+                                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="custom-tabs-three-{{$i}}-tab"
+                                               data-toggle="pill" href="#custom-tabs-{{$i}}-home" role="tab"
+                                               aria-controls="custom-tabs-three-{{$i}}" aria-selected="true">
+                                                <span><i class="fa fa-clock"></i></span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="custom-tabs-three-{{$i}}-tab"
+                                               data-toggle="pill" href="#custom-tabs-three-{{$i}}" role="tab"
+                                               aria-controls="custom-tabs-three-{{$i}}" aria-selected="false">
+                                                <span><i class="fa fa-clock"></i></span>
+                                                <i class="fa fa-sm fa-plus-circle"></i>
+                                            </a>
+                                        </li>
+                                        @else
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="custom-tabs-three-f{{$i}}-tab"
+                                                   data-toggle="pill" href="#custom-tabs-three-f{{$i}}" role="tab"
+                                                   aria-controls="custom-tabs-three-f{{$i}}" aria-selected="true">&ensp;First
+                                                    Period</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="custom-tabs-three-s{{$i}}-tab"
+                                                   data-toggle="pill" href="#custom-tabs-three-s{{$i}}" role="tab"
+                                                   aria-controls="custom-tabs-three-s{{$i}}" aria-selected="false">Second
+                                                    Period</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="custom-tabs-three-tabContent">
+                                        <div class="tab-pane fade show active" id="custom-tabs-three-f{{$i}}"
+                                             role="tabpanel" aria-labelledby="custom-tabs-three-f{{$i}}-tab">
+                                            <div class="col-md-8 col-sm-4">
+                                                <!-- time Picker -->
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="first_from{{$i}}"><small>From</small> &ensp;</label>
+                                                        <input type="time" name="first_start_time[]"
+                                                               value="{{isset($row[$i]) ? $row[$i]->first_start_time : ''}}"
+                                                               class="form-control" id="first_from{{$i}}"/>
+                                                        @error('first_start_time')<span class="invalid-feedback"
+                                                                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <!-- /.form group -->
+                                            </div>
 
-                        <div class="col-sm-3">
-                            <!-- time Picker -->
-                            <div class="form-group">
-                                <div class="input-group date" id="timepicker" data-target-input="nearest">
-                                    <label for="from{{$i}}"><small>From</small> &ensp;</label>
-                                    <input type="time" name="start_time[]"
-                                           value="{{isset($row[$i]) ? $row[$i]->start_time : ''}}"
-                                           class="form-control" id="from{{$i}}" data-target="#SaturdayFrom"/>
+                                            <div class="col-md-8 col-sm-4">
+                                                <!-- time Picker -->
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="first_to{{$i}}"><small>To</small> &ensp;</label>
+                                                        <input type="time" name="first_end_time[]"
+                                                               value="{{isset($row[$i]) ? $row[$i]->first_end_time : ''}}"
+                                                               class="form-control" id="first_to{{$i}}"/>
+                                                        @error('first_end_time')<span class="invalid-feedback"
+                                                                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <!-- /.form group -->
+                                            </div>
+                                            &ensp;&ensp;&ensp;
+                                        </div>
+                                        <div class="tab-pane fade" id="custom-tabs-three-s{{$i}}" role="tabpanel"
+                                             aria-labelledby="custom-tabs-three-s{{$i}}-tab">
+                                            <div class="col-md-8 col-sm-4">
+                                                <!-- time Picker -->
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="second_from{{$i}}"><small>From</small>
+                                                            &ensp;</label>
+                                                        <input type="time" name="second_start_time[]"
+                                                               value="{{isset($row[$i]) ? $row[$i]->second_start_time : ''}}"
+                                                               class="form-control" id="second_from{{$i}}"/>
+                                                        @error('second_start_time')<span class="invalid-feedback"
+                                                                                      role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <!-- /.form group -->
+                                            </div>
+                                            <div class="col-md-8 col-sm-4">
+                                                <!-- time Picker -->
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="second_to{{$i}}"><small>To</small> &ensp;</label>
+                                                        <input type="time" name="second_end_time[]"
+                                                               value="{{isset($row[$i]) ? $row[$i]->second_end_time : ''}}"
+                                                               class="form-control" id="second_to{{$i}}"/>
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <!-- /.form group -->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- /.input group -->
+
                             </div>
-                            <!-- /.form group -->
                         </div>
-                        &ensp;&ensp;&ensp;
-                        <div class="col-sm-3">
-                            <!-- time Picker -->
-                            <div class="form-group">
-                                <div class="input-group date" id="timepicker" data-target-input="nearest">
-                                    <label for="to{{$i}}"><small>To</small> &ensp;</label>
-                                    <input type="time" name="end_time[]"
-                                           value="{{isset($row[$i]) ? $row[$i]->end_time : ''}}"
-                                           class="form-control" id="to{{$i}}"
-                                           data-target="#to{{$i}}"/>
-                                </div>
-                                <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
-                        </div>
+
                     </div>
                 @endfor
             </div>
