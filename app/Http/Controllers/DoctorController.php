@@ -187,6 +187,7 @@ class DoctorController extends Controller
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->select('users.*', 'users.id as userId', 'doctors.*')
             ->first();
         $this->validate($request, [
@@ -208,7 +209,10 @@ class DoctorController extends Controller
             if (!empty($row->profile_photo_path)) {
                 unlink(public_path('images/users/' . $row->profile_photo_path));
             }
-            $user = DB::table('users')->where('id', '=', $id)->update([
+            $user = DB::table('users')
+                ->where('id', '=', $id)
+                ->where('users.clinic_id', '=', $this->getClinic()->id)
+                ->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -219,7 +223,10 @@ class DoctorController extends Controller
             ]);
         }
         if (!$request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->where('id', '=', $id)->update([
+            $user = DB::table('users')
+                ->where('id', '=', $id)
+                ->where('users.clinic_id', '=', $this->getClinic()->id)
+                ->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -231,7 +238,10 @@ class DoctorController extends Controller
             if (!empty($row->profile_photo_path)) {
                 unlink(public_path('images/users/' . $row->profile_photo_path));
             }
-            $user = DB::table('users')->where('id', '=', $id)->update([
+            $user = DB::table('users')
+                ->where('id', '=', $id)
+                ->where('users.clinic_id', '=', $this->getClinic()->id)
+                ->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -241,7 +251,10 @@ class DoctorController extends Controller
             ]);
         }
         if (!$request->hasFile('image') && (isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->where('id', '=', $id)->update([
+            $user = DB::table('users')
+                ->where('id', '=', $id)
+                ->where('users.clinic_id', '=', $this->getClinic()->id)
+                ->update([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -250,7 +263,10 @@ class DoctorController extends Controller
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
         }
-        $doctor = DB::table('doctors')->where('user_id', '=', $id)->update([
+        $doctor = DB::table('doctors')
+            ->where('user_id', '=', $id)
+            ->where('doctors.clinic_id', '=', $this->getClinic()->id)
+            ->update([
             'title' => $request->title,
             'degree' => $request->degree,
             'specialist' => $request->specialist,
