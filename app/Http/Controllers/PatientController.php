@@ -254,7 +254,7 @@ class PatientController extends Controller
         ]);
 
         $user = DB::table('users')
-            ->where('idds', '=', $id)
+            ->where('id', '=', $id)
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->update([
             'name' => $request->name,
