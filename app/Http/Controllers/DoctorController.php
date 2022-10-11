@@ -359,7 +359,9 @@ class DoctorController extends Controller
             ->orderBy('doctor_schedules.id', 'asc')
             ->select('users.name as name', 'users.id as userId', 'doctor_schedules.*', 'doctors.title as title', 'doctor_schedules.id as schedule_id')
             ->get();
+
         for ($i = 0; $i < 7; $i++) {
+            // validation
             if(isset($request->day_of_week[$i])){
                 if ($request->day_of_week[$i] == 1 && $request->first_start_time[$i] == '') {
                     return Redirect::back()->with('error', 'You must fill time of the day you have checked !');

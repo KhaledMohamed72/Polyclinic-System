@@ -69,22 +69,28 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     @foreach($schedule_rows as $row)
-                    <strong>{{$row->day_of_week}}</strong>
+                        <strong>{{$row->day_of_week}}</strong>
 
-                    <p class="text-muted text-center">
-                        <p class=""><bold>First Period</bold></p>
-                        <span class="badge mr-3 bg-primary">From</span>
-                        {{date("g:i A", strtotime($row->first_start_time))}}
-                    </p>
-                    <p class="text-muted text-center">
-                        <span class="badge ml-3 mr-3 bg-info">To</span>
-                        {{date("g:i A", strtotime($row->first_end_time))}}
-                    </p>
-                    @if($row->second_start_time != '')
-                            <p class="text-muted text-center">
-                            <p class=""><bold>Second Period</bold></p>
+                        <p class="text-muted text-center">
+                        @if($row->second_start_time != '')
+                        <p><span class="badge ml-3 bg-danger">1</span></p>
+                        @endif
+                        <p class="ml-5">
                             <span class="badge mr-3 bg-primary">From</span>
-                            {{date("g:i A", strtotime($row->second_start_time))}}
+                            {{date("g:i A", strtotime($row->first_start_time))}}
+                        </p>
+                        </p>
+                        <p class="text-muted text-center">
+                            <span class="badge ml-3 mr-3 bg-info">To</span>
+                            {{date("g:i A", strtotime($row->first_end_time))}}
+                        </p>
+                        @if($row->second_start_time != '')
+                            <p class="text-muted text-center">
+                            <p><span class="badge ml-3 bg-danger">2</span></p>
+                            <p class="ml-5">
+                                <span class="badge mr-3 bg-primary">From</span>
+                                {{date("g:i A", strtotime($row->second_start_time))}}
+                            </p>
                             </p>
                             <p class="text-muted text-center">
                                 <span class="badge ml-3 mr-3 bg-info">To</span>
@@ -196,7 +202,7 @@
                     <div class="tab-content" id="custom-content-below-tabContent">
                         <div class="tab-pane fade show active" id="custom-content-below-appointment" role="tabpanel"
                              aria-labelledby="custom-content-below-appointment-tab">
-                           {{-- Appointment List table --}}
+                            {{-- Appointment List table --}}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card">
@@ -215,78 +221,78 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>test</td>
-                                                        <td>01128206779</td>
-                                                        <td>test@test.com</td>
-                                                        <td>12-5-2022</td>
-                                                        <td>09:00</td>
-                                                    </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>01128206779</td>
+                                                    <td>test@test.com</td>
+                                                    <td>12-5-2022</td>
+                                                    <td>09:00</td>
+                                                </tr>
 
                                                 </tbody>
                                             </table>

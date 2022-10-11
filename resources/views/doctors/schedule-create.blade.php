@@ -67,16 +67,16 @@
                                         @if(\Jenssegers\Agent\Facades\Agent::isMobile())
                                         &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="custom-tabs-three-{{$i}}-tab"
-                                               data-toggle="pill" href="#custom-tabs-{{$i}}-home" role="tab"
-                                               aria-controls="custom-tabs-three-{{$i}}" aria-selected="true">
+                                            <a class="nav-link active" id="custom-tabs-three-f{{$i}}-tab"
+                                               data-toggle="pill" href="#custom-tabs-three-f{{$i}}" role="tab"
+                                               aria-controls="custom-tabs-three-f{{$i}}" aria-selected="true">
                                                 <span><i class="fa fa-clock"></i></span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="custom-tabs-three-{{$i}}-tab"
-                                               data-toggle="pill" href="#custom-tabs-three-{{$i}}" role="tab"
-                                               aria-controls="custom-tabs-three-{{$i}}" aria-selected="false">
+                                            <a class="nav-link" id="custom-tabs-three-s{{$i}}-tab"
+                                               data-toggle="pill" href="#custom-tabs-three-s{{$i}}" role="tab"
+                                               aria-controls="custom-tabs-three-s{{$i}}" aria-selected="false">
                                                 <span><i class="fa fa-clock"></i></span>
                                                 <i class="fa fa-sm fa-plus-circle"></i>
                                             </a>
