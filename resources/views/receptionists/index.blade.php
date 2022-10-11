@@ -19,7 +19,7 @@
                         @if(auth()->user()->hasRole('admin'))
                             @if(($clinicType == 0 && $receptionists < 1) || $clinicType == 1)
                                 <a href="{{route('receptionists.create')}}" class="btn btn-block bg-gradient-success">Add
-                                    New Doctor</a>
+                                    Receptionist</a>
                             @endif
                         @endif
                     </div>
