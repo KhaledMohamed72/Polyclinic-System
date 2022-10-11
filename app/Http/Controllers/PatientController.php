@@ -117,7 +117,7 @@ class PatientController extends Controller
         // patient email not required so i have to escape this because DB does'nt accept this
 
         if (empty($request->email)) {
-            $request->email = 'patient' . time() . '.' . str_random() . '@gmail.com';
+            $request->email = 'patient' . time() . '' . random_int(100,100000) . '@gmail.com';
         }
         // insert general info into users table
         $user = DB::table('users')->insert([
@@ -230,6 +230,7 @@ class PatientController extends Controller
             toastr()->warning('Something went wrong!');
             return redirect()->route('home');
         }
+
         $row = DB::table('users')
             ->join('patients', 'patients.user_id', '=', 'users.id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
@@ -252,10 +253,14 @@ class PatientController extends Controller
             'allergy' => ['nullable', 'string', 'max:191'],
         ]);
 
-        $user = DB::table('users')->where('id', '=', $id)->update([
+        $user = DB::table('users')
+            ->where('idds', '=', $id)
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
         // insert the rest of info into Patients table
         // get recep and doctor ids

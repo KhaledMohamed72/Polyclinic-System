@@ -192,4 +192,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/doctors/schedule_edit/{doctor}',[\App\Http\Controllers\DoctorController::class,'scheduleUpdate'])->name('schedule-update');
     Route::resource('/receptionists',\App\Http\Controllers\ReceptionistController::class);
     Route::resource('/patients',\App\Http\Controllers\PatientController::class);
+    Route::resource('/appointments',\App\Http\Controllers\PatientController::class);
 });

@@ -363,10 +363,10 @@ class DoctorController extends Controller
         for ($i = 0; $i < 7; $i++) {
             // validation
             if(isset($request->day_of_week[$i])){
-                if ($request->day_of_week[$i] == 1 && $request->first_start_time[$i] == '') {
+                if ($request->first_start_time[$i] == '') {
                     return Redirect::back()->with('error', 'You must fill time of the day you have checked !');
                 } if ($request->first_start_time[$i] != '' && $request->first_end_time[$i] == '') {
-                    return Redirect::back()->with('error', 'You must complete time "To" of the day you have checked !');
+                    return Redirect::back()->with('error', 'You must complete time "To" time of the day you have checked !');
                 }
             }
 

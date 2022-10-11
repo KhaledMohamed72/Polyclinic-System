@@ -90,8 +90,8 @@
                 <label for="exampleInput{{$input}}">Gender</label>
                 <select name="{{$input}}" class="form-control select2" style="width: 100%;">
                     <option selected="" disabled="">Select Gender</option>
-                    <option value="male" {{isset($row) && $row->$input == 'male' ? 'selected' : ''}}>Male</option>
-                    <option value="female" {{isset($row) && $row->$input == 'female' ? 'selected' : ''}}>Female</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                 </select>
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
@@ -153,14 +153,14 @@
                 <label for="exampleInput{{$input}}">Blood Group</label>
                 <select name="{{$input}}" class="form-control select2" style="width: 100%;">
                     <option selected="" disabled="">Select Blood Group</option>
-                    <option value="A+" {{isset($row) && $row->$input == 'A+' ? 'selected' : ''}}>A+</option>
-                    <option value="A-" {{isset($row) && $row->$input == 'A-' ? 'selected' : ''}}>A-</option>
-                    <option value="B+" {{isset($row) && $row->$input == 'B+' ? 'selected' : ''}}>B+</option>
-                    <option value="B-" {{isset($row) && $row->$input == 'B-' ? 'selected' : ''}}>B-</option>
-                    <option value="O+" {{isset($row) && $row->$input == 'O+' ? 'selected' : ''}}>O+</option>
-                    <option value="O-" {{isset($row) && $row->$input == 'O-' ? 'selected' : ''}}>O-</option>
-                    <option value="AB+" {{isset($row) && $row->$input == 'AB+' ? 'selected' : ''}}>AB+</option>
-                    <option value="AB-" {{isset($row) && $row->$input == 'AB-' ? 'selected' : ''}}>AB-</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
                 </select>
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
