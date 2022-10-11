@@ -254,14 +254,14 @@ class PatientController extends Controller
         ]);
 
         $user = DB::table('users')
-            ->where('id', '=', $id)
+            ->where('issd', '=', $id)
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
         // insert the rest of info into Patients table
         // get recep and doctor ids
         // if the form has input doctor
