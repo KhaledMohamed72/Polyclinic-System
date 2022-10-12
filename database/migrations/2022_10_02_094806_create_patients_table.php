@@ -21,13 +21,13 @@ return new class extends Migration
             $table->foreignId('receptionist_id')->constrained('users')->cascadeOnDelete();
             $table->string('gender')->nullable();
             $table->integer('age')->nullable();
-            $table->string('address')->nullable();
+            $table->text('address')->nullable();
             $table->float('height')->nullable();
             $table->float('weight')->nullable();
-            $table->string('blood_group')->nullable();
+            $table->text('blood_group')->nullable();
             $table->integer('blood_pressure')->nullable();
             $table->integer('pulse')->nullable();
-            $table->string('allergy')->nullable();
+            $table->text('allergy')->nullable();
             $table->timestamps();
         });
     }

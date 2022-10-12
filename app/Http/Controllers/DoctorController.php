@@ -203,7 +203,7 @@ class DoctorController extends Controller
             'slot_time' => ['required', 'numeric'],
             'fees' => ['required', 'numeric'],
             'bio' => ['nullable', 'string'],
-            'receptionist' => ['required','integer'],
+            'receptionist' => ['required', 'integer'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
@@ -364,25 +364,37 @@ class DoctorController extends Controller
 
         for ($i = 0; $i < 7; $i++) {
             // validation
-            if(isset($request->day_of_week[$i])){
+            if (isset($request->day_of_week[$i])) {
                 if ($request->first_start_time[$i] == '') {
-                    return Redirect::back()->with('error', 'You must fill time of the day you have checked !');
-                } if ($request->first_start_time[$i] != '' && $request->first_end_time[$i] == '') {
-                    return Redirect::back()->with('error', 'You must complete time "To" time of the day you have checked !');
+                    return Redirect::back()->with('error', 'You must fill time of ' . $row[$i]->day_of_week . ' day !');
                 }
+                if ($request->first_start_time[$i] != '' && $request->first_end_time[$i] == '') {
+                    return Redirect::back()->with('error', 'You must complete time "To" time of ' . $row[$i]->day_of_week . ' day !');
+                }
+                if ($request->first_start_time[$i] > $request->first_end_time[$i]) {
+                    return Redirect::back()->with('error', 'The "From" time input value must be lower than "To" time input!');
+                }
+
+                if ($request->second_start_time[$i] != '' && $request->second_end_time[$i] == '') {
+                    return Redirect::back()->with('error', 'You must complete time "To" time of ' . $row[$i]->day_of_week . ' day !');
+                }
+                if ($request->second_start_time[$i] > $request->second_end_time[$i]) {
+                    return Redirect::back()->with('error', 'The "From" time input value must be lower than "To" time input!');
+                }
+
             }
 
-                $updateSchedule = DB::table('doctor_schedules')
-                    ->where('id', '=', $row[$i]->schedule_id)
-                    ->update([
-                        'day_attendance' => isset($request->day_of_week[$i]) ? $request->day_of_week[$i] : 0,
-                        'first_start_time' => $request->first_start_time[$i],
-                        'first_end_time' => $request->first_end_time[$i],
-                        'second_start_time' => $request->second_start_time[$i],
-                        'second_end_time' => $request->second_end_time[$i],
-                        'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                    ]);
-            }
+            $updateSchedule = DB::table('doctor_schedules')
+                ->where('id', '=', $row[$i]->schedule_id)
+                ->update([
+                    'day_attendance' => isset($request->day_of_week[$i]) ? $request->day_of_week[$i] : 0,
+                    'first_start_time' => $request->first_start_time[$i],
+                    'first_end_time' => $request->first_end_time[$i],
+                    'second_start_time' => $request->second_start_time[$i],
+                    'second_end_time' => $request->second_end_time[$i],
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
+        }
 
         if ($updateSchedule) {
             toastr()->success('Successfully Updated');
