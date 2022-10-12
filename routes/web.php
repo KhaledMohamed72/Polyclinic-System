@@ -184,7 +184,6 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-/*    Route::get('/logout', [\App\Http\Controllers\UserController::class,'logout'])->name('logout');*/
     Route::get('/dashboard',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
     Route::get('/',[\App\Http\Controllers\HomeController::class,'index']);
     Route::resource('/doctors',\App\Http\Controllers\DoctorController::class);
@@ -192,5 +191,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/doctors/schedule_edit/{doctor}',[\App\Http\Controllers\DoctorController::class,'scheduleUpdate'])->name('schedule-update');
     Route::resource('/receptionists',\App\Http\Controllers\ReceptionistController::class);
     Route::resource('/patients',\App\Http\Controllers\PatientController::class);
-    Route::resource('/appointments',\App\Http\Controllers\PatientController::class);
+    Route::resource('/appointments',\App\Http\Controllers\AppointmentController::class);
 });
