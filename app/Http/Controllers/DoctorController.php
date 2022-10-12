@@ -203,6 +203,7 @@ class DoctorController extends Controller
             'slot_time' => ['required', 'numeric'],
             'fees' => ['required', 'numeric'],
             'bio' => ['nullable', 'string'],
+            'receptionist' => ['required','integer'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
@@ -268,6 +269,7 @@ class DoctorController extends Controller
             ->where('user_id', '=', $id)
             ->where('doctors.clinic_id', '=', $this->getClinic()->id)
             ->update([
+                'receptionist_id' => $request->receptionist,
                 'title' => $request->title,
                 'degree' => $request->degree,
                 'specialist' => $request->specialist,

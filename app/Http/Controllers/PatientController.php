@@ -254,7 +254,7 @@ class PatientController extends Controller
         ]);
 
         $user = DB::table('users')
-            ->where('issd', '=', $id)
+            ->where('id', '=', $id)
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->update([
                 'name' => $request->name,
@@ -274,19 +274,24 @@ class PatientController extends Controller
             $receptionist_id = $doctor['receptionist_id'];
             $doctor_id = $doctor['user_id'];
         }
-        $patient = DB::table('patients')->where('user_id', '=', $id)->update([
+
+        $patient = DB::table('patients')
+            ->where('user_id', '=', $id)
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->update([
             'doctor_id' => $doctor_id,
             'receptionist_id' => $receptionist_id,
-            'gender' => $request->gender,
+            'gender' => "'$request->gender'",
             'age' => $request->age,
-            'address' => $request->address,
+            'address' => "'$request->address'",
             'height' => $request->height,
             'weight' => $request->weight,
-            'blood_group' => $request->blood_group,
+            'blood_group' => "'$request->blood_group'",
             'blood_pressure' => $request->blood_pressure,
             'pulse' => $request->pulse,
-            'allergy' => $request->allergy,
+            'allergy' => "'$request->allergy'",
         ]);
+
         if ($user && $patient) {
             toastr()->success('Successfully Updated');
             return redirect()->route('patients.index');
