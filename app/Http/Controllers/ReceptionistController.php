@@ -18,6 +18,8 @@ class ReceptionistController extends Controller
         $clinicType = $this->getClinic()->type;
         $rows = DB::table('users')
             ->join('receptionists', 'receptionists.user_id', '=', 'users.id')
+            ->join('role_user', 'role_user.user_id', '=', 'receptionists.user_id')
+            ->join('roles', 'roles.id', '=', 'role_user.role_id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->select('users.*')
             ->paginate(10);
@@ -34,6 +36,8 @@ class ReceptionistController extends Controller
         // get doctor of current clinic
         $doctors = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
+            ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
+            ->join('roles', 'roles.id', '=', 'role_user.role_id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->select('users.id','users.name')
             ->get();

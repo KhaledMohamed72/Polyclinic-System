@@ -25,12 +25,16 @@ class DoctorController extends Controller
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
+                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->select('users.*', 'doctors.title')
                 ->paginate(10);
         } else {
             $rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
+                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('doctors.receptionist_id', '=', auth()->user()->id)
                 ->select('users.*', 'doctors.title')
