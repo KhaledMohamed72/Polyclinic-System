@@ -13,6 +13,7 @@ class UserController extends Controller
     }
 
     public function logout(){
+
         auth()->guard('web')->logout();
 
             return redirect()->route('login');
