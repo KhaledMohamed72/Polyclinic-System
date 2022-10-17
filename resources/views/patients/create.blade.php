@@ -28,32 +28,9 @@
 @section('scripts')
     <!-- Select2 -->
     <script src="{{asset('assets/plugins/select2/js/select2.full.min.js')}}"></script>
-    {{--Counter for slot timw in form--}}
-    <script>
-        var select = '';
-        for (i = 5; i <= 60; i+=5) {
-            select += '<option value=' + i + '>' + i + '</option>';
-        }
-        $('#some_select').html(select);
-    </script>
-    <script>
-        // Profile photo
-        function triggerClick() {
-            document.querySelector('#profile_photo').click();
-        }
 
-        function displayProfile(e) {
-            if (e.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.querySelector('#profile_display').setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(e.files[0]);
-            }
-        }
+    <script>
         $(function () {
-            // Summernote
-            $('#summernote').summernote()
             //Initialize Select2 Elements
             $('.select2').select2()
 

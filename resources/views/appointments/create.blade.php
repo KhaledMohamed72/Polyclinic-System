@@ -4,21 +4,21 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Patients    @endsection
-@section('header-title')    Patients    @endsection
-@section('header-title-one')    Patients    @endsection
+@section('title')   Appointments    @endsection
+@section('header-title')    Appointments   @endsection
+@section('header-title-one')    Appointments    @endsection
 @section('header-title-two')    Create   @endsection
 
 @section('content')
 
     <div class="card card-primary">
         <div class="card-header">
-            <div class="card-title">Add New Patient</div>
+            <div class="card-title">Book Appointment</div>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form method="post" action="{{route('patients.store')}}">
-            @include('patients.form')
+        <form method="post" action="{{route('appointments.store')}}">
+            @include('appointments.form')
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary" name="create">Submit</button>
             </div>
@@ -28,32 +28,14 @@
 @section('scripts')
     <!-- Select2 -->
     <script src="{{asset('assets/plugins/select2/js/select2.full.min.js')}}"></script>
-    {{--Counter for slot timw in form--}}
     <script>
-        var select = '';
-        for (i = 5; i <= 60; i+=5) {
-            select += '<option value=' + i + '>' + i + '</option>';
-        }
-        $('#some_select').html(select);
+        $('#datepicker').change(function (){
+            var doctor_id = $('#doctor').is(':checked');
+            window.location = "{{url('/appointment/get_available_time?doctor_id=')}}"+ doctor_id + '?date=' + $(this).val();
+        });
     </script>
     <script>
-        // Profile photo
-        function triggerClick() {
-            document.querySelector('#profile_photo').click();
-        }
-
-        function displayProfile(e) {
-            if (e.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.querySelector('#profile_display').setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(e.files[0]);
-            }
-        }
         $(function () {
-            // Summernote
-            $('#summernote').summernote()
             //Initialize Select2 Elements
             $('.select2').select2()
 

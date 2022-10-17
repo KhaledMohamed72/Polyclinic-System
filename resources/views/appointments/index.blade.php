@@ -96,6 +96,8 @@
     <script src="{{asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
     <script src="{{asset('assets/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
     <script src="{{asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+    <!-- jQuery UI -->
+    <script src="{{asset('assets/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
     <!-- fullCalendar 2.2.5 -->
     <script src="{{asset('assets/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/plugins/fullcalendar/main.js')}}"></script>
@@ -115,6 +117,7 @@
                 "responsive": true,
             });
         });
+
         $(function () {
 
             /* initialize the external events
