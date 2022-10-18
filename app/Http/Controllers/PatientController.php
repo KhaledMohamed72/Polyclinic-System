@@ -20,16 +20,12 @@ class PatientController extends Controller
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('users')
                 ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'patients.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->select('users.*')
                 ->paginate(10);
         } elseif (auth()->user()->hasRole('recep')) {
             $rows = DB::table('users')
                 ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'patients.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('patients.receptionist_id', '=', auth()->user()->id)
                 ->select('users.*')
@@ -37,8 +33,6 @@ class PatientController extends Controller
         } else {
             $rows = DB::table('users')
                 ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'patients.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('patients.doctor_id', '=', auth()->user()->id)
                 ->select('users.*')
@@ -57,8 +51,6 @@ class PatientController extends Controller
         if (auth()->user()->hasRole('admin')) {
             $doctor_rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->select('users.id', 'users.name')
                 ->get();
@@ -68,8 +60,6 @@ class PatientController extends Controller
         if (auth()->user()->hasRole('recep')) {
             $doctor_rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('doctors.receptionist_id', '=', auth()->user()->id)
                 ->select('users.id', 'users.name')
@@ -78,8 +68,6 @@ class PatientController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             $doctor_rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('doctors.user_id', '=', auth()->user()->id)
                 ->select('users.id', 'users.name')
@@ -190,8 +178,6 @@ class PatientController extends Controller
         if (auth()->user()->hasRole('admin')) {
             $doctor_rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->select('users.id', 'users.name')
                 ->get();
@@ -201,8 +187,6 @@ class PatientController extends Controller
         if (auth()->user()->hasRole('recep')) {
             $doctor_rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('doctors.receptionist_id', '=', auth()->user()->id)
                 ->select('users.id', 'users.name')
@@ -212,8 +196,6 @@ class PatientController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             $doctor_rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->join('role_user', 'role_user.user_id', '=', 'doctors.user_id')
-                ->join('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('doctors.user_id', '=', auth()->user()->id)
                 ->select('users.id', 'users.name')
