@@ -99,7 +99,25 @@ class AppointmentController extends Controller
             ->where('doctor_schedules.clinic_id','=',$this->getClinic()->id)
             ->where('doctor_schedules.id','=',$request->id)
             ->select('doctor_schedules.*','doctors.slot_time')
-            ->get();
+            ->first();
+        $time_slots_array = array();
+
+        $first_start = strtotime($time_slots->first_start_time);
+        $first_end = strtotime($time_slots->first_end_time);
+
+        $slot_time = $time_slots->slot_time;
+        array_push($time_slots_array,$time_slots->first_start_time);
+
+        for (;;){
+            $time_to_push = strtotime("+". $slot_time . "minutes",strtotime($time_slots->first_start_time));
+            dd($time_to_push);
+            if (($first_end - $time_to_push)/60 > $slot_time){
+                break;
+            }else{
+                array_push($time_slots_array,date('H:i', $time_to_push));
+            }
+        }
+        dd($time_slots_array);
         return response()->json($time_slots);
     }
 }

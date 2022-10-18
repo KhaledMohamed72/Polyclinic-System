@@ -53,7 +53,7 @@
     <div class="row">
         <div class="col-md-12 form-group">
             <label for="" class="d-block">Available Time</label>
-            <div class="btn-group btn-group-toggle available_time" data-toggle="buttons">
+            <div class="btn-group btn-group-toggle available_time">
             </div>
         </div>
     </div>

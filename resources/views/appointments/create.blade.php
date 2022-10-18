@@ -28,9 +28,6 @@
 @section('scripts')
     <!-- Select2 -->
     <script src="{{asset('assets/plugins/select2/js/select2.full.min.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
-            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             function tConvert(time) {
@@ -44,6 +41,30 @@
                 }
                 return time.join(''); // return adjusted time or original string
             }
+            function addMinutes(time, minsToAdd) {
+                function D(J){ return (J<10? '0':'') + J};
+
+                var piece = time.split(':');
+
+                var mins = piece[0]*60 + +piece[1] + +minsToAdd;
+
+                return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);
+            }
+        function getTimeDiff(time1,time2){
+            var splitted1 = time1.split(":");
+            var splitted2 = time2.split(":");
+            var time1 = splitted1[0]+splitted1[1];
+            var time2 = splitted2[0]+splitted2[1];
+            if (time1 < time2) {
+                var diff = getTimeDiff(time2, time1, 'm');
+                diff;
+            } else {
+                var diff1 = getTimeDiff('24:00', '{time1}', 'm');
+                var diff2 = getTimeDiff('{time2}', '00:00', 'm');
+                var totalDiff = diff1+diff2;
+                totalDiff;
+            };
+        }
             $(document).on('change', '#doctor', function () {
                 $('#date').val('');
                 $('.available_time').empty();
@@ -79,14 +100,14 @@
 
                                 if (time.second_start_time != null && time.second_end_time != null) {
                                     $('.available_time').append(
-                                        '<label class="btn btn-outline-secondary mr-2"><input type="radio" name="available_time" class="available_period" value="' +
+                                        '<label class="btn btn-outline-secondary mr-2"><input type="radio" name="available_time" id="period" class="available_period" value="' +
                                         time.id + '" >' + tConvert(time.first_start_time) + ' to ' + tConvert(time.first_end_time) +
                                         " | " + tConvert(time.second_start_time) + " to " + tConvert(time.second_end_time) +
                                         '</label>');
                                 }else {
                                     if(time.first_start_time != 'NULL') {
                                         $('.available_time').append(
-                                            '<label class="btn btn-outline-secondary mr-2"><input type="radio" name="available_time" class="available_period" value="' +
+                                            '<label class="btn btn-outline-secondary mr-2"><input type="radio" name="available_time" id="period" class="available_period" value="' +
                                             time.id + '" >' + tConvert(time.first_start_time) + ' to ' + tConvert(time.first_end_time) +
                                             '</label>');
                                     }else {
@@ -111,12 +132,11 @@
                 $('.availble_slot').empty();
             });
             // doctor available time show
-            $('input:radio[name="available_time"]').click(function(){
-                alert('dddd');
+
+            $(document).on('click', '#period', function() {
+
                 $('.availble_slot').empty();
                 var time_id = $(this).val();
-                var date = $('#datepicker').val();
-                var doctor_id = $("#doctor").val();
                 $.ajax({
                     url: "{{url('appointment/get_time_slots?id=')}}" + time_id,
                     type: "GET",
@@ -125,14 +145,16 @@
 
                         $.each(data, function (i, time) {
                             //do something
-                            $('.available_time').append(
-                                '<label class="btn btn-outline-secondary mr-2 "><input type="radio" name="available_time" class="available_period " value="' +
-                                time.id + '" >' + tConvert(time.first_start_time) + ' to ' + tConvert(time.first_end_time) + '</label>');
-                            if (time.second_start_time != '' && time.second_end_time != '') {
-                                $('.available_time').append(
-                                    '<label class="btn btn-outline-secondary mr-2 "><input type="radio" name="available_time" class="available_period " value="' +
-                                    time.id + '" >' + tConvert(time.second_start_time) + ' to ' + tConvert(time.second_end_time) + '</label>');
-                            }
+                            var start_time = time.first_start_time;
+                            var second_time = time.first_end_time;
+                            var top_time = '';
+                            /*for (;;) {
+                                top_time = addMinutes(start_time,20)
+                                console.log(top_time);
+                                if(top_time === second_time){
+                                    break;
+                                }
+                            }*/
                         });
 
                     },
