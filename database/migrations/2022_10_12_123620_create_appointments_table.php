@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('receptionist_id')->constrained('users')->cascadeOnDelete();
             $table->string('date');
             $table->string('time');
+            $table->string('status');
             $table->timestamps();
         });
     }

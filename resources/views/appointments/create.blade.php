@@ -41,30 +41,6 @@
                 }
                 return time.join(''); // return adjusted time or original string
             }
-            function addMinutes(time, minsToAdd) {
-                function D(J){ return (J<10? '0':'') + J};
-
-                var piece = time.split(':');
-
-                var mins = piece[0]*60 + +piece[1] + +minsToAdd;
-
-                return D(mins%(24*60)/60 | 0) + ':' + D(mins%60);
-            }
-        function getTimeDiff(time1,time2){
-            var splitted1 = time1.split(":");
-            var splitted2 = time2.split(":");
-            var time1 = splitted1[0]+splitted1[1];
-            var time2 = splitted2[0]+splitted2[1];
-            if (time1 < time2) {
-                var diff = getTimeDiff(time2, time1, 'm');
-                diff;
-            } else {
-                var diff1 = getTimeDiff('24:00', '{time1}', 'm');
-                var diff2 = getTimeDiff('{time2}', '00:00', 'm');
-                var totalDiff = diff1+diff2;
-                totalDiff;
-            };
-        }
             $(document).on('change', '#doctor', function () {
                 $('#date').val('');
                 $('.available_time').empty();
@@ -134,35 +110,24 @@
             // doctor available time show
 
             $(document).on('click', '#period', function() {
-
-                $('.availble_slot').empty();
+                $('.available_slot').empty();
                 var time_id = $(this).val();
+                var doctor_id = $('#doctor').val();
+                var date = $('#date').val();
                 $.ajax({
-                    url: "{{url('appointment/get_time_slots?id=')}}" + time_id,
+                    url: "{{url('appointment/get_time_slots?id=')}}" + time_id + "&doctor_id=" + doctor_id + "&date=" + date,
                     type: "GET",
                     dataType: "json",
                     success: function (data) {
-
-                        $.each(data, function (i, time) {
-                            //do something
-                            var start_time = time.first_start_time;
-                            var second_time = time.first_end_time;
-                            var top_time = '';
-                            /*for (;;) {
-                                top_time = addMinutes(start_time,20)
-                                console.log(top_time);
-                                if(top_time === second_time){
-                                    break;
-                                }
-                            }*/
-                        });
-
+                        for (let i = 0; i < data.length; i++) {
+                            $('.available_slot').append(
+                                '<label class="btn btn-outline-secondary mr-2"><input type="radio" name="available_slot" id="period" class="available_period" value="' +
+                                data[i] + '" >' + tConvert(data[i])  +
+                                '</label>');
+                        }
                     },
                     error: function (error) {
                         console.log(error);
-                        toastr.error('Something went wrong!', {
-                            timeOut: 10000
-                        });
                     }
                 });
             });

@@ -2,7 +2,7 @@
 
 <div class="card-body">
     <div class="row">
-        @php $input = 'patient' @endphp
+        @php $input = 'patient_id' @endphp
         <div class="col-md-12">
             <div class="form-group">
                 <label>Patient</label>
@@ -60,7 +60,7 @@
     <div class="row">
         <div class="col-md-12 form-group">
             <label for="" class="d-block">Available Slot</label>
-            <div class="btn-group btn-group-toggle availble_slot d-block"
+            <div class="btn-group btn-group-toggle available_slot d-block"
                  data-toggle="buttons">
             </div>
         </div>
