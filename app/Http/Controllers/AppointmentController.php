@@ -91,7 +91,7 @@ class AppointmentController extends Controller
             'date' => ['required', 'string'],
         ]);
         //validate available_slot radio
-        if (! $request->has('available_slot')){
+        if (!$request->has('available_slot')) {
             return Redirect::back()->with('error', 'You must choose any available slot');
         }
         // if the form has input doctor
@@ -147,9 +147,9 @@ class AppointmentController extends Controller
             ->first();
 
         // check if there is reserved times or not and covert it to array
-        if($request->has('has_one_doctor_id')){
+        if ($request->has('has_one_doctor_id')) {
             $doctor_id = $request->has_one_doctor_id;
-        }else{
+        } else {
             $doctor_id = $request->doctor_id;
         }
         if (auth()->user()->hasRole('admin')) {
@@ -195,17 +195,16 @@ class AppointmentController extends Controller
             */
             $time_to_push = strtotime("+" . $slot_time . "minutes", strtotime($time_slots->first_start_time));
 
-
             if (($first_end - $time_to_push) / 60 >= $slot_time_or) {
 
-                    array_push($time_slots_array, date('H:i', $time_to_push));
+                array_push($time_slots_array, date('H:i', $time_to_push));
 
                 $slot_time = $slot_time + $slot_time_or;
             } else {
                 break;
             }
         }
-        $free_time_array = array_diff($time_slots_array,$reserved_time_array);
+        $free_time_array = array_diff($time_slots_array, $reserved_time_array);
 
         return response()->json(array_values($free_time_array));
     }
