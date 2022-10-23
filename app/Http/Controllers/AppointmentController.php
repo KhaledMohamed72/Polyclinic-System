@@ -147,34 +147,32 @@ class AppointmentController extends Controller
             ->first();
 
         // check if there is reserved times or not and covert it to array
-
         if($request->has('has_one_doctor_id')){
             $doctor_id = $request->has_one_doctor_id;
         }else{
             $doctor_id = $request->doctor_id;
         }
-
-        if ($request->hasRole('admin')){
+        if (auth()->user()->hasRole('admin')) {
             $reserved_time = DB::table('appointments')
-                ->where('clinic_id',$this->getClinic()->id)
-                ->where('doctor_id',$doctor_id)
-                ->where('date',$request->date)
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('doctor_id', $doctor_id)
+                ->where('date', $request->date)
                 ->select('time')
                 ->get()->pluck('time');
         }
-        if ($request->hasRole('doctor')){
+        if (auth()->user()->hasRole('recep')) {
             $reserved_time = DB::table('appointments')
-                ->where('clinic_id',$this->getClinic()->id)
-                ->where('doctor_id',auth()->user()->id)
-                ->where('date',$request->date)
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('receptionist_id', auth()->user()->id)
+                ->where('date', $request->date)
                 ->select('time')
                 ->get()->pluck('time');
         }
-        if ($request->hasRole('recep')){
+        if (auth()->user()->hasRole('doctor')) {
             $reserved_time = DB::table('appointments')
-                ->where('clinic_id',$this->getClinic()->id)
-                ->where('receptionist_id',auth()->user()->id)
-                ->where('date',$request->date)
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('doctor_id', auth()->user()->id)
+                ->where('date', $request->date)
                 ->select('time')
                 ->get()->pluck('time');
         }
