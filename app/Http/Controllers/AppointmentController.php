@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class AppointmentController extends Controller
 {
@@ -48,6 +49,7 @@ class AppointmentController extends Controller
                 ->select('users.id', 'users.name')
                 ->get();
         }
+        // list of doctors if the role is doctor
         if (auth()->user()->hasRole('doctor')) {
             $doctor_rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
@@ -58,7 +60,7 @@ class AppointmentController extends Controller
             $patient_rows = DB::table('users')
                 ->join('patients', 'patients.user_id', '=', 'users.id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('patients.user_id', '=', auth()->user()->id)
+                ->where('patients.doctor_id', '=', auth()->user()->id)
                 ->select('users.id', 'users.name')
                 ->get();
         }
@@ -87,9 +89,11 @@ class AppointmentController extends Controller
         $this->validate($request, [
             'patient_id' => ['required', 'integer'],
             'date' => ['required', 'string'],
-            'available_slot' => ['required', 'string'],
         ]);
-
+        //validate available_slot radio
+        if (! $request->has('available_slot')){
+            return Redirect::back()->with('error', 'You must choose any available slot');
+        }
         // if the form has input doctor
         if ($request->has('doctor_id') && $request->doctor_id != '') {
             $doctor = Doctor::where('user_id', $request->doctor_id)->first();
@@ -107,14 +111,14 @@ class AppointmentController extends Controller
             'receptionist_id' => $receptionist_id,
             'date' => $request->date,
             'time' => $request->available_slot,
-            'status' => 'comming',
+            'status' => 'pending',
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         if ($appointment) {
             toastr()->success('Successfully Created');
-            return redirect()->route('appointments.index');
+            return redirect()->route('appointments.create');
         } else {
             toastr()->error('Something went wrong!');
             return redirect()->route('appointments.index');
@@ -142,20 +146,16 @@ class AppointmentController extends Controller
             ->select('doctor_schedules.*', 'doctors.slot_time')
             ->first();
 
-        // check if this time slot is found or not
+        // check if there is reserved times or not and covert it to array
         $reserved_time = DB::table('appointments')
             ->where('clinic_id',$this->getClinic()->id)
             ->where('doctor_id',$request->doctor_id)
             ->where('date',$request->date)
             ->select('time')
-            ->get();
-        foreach($reserved_time as $object)
-        {
-            $arrays[] = (array)$object;
-        }
-        print_r($arrays);
+            ->get()->pluck('time');
+        $reserved_time_array = $reserved_time->all();
+
         $time_slots_array = array();
-        $first_start = strtotime($time_slots->first_start_time);
         $first_end = strtotime($time_slots->first_end_time);
 
         $slot_time_or = $time_slots->slot_time;
@@ -163,20 +163,28 @@ class AppointmentController extends Controller
         array_push($time_slots_array, $time_slots->first_start_time);
 
         for (; ;) {
+            /*
+            Here I made some operation to get the time slots between start and end time of doctor
+            1- every round we add slot time of doctor to start time and increment with its value
+            2- then we check the difference between (added time slot to start time) and end time
+            3- if the result is more than base slot time, we push this time to array
+            3 - if the result is less than base slot time, we break the loop
+            4 - then we get the difference between the two array =>(time slots , reserved_time)
+            */
             $time_to_push = strtotime("+" . $slot_time . "minutes", strtotime($time_slots->first_start_time));
+
 
             if (($first_end - $time_to_push) / 60 >= $slot_time_or) {
 
                     array_push($time_slots_array, date('H:i', $time_to_push));
 
-                $slot_time = $slot_time + 30;
+                $slot_time = $slot_time + $slot_time_or;
             } else {
                 break;
             }
         }
-        $arr1 = ['11:47','12:17'];
-        $arr2 = ['11:47'];
-        dd(array_diff($arr1,$arr2));
-        return response()->json($time_slots_array);
+        $free_time_array = array_diff($time_slots_array,$reserved_time_array);
+
+        return response()->json(array_values($free_time_array));
     }
 }

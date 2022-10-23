@@ -31,8 +31,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('appointments.index')}}" class="nav-link">
-                        <i class="nav-icon fas fa-calendar"></i>
+                    <a href="{{route('appointments.index')}}" class="nav-link {{ request()->is('appointments/*') || request()->is('appointments')? 'active' : '' }}">
+                        <i class="nav-icon fas fa-calendar-plus"></i>
                         <p>
                             Appointment
                         </p>
@@ -116,14 +116,38 @@
                         </li>
                     </ul>
                 </li>
-                @endif
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{route('today-appointment')}}" class="nav-link {{ request()->is('appointment-list/*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-calendar"></i>
                         <p>
                             Appointment List
                         </p>
                     </a>
+                </li>
+                @endif
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ (request()->routeIs('invoices.*')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-receipt"></i>
+                        <p>
+                            Invoices
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('patients.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Invoices List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('patients.create')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add New Invoice</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

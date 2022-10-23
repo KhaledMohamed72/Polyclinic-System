@@ -13,7 +13,7 @@
                             {{isset($row) && $row->$patient_row == $patient_row->id ? 'selected' : ''}}>{{$patient_row->name}}</option>
                     @endforeach
                 </select>
-                @error($input)<span class="invalid-feedback"
+                @error($input)<span class="badge badge-danger"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
@@ -32,7 +32,7 @@
                                 {{isset($row) && $row->doctor_id == $doctor_row->id ? 'selected' : ''}}>{{$doctor_row->name}}</option>
                         @endforeach
                     </select>
-                    @error($input)<span class="invalid-feedback"
+                    @error($input)<span class="badge badge-danger"
                                         role="alert"><strong>{{ $message }}</strong></span>@enderror
                 </div>
             </div>
@@ -64,7 +64,6 @@
                  data-toggle="buttons">
             </div>
         </div>
-
     </div>
 </div>
 

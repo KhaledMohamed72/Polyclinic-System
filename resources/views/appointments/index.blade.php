@@ -18,7 +18,8 @@
             <div class="sticky-top mb-3">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Draggable Events</h4>
+                        <a href="{{route('appointments.create')}}" class="btn btn-block bg-gradient-success">Add New
+                            Appointment</a>
                     </div>
                     <div class="card-body">
                         <!-- the events -->

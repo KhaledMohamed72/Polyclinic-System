@@ -28,8 +28,10 @@
 @section('scripts')
     <!-- Select2 -->
     <script src="{{asset('assets/plugins/select2/js/select2.full.min.js')}}"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
+            // convert 24hrs to 12hrs
             function tConvert(time) {
                 // Check correct time format and split into components
                 time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -41,14 +43,17 @@
                 }
                 return time.join(''); // return adjusted time or original string
             }
+
             $(document).on('change', '#doctor', function () {
                 $('#date').val('');
                 $('.available_time').empty();
-                $('.availble_slot').empty();
+                $('.available_slot').empty();
             });
+
             $('#date').on('change', function () {
                 var date = $('#date').val();
                 $('.available_time').empty();
+                // detect the name of day from given date
                 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                 var d = new Date(date);
                 var dayName = days[d.getDay()];
@@ -66,7 +71,7 @@
                         type: "GET",
                         dataType: "json",
                         success: function (data) {
-                            if(data == ''){
+                            if (data == '') {
                                 $('.available_time').append(
                                     '<span class="badge-warning">Doctor is not available in this day !</span>'
                                 );
@@ -80,13 +85,13 @@
                                         time.id + '" >' + tConvert(time.first_start_time) + ' to ' + tConvert(time.first_end_time) +
                                         " | " + tConvert(time.second_start_time) + " to " + tConvert(time.second_end_time) +
                                         '</label>');
-                                }else {
-                                    if(time.first_start_time != 'NULL') {
+                                } else {
+                                    if (time.first_start_time != 'NULL') {
                                         $('.available_time').append(
                                             '<label class="btn btn-outline-secondary mr-2"><input type="radio" name="available_time" id="period" class="available_period" value="' +
                                             time.id + '" >' + tConvert(time.first_start_time) + ' to ' + tConvert(time.first_end_time) +
                                             '</label>');
-                                    }else {
+                                    } else {
                                         $('.available_time').append(
                                             '<span class="badge-warning">There is no schedule in this day !</span>'
                                         );
@@ -105,11 +110,11 @@
             });
             // datepicker change
             $(document).on('change', '#date', function () {
-                $('.availble_slot').empty();
+                $('.available_slot').empty();
             });
             // doctor available time show
 
-            $(document).on('click', '#period', function() {
+            $(document).on('click', '#period', function () {
                 $('.available_slot').empty();
                 var time_id = $(this).val();
                 var doctor_id = $('#doctor').val();
@@ -122,7 +127,7 @@
                         for (let i = 0; i < data.length; i++) {
                             $('.available_slot').append(
                                 '<label class="btn btn-outline-secondary mr-2"><input type="radio" name="available_slot" id="period" class="available_period" value="' +
-                                data[i] + '" >' + tConvert(data[i])  +
+                                data[i] + '" >' + tConvert(data[i]) +
                                 '</label>');
                         }
                     },
