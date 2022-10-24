@@ -39,8 +39,8 @@
                                     <tbody>
                                     @foreach($rows as $row)
                                         @php
-                                            $doctor = \App\Models\User::where('id',$row->doctor_id)->first();
-                                            $patient = \App\Models\User::where('id',$row->patient_id)->first();
+                                            $doctor = \App\Models\User::orderBy('id','desc')->where('id',$row->doctor_id)->first();
+                                            $patient = \App\Models\User::orderBy('id','desc')->where('id',$row->patient_id)->first();
                                         @endphp
                                         <tr>
                                             <td>{{$row->id}}</td>

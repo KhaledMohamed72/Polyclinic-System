@@ -32,6 +32,7 @@
                                         <th>Contact No</th>
                                         <th>Date</th>
                                         <th>time</th>
+                                        <th>action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
