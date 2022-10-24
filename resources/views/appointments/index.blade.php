@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
     <!-- fullCalendar -->
     <link rel="stylesheet" href="{{asset('assets/fullcalender/lib/main.css')}}">
+
 @endsection
 @section('title')   Appointments    @endsection
 @section('header-title')    Appointments    @endsection
@@ -13,18 +14,21 @@
 @section('header-title-two')    Calender   @endsection
 
 @section('content')
+    @if(\Jenssegers\Agent\Facades\Agent::isMobile())
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <div id="calendar"></div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="col-md-4 float-right">
+                    <div class="col-md-6 float-right">
                         <a href="{{route('patients.create')}}" class="btn btn-block bg-gradient-success">Add Appointment</a>
                     </div>
                 </div>
@@ -62,8 +66,8 @@
                                             <i class="fas fa-trash">
                                             </i>
                                         </button>
-                                    </form>--}}
-                                </td>
+                                    </form>
+                                </td>--}}
                             </tr>
 
                         </tbody>
@@ -71,9 +75,73 @@
                 </div>
                 <!-- /.card-body -->
             </div>
-        </div>
         <!-- /.col -->
     </div>
+    </div>
+
+    @else
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="col-md-6 float-right">
+                            <a href="{{route('patients.create')}}" class="btn btn-block bg-gradient-success">Add Appointment</a>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient</th>
+                                <th>doctor</th>
+                                <th>Time</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td>1</td>
+                                <td> Hell Hell Hell</td>
+                                <td>Kill Hell Hell</td>
+                                <td>012:05 pm</td>
+                                {{--                                <td class="project-actions text-left">
+                                                                    <a class="btn btn-primary btn-sm" href="{{route('patients.show',$row->id)}}" title="View">
+                                                                        <i class="fas fa-eye">
+                                                                        </i>
+                                                                    </a>
+                                                                    <a class="btn btn-info btn-sm" href="{{route('patients.edit',$row->id)}}" title="Edit">
+                                                                        <i class="fas fa-pencil-alt">
+                                                                        </i>
+                                                                    </a>
+                                                                    <form action="{{route('patients.destroy',$row->id)}}" method="POST" style="display: contents;">
+                                                                        {{ csrf_field() }}
+                                                                        {{ method_field('delete') }}
+                                                                        <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
+                                                                            <i class="fas fa-trash">
+                                                                            </i>
+                                                                        </button>
+                                                                    </form>--}}
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+    @endif
     <!-- /.row -->
 @endsection
 @section('scripts')
@@ -127,6 +195,7 @@
                 editable: false, // enable draggable events
                 selectable: true,
                 height:650,
+                responsive:true,
                 aspectRatio: 1.8,
                 headerToolbar: {
                     left: 'prev,next',
