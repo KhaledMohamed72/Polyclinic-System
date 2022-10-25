@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -11,9 +12,115 @@ class AppointmentController extends Controller
 {
     public function index()
     {
-        return view('appointments.index');
+        if (auth()->user()->hasRole('admin')) {
+            $rows = DB::table('appointments')
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
+        }
+        // doctor
+        if (auth()->user()->hasRole('doctor')) {
+            $rows = DB::table('appointments')
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->where('appointments.doctor_id','=',auth()->user()->id)
+                ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
+        }
+        // receptionist
+        if (auth()->user()->hasRole('recep')) {
+            $rows = DB::table('appointments')
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->where('appointments.receptionist_id','=',auth()->user()->id)
+                ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
+        }
+        return view('appointments.index',compact('rows'));
+    }
+    //  calendar
+    public function get_all_appointments(){
+        // admin
+        if (auth()->user()->hasRole('admin')) {
+            $rows = DB::table('appointments')
+                ->where('clinic_id',$this->getClinic()->id)
+                ->select('date', DB::raw('concat(count(*), " appointments") as title'))
+                ->groupBy('date')
+                ->get();
+        }
+        // doctor
+        if (auth()->user()->hasRole('doctor')) {
+            $rows = DB::table('appointments')
+                ->where('clinic_id',$this->getClinic()->id)
+                ->where('doctor_id',auth()->user()->id)
+                ->select('date', DB::raw('concat(count(*), " appointments") as title'),)
+                ->groupBy('date')
+                ->get();
+        }
+        // receptionist
+        if (auth()->user()->hasRole('recep')) {
+            $rows = DB::table('appointments')
+                ->where('clinic_id',$this->getClinic()->id)
+                ->where('receptionist_id',auth()->user()->id)
+                ->select('date', DB::raw('concat(count(*), " appointments") as title'),)
+                ->groupBy('date')
+                ->get();
+        }
+        if ($rows) {
+            return response()->json($rows);
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('appointments.index');
+        }
     }
 
+    public function get_appointments_per_date(Request $request){
+
+        if (auth()->user()->hasRole('admin')) {
+            $rows = DB::table('appointments')
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.date', '=', $request->date)
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
+        }
+        // doctor
+        if (auth()->user()->hasRole('doctor')) {
+            $rows = DB::table('appointments')
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->where('appointments.doctor_id','=',auth()->user()->id)
+                ->whereDate('appointments.date', '=', $request->date)
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
+        }
+        // receptionist
+        if (auth()->user()->hasRole('recep')) {
+            $rows = DB::table('appointments')
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->where('appointments.receptionist_id','=',auth()->user()->id)
+                ->whereDate('appointments.date', '=', $request->date)
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
+        }
+        if ($rows) {
+            return response()->json($rows);
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('appointments.index');
+        }
+    }
     public function create(Request $request)
     {
         if (!auth()->user()->hasRole(['admin', 'doctor', 'recep'])) {

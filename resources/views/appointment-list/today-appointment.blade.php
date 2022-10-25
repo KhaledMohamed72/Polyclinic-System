@@ -38,15 +38,11 @@
                                     </thead>
                                     <tbody>
                                     @foreach($rows as $row)
-                                        @php
-                                            $doctor = \App\Models\User::orderBy('id','desc')->where('id',$row->doctor_id)->first();
-                                            $patient = \App\Models\User::orderBy('id','desc')->where('id',$row->patient_id)->first();
-                                        @endphp
                                         <tr>
                                             <td>{{$row->id}}</td>
-                                            <td>{{$doctor->name}}</td>
-                                            <td>{{$patient->name}}</td>
-                                            <td>{{$patient->phone}}</td>
+                                            <td>{{$row->doctor_name}}</td>
+                                            <td>{{$row->patient_name}}</td>
+                                            <td>{{$row->phone}}</td>
                                             <td>{{$row->date}}</td>
                                             <td>{{date("g:i A", strtotime($row->time))}}</td>
                                             <td>
@@ -107,13 +103,13 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],order: [[0, 'desc']],
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
                 "searching": false,
-                "ordering": true,
+                "ordering": false,
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,

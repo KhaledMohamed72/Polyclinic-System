@@ -7,6 +7,90 @@
     <!-- fullCalendar -->
     <link rel="stylesheet" href="{{asset('assets/fullcalender/lib/main.css')}}">
 
+    <script src="{{asset('assets/fullcalender/lib/main.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                scrollTime: '00:00', // undo default 6am scrollTime
+                editable: false, // enable draggable events
+                selectable: true,
+                aspectRatio: 1.8,
+                headerToolbar: {
+                    left: 'today prev,next',
+                    center: 'title',
+                    right: 'timeGridWeek,dayGridMonth,dayGridDay'
+                },
+                events: '{{route('get-all-appointments')}}',
+
+                dateClick: function (info) {
+                    function tConvert(time) {
+                        // Check correct time format and split into components
+                        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+                        if (time.length > 1) { // If time format correct
+                            time = time.slice(1);  // Remove full string match value
+                            time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+                            time[0] = +time[0] % 12 || 12; // Adjust hours
+                        }
+                        return time.join(''); // return adjusted time or original string
+                    }
+                    var dd = info.date;
+                    var date = dd.toLocaleDateString('en-CA');
+                    $('#selected_date').html(date);
+                    $('#new_list').hide();
+                    $('#new_list').show();
+                    $.ajax({
+                        type: "GET",
+                        url: "{{url('/appointment/get-appointments-per-date?date=')}}"+date,
+                        dataType: 'json',
+                        success: function (response,textStatus, xhr) {
+
+                            if (response == "undefined") {
+                                $('#new_list').empty();
+                                $('#no_list').text('<p>'+'No available appointments'+'</p>');
+                            } else {
+                                $('#new_list').empty();
+                                for (let i = 0; i < response.length; i++) {
+                                    $('#new_list').append(
+                                        '<tr>' +
+                                        '<td>'+ response[i].id +'</td>' +
+                                        '<td>'+ response[i].patient_name +'</td>' +
+                                        '<td>'+ response[i].doctor_name +'</td>' +
+                                        '<td>'+ tConvert(response[i].time) +'</td>' +
+                                        '</tr>'
+                                        );
+                                }
+                            }
+                        },
+                        error: function () {
+                            console.log('Errors...Something went wrong!!!!');
+                        }
+                    });
+                }
+            });
+            calendar.changeView('dayGridMonth');
+            calendar.render();
+        });
+    </script>
+
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        #calendar {
+            max-width: 1100px;
+            margin: 50px auto;
+        }
+
+    </style>
 @endsection
 @section('title')   Appointments    @endsection
 @section('header-title')    Appointments    @endsection
@@ -15,69 +99,55 @@
 
 @section('content')
     @if(\Jenssegers\Agent\Facades\Agent::isMobile())
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div id="calendar"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="col-md-6 float-right">
-                        <a href="{{route('patients.create')}}" class="btn btn-block bg-gradient-success">Add Appointment</a>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="col-md-6 float-right">
+                            <a href="{{route('appointments.create')}}" class="btn btn-block bg-gradient-success">Add
+                                Appointment</a>
+                        </div>
                     </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div id="appointment_list">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient</th>
+                                    <th>doctor</th>
+                                    <th>Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($rows as $row)
+                                <tr>
+                                    <td>{{$row->id}}</td>
+                                    <td> {{$row->patient_name}}</td>
+                                    <td>{{$row->doctor_name}}</td>
+                                    <td>{{$row->time}}</td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            <div id="no_list" style="display : none"></div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Patient</th>
-                            <th>doctor</th>
-                            <th>Time</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                            <tr>
-                                <td>1</td>
-                                <td> Hell Hell Hell</td>
-                                <td>Kill Hell Hell</td>
-                                <td>012:05 pm</td>
-{{--                                <td class="project-actions text-left">
-                                    <a class="btn btn-primary btn-sm" href="{{route('patients.show',$row->id)}}" title="View">
-                                        <i class="fas fa-eye">
-                                        </i>
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="{{route('patients.edit',$row->id)}}" title="Edit">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                    </a>
-                                    <form action="{{route('patients.destroy',$row->id)}}" method="POST" style="display: contents;">
-                                        {{ csrf_field() }}
-                                        {{ method_field('delete') }}
-                                        <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </button>
-                                    </form>
-                                </td>--}}
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
+                <!-- /.col -->
             </div>
-        <!-- /.col -->
-    </div>
-    </div>
+        </div>
 
     @else
         <div class="row">
@@ -92,51 +162,42 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="col-md-6 float-right">
-                            <a href="{{route('patients.create')}}" class="btn btn-block bg-gradient-success">Add Appointment</a>
+                            <a href="{{route('appointments.create')}}" class="btn btn-block bg-gradient-success">Add
+                                Appointment</a>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Patient</th>
-                                <th>doctor</th>
-                                <th>Time</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                        <h4 class="card-title mb-4">Appointment List | <label
+                                id="selected_date">{{date("Y-m-d")}}</label>
+                        </h4>
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient</th>
+                                    <th>doctor</th>
+                                    <th>Time</th>
+                                </tr>
+                                </thead>
+                                <tbody id="new_list">
+                                <tr>
+                                @foreach($rows as $row)
+                                    <tr>
+                                        <td>{{$row->id}}</td>
+                                        <td> {{$row->patient_name}}</td>
+                                        <td>{{$row->doctor_name}}</td>
+                                        <td>{{date("g:i a", strtotime($row->time))}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tr>
 
-                            <tr>
-                                <td>1</td>
-                                <td> Hell Hell Hell</td>
-                                <td>Kill Hell Hell</td>
-                                <td>012:05 pm</td>
-                                {{--                                <td class="project-actions text-left">
-                                                                    <a class="btn btn-primary btn-sm" href="{{route('patients.show',$row->id)}}" title="View">
-                                                                        <i class="fas fa-eye">
-                                                                        </i>
-                                                                    </a>
-                                                                    <a class="btn btn-info btn-sm" href="{{route('patients.edit',$row->id)}}" title="Edit">
-                                                                        <i class="fas fa-pencil-alt">
-                                                                        </i>
-                                                                    </a>
-                                                                    <form action="{{route('patients.destroy',$row->id)}}" method="POST" style="display: contents;">
-                                                                        {{ csrf_field() }}
-                                                                        {{ method_field('delete') }}
-                                                                        <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
-                                                                            <i class="fas fa-trash">
-                                                                            </i>
-                                                                        </button>
-                                                                    </form>--}}
-                                </td>
-                            </tr>
+                                </tbody>
 
-                            </tbody>
-                        </table>
+                            </table>
+                        <div id="no_list" class="text-center"></div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
                 </div>
             </div>
             <!-- /.col -->
@@ -156,11 +217,12 @@
     <!-- fullCalendar 2.2.5 -->
     <script src="{{asset('assets/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/fullcalender/lib/main.js')}}"></script>
+
     <script>
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],order:[[0,'desc']],
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,
@@ -175,27 +237,15 @@
 
         $(function () {
 
-            /* initialize the calendar
-             -----------------------------------------------------------------*/
-            //Date for the calendar events (dummy data)
-            var date = new Date()
-            var d    = date.getDate(),
-                m    = date.getMonth(),
-                y    = date.getFullYear()
-
-            var Calendar = FullCalendar.Calendar;
             var calendarEl = document.getElementById('calendar');
 
-            // initialize the external events
-            // -----------------------------------------------------------------
+            var calendar = new FullCalendar.Calendar(calendarEl, {
 
-            var calendar = new Calendar(calendarEl, {
-                now: '2022-10-24',
+
                 scrollTime: '00:00', // undo default 6am scrollTime
                 editable: false, // enable draggable events
                 selectable: true,
-                height:650,
-                responsive:true,
+                height: 650,
                 aspectRatio: 1.8,
                 headerToolbar: {
                     left: 'prev,next',
@@ -205,15 +255,11 @@
 
                 initialView: 'dayGridMonth',
 
-                events: [
-                    { id: '1', resourceId: 'b', start: '2022-10-24T02:00:00', end: '2022-10-24T07:00:00', title: 'event 1' },
-                    { id: '2', resourceId: 'c', start: '2020-09-07T05:00:00', end: '2020-09-07T22:00:00', title: 'event 2' },
-                    { id: '3', resourceId: 'd', start: '2020-09-06', end: '2020-09-08', title: 'event 3' },
-                    { id: '4', resourceId: 'e', start: '2020-09-07T03:00:00', end: '2020-09-07T08:00:00', title: 'event 4' },
-                    { id: '5', resourceId: 'f', start: '2020-09-07T00:30:00', end: '2020-09-07T02:30:00', title: 'event 5' }
-                ]
+                events: '{{route('get-all-appointments')}}',
             });
-
+            dateClick: function ss(info) {
+                alert('ddddddd');
+            }
             calendar.render();
 
         })

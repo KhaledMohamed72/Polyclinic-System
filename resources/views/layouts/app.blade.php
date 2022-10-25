@@ -57,7 +57,11 @@
 
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
-<script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
+<!-- it makes a conflict with calender libs so i have to disable it on this page -->
+@if (!request()->routeIs('appointments.index'))
+    <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
+@endif
+
 <!-- Bootstrap -->
 <script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- overlayScrollbars -->

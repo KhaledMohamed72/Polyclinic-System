@@ -15,25 +15,34 @@ class AppointmentListController extends Controller
         // admin
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->orderBy('id','desc')->get();
+            ->join('users as t1','t1.id','=','appointments.doctor_id')
+            ->join('users as t2','t2.id','=','appointments.patient_id')
+            ->where('appointments.clinic_id','=',$this->getClinic()->id)
+            ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
+            ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+            ->orderBy('appointments.id','desc')->get();
         }
         // doctor
         if (auth()->user()->hasRole('doctor')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.doctor_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->orderBy('id','desc')->get();
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // receptionist
         if (auth()->user()->hasRole('recep')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.receptionist_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->orderBy('id','desc')->get();
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         if ($rows) {
             return view('appointment-list.today-appointment',compact('rows'));
@@ -48,25 +57,34 @@ class AppointmentListController extends Controller
         // admin
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('status','pending')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.status', '=', 'pending')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // doctor
         if (auth()->user()->hasRole('doctor')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.doctor_id','=',auth()->user()->id)
-                ->where('status','pending')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.doctor_id', '=', auth()->user()->id)
+                ->whereDate('appointments.status', '=', 'pending')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // receptionist
         if (auth()->user()->hasRole('recep')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.receptionist_id','=',auth()->user()->id)
-                ->where('status','pending')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.receptionist_id', '=', auth()->user()->id)
+                ->whereDate('appointments.status', '=', 'pending')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         if ($rows) {
             return view('appointment-list.pending-appointment',compact('rows'));
@@ -77,30 +95,38 @@ class AppointmentListController extends Controller
     }
 
     public function upcomingAppointments (){
-        //  today's appointments
 
         // admin
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->whereDate('appointments.date', '>', Carbon::today()->toDateString())
-                ->orderBy('id','desc')->get();
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // doctor
         if (auth()->user()->hasRole('doctor')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.doctor_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '>', Carbon::today()->toDateString())
-                ->orderBy('id','desc')->get();
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // receptionist
         if (auth()->user()->hasRole('recep')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.receptionist_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '>', Carbon::today()->toDateString())
-                ->orderBy('id','desc')->get();
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         if ($rows) {
             return view('appointment-list.upcomming-appointment',compact('rows'));
@@ -112,28 +138,36 @@ class AppointmentListController extends Controller
 
     public function completeAppointments(){
         //  pending appointments
-        // admin
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('status','complete')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.status', '=', 'complete')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // doctor
         if (auth()->user()->hasRole('doctor')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.doctor_id','=',auth()->user()->id)
-                ->where('status','complete')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.doctor_id', '=', auth()->user()->id)
+                ->whereDate('appointments.status', '=', 'complete')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // receptionist
         if (auth()->user()->hasRole('recep')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.receptionist_id','=',auth()->user()->id)
-                ->where('status','complete')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.receptionist_id', '=', auth()->user()->id)
+                ->whereDate('appointments.status', '=', 'complete')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         if ($rows) {
             return view('appointment-list.complete-appointment',compact('rows'));
@@ -144,30 +178,39 @@ class AppointmentListController extends Controller
     }
 
     public function cancelAppointments(){
-        //  pending appointments
-        // admin
+        //  complete appointments
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('status','cancel')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.status', '=', 'cancel')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // doctor
         if (auth()->user()->hasRole('doctor')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.doctor_id','=',auth()->user()->id)
-                ->where('status','cancel')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.doctor_id', '=', auth()->user()->id)
+                ->whereDate('appointments.status', '=', 'cancel')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
         // receptionist
         if (auth()->user()->hasRole('recep')) {
             $rows = DB::table('appointments')
-                ->where('clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.receptionist_id','=',auth()->user()->id)
-                ->where('status','cancel')
-                ->orderBy('id','desc')->get();
+                ->join('users as t1','t1.id','=','appointments.doctor_id')
+                ->join('users as t2','t2.id','=','appointments.patient_id')
+                ->where('appointments.clinic_id','=',$this->getClinic()->id)
+                ->whereDate('appointments.receptionist_id', '=', auth()->user()->id)
+                ->whereDate('appointments.status', '=', 'cancel')
+                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
+                ->orderBy('appointments.id','desc')->get();
         }
+
         if ($rows) {
             return view('appointment-list.cancel-appointment',compact('rows'));
         } else {

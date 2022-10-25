@@ -202,4 +202,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/appointment-list/cancel-appointment', [\App\Http\Controllers\AppointmentListController::class, 'cancelAppointments'])->name('cancel-appointment');
     Route::get('/appointment-list/complete-action/{id}', [\App\Http\Controllers\AppointmentListController::class, 'completeAction'])->name('complete-action');
     Route::get('/appointment-list/cancel-action/{id}', [\App\Http\Controllers\AppointmentListController::class, 'cancelAction'])->name('cancel-action');
+    // calender
+    Route::get('/appointment/get-all-appointments', [\App\Http\Controllers\AppointmentController::class, 'get_all_appointments'])->name('get-all-appointments');
+    Route::get('/appointment/get-appointments-per-date', [\App\Http\Controllers\AppointmentController::class, 'get_appointments_per_date']);
+
 });
