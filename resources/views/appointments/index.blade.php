@@ -17,9 +17,10 @@
                 scrollTime: '00:00', // undo default 6am scrollTime
                 editable: false, // enable draggable events
                 selectable: true,
+                height: 650,
                 aspectRatio: 1.8,
                 headerToolbar: {
-                    left: 'today prev,next',
+                    left: 'prev,next',
                     center: 'title',
                     right: 'timeGridWeek,dayGridMonth,dayGridDay'
                 },
@@ -42,17 +43,19 @@
                     $('#selected_date').html(date);
                     $('#new_list').hide();
                     $('#new_list').show();
+                    $('#no_list').empty();
                     $.ajax({
                         type: "GET",
                         url: "{{url('/appointment/get-appointments-per-date?date=')}}"+date,
                         dataType: 'json',
                         success: function (response,textStatus, xhr) {
 
-                            if (response == "undefined") {
+                            if (response == '') {
                                 $('#new_list').empty();
-                                $('#no_list').text('<p>'+'No available appointments'+'</p>');
+                                $('#no_list').append('No Available Appointments')
                             } else {
                                 $('#new_list').empty();
+                                $('#no_list').empty();
                                 for (let i = 0; i < response.length; i++) {
                                     $('#new_list').append(
                                         '<tr>' +
@@ -75,21 +78,14 @@
             calendar.render();
         });
     </script>
-
     <style>
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-            font-size: 14px;
+        .fc .fc-toolbar-title{
+            font-size: smaller;
+            margin-left: 5px;
         }
-
-        #calendar {
-            max-width: 1100px;
-            margin: 50px auto;
+        .fc .fc-button-group{
+            font-size: smaller;
         }
-
     </style>
 @endsection
 @section('title')   Appointments    @endsection
@@ -129,18 +125,18 @@
                                     <th>Time</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="new_list">
                                 @foreach($rows as $row)
                                 <tr>
                                     <td>{{$row->id}}</td>
                                     <td> {{$row->patient_name}}</td>
                                     <td>{{$row->doctor_name}}</td>
-                                    <td>{{$row->time}}</td>
+                                    <td>{{date("g:i a", strtotime($row->time))}}</td>
                                 </tr>
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div id="no_list" style="display : none"></div>
+                            <div id="no_list"></div>
                         </div>
                     </div>
                     <!-- /.card-body -->
