@@ -46,7 +46,7 @@
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="date" id="date" data-provide="datepicker"
-                       data-date-autoclose="true" autocomplete="off">
+                       data-date-autoclose="true" autocomplete="on" min="{{date("Y-m-d")}}">
             </div>
         </div>
     </div>

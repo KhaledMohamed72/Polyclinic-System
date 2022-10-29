@@ -12,10 +12,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{!empty(auth()->user()->profile_photo_path) ? asset('assets/images/users/'.auth()->user()->profile_photo_path) : asset('assets/dist/img/noimage.png')}}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{!empty($user->profile_photo_path) ? asset('images/users/'.$user->profile_photo_path) : asset('assets/dist/img/noimage.png')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{auth()->user()->name}}</a>
+                <a href="#" class="d-block">{{$user->name}}</a>
             </div>
         </div>
 
@@ -125,7 +125,31 @@
                     </a>
                 </li>
                 @endif
-
+                @if($user->hasRole('doctor'))
+                    <li class="nav-item">
+                        <a href="#" class="nav-link {{ (request()->routeIs('prescriptions.*')) ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-md"></i>
+                            <p>
+                                Prescriptions
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('prescriptions.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Prescriptions List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('prescriptions.create')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create Prescription</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ (request()->routeIs('invoices.*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-receipt"></i>
