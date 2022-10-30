@@ -42,13 +42,6 @@
     <script src="{{asset('assets/plugins/summernote/summernote-bs4.min.js')}}"></script>
     {{--Counter for slot timw in form--}}
     <script>
-        var select = '';
-        for (i = 5; i <= 60; i+=5) {
-            select += '<option value=' + i + '>' + i + '</option>';
-        }
-        $('#some_select').html(select);
-    </script>
-    <script>
         // Profile photo
         function triggerClick() {
             document.querySelector('#profile_photo').click();

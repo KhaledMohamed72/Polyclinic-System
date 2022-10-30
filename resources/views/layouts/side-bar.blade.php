@@ -125,7 +125,7 @@
                     </a>
                 </li>
                 @endif
-                @if($user->hasRole('doctor'))
+
                     <li class="nav-item">
                         <a href="#" class="nav-link {{ (request()->routeIs('prescriptions.*')) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-md"></i>
@@ -135,21 +135,24 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            @if($user->hasRole('admin','doctor'))
                             <li class="nav-item">
                                 <a href="{{route('prescriptions.index')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Prescriptions List</p>
                                 </a>
                             </li>
+                            @endif
+                            @if($user->hasRole('doctor'))
                             <li class="nav-item">
                                 <a href="{{route('prescriptions.create')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Create Prescription</p>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
-                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ (request()->routeIs('invoices.*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-receipt"></i>

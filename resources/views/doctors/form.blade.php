@@ -103,6 +103,9 @@
             <div class="form-group">
                 <label>Slot Time (in minutes)</label>
                 <select name="{{$input}}" id="some_select" class="form-control select2" style="width: 100%;">
+                    @for($i = 5;$i <= 60;$i+=5)
+                        <option value="{{$i}}" {{isset($row) && $row->slot_time == $i ? 'selected' : ''}}>{{$i}}</option>
+                    @endfor
                 </select>
             </div>
         </div>
