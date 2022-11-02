@@ -104,18 +104,47 @@
                 <label>Slot Time (in minutes)</label>
                 <select name="{{$input}}" id="some_select" class="form-control select2" style="width: 100%;">
                     @for($i = 5;$i <= 60;$i+=5)
-                        <option value="{{$i}}" {{isset($row) && $row->slot_time == $i ? 'selected' : ''}}>{{$i}}</option>
+                        <option
+                            value="{{$i}}" {{isset($row) && $row->slot_time == $i ? 'selected' : ''}}>{{$i}}</option>
                     @endfor
                 </select>
             </div>
         </div>
-        @php $input = 'fees' @endphp
+        @php $input = 'examination_fees' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Fees</label>
+                <label for="exampleInput{{$input}}">Examination Fees</label>
                 <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
                        placeholder="Enter {{$input}}">
+                @error($input)<span class="invalid-feedback"
+                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @php $input = 'followup_fees' @endphp
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleInput{{$input}}">Followups Fees</label>
+                <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
+                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
+                       placeholder="Enter {{$input}}">
+                @error($input)<span class="invalid-feedback"
+                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
+            </div>
+        </div>
+        @php $input = 'receptionist' @endphp
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Receptionist</label>
+                <select name="{{$input}}" class="form-control select2" style="width: 100%;">
+                    <option selected="" disabled="">Select Receptionist</option>
+                    @foreach($receptionists_rows as $receptionist)
+                        <option
+                            value="{{$receptionist->id}}" {{ (isset($row) && $receptionist->id == $row->receptionist_id ? 'selected' : '') }}>{{$receptionist->name}}</option>
+                    @endforeach
+                </select>
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -132,25 +161,9 @@
             @error($input)<span class="invalid-feedback"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
-        @php $input = 'receptionist' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Receptionist</label>
-                <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                    <option selected="" disabled="">Select Receptionist</option>
-                    @foreach($receptionists_rows as $receptionist)
-                        <option value="{{$receptionist->id}}" {{ (isset($row) && $receptionist->id == $row->receptionist_id ? 'selected' : '') }}>{{$receptionist->name}}</option>
-                    @endforeach
-                </select>
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    <div class="row">
         @php $input = 'image' @endphp
         <div class="col-md-6">
-            <div class="form-group">
+            <div class="form-group ml-4">
                 <p><label for="exampleInput{{$input}}">Profile Photo</label></p>
 
                 <img class="rounded-circle" src="

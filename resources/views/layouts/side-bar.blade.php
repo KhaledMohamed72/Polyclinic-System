@@ -176,6 +176,39 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ (request()->routeIs('settings.*')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-md"></i>
+                        <p>
+                            Settings
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if($user->hasRole('admin'))
+                            <li class="nav-item">
+                                <a href="{{route('expenses.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Expenses</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('incomes.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Incomes</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if($user->hasRole('doctor'))
+                            <li class="nav-item">
+                                <a href="{{route('formulas.create')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Formulas</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

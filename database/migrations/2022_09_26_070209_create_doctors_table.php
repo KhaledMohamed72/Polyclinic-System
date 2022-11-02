@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('degree');
             $table->string('specialist');
             $table->text('bio')->nullable();
-            $table->float('fees');
+            $table->float('examination_fees');
+            $table->float('followup_fees');
             $table->tinyInteger('slot_time');
             $table->timestamps();
         });

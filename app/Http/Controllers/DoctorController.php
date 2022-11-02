@@ -107,7 +107,8 @@ class DoctorController extends Controller
             'degree' => ['required', 'string', 'max:191'],
             'specialist' => ['required', 'string', 'max:191'],
             'slot_time' => ['required', 'numeric'],
-            'fees' => ['required', 'numeric'],
+            'examination_fees' => ['required', 'numeric'],
+            'followup_fees' => ['required', 'numeric'],
             'bio' => ['nullable', 'string'],
             'receptionist' => ['required', 'integer'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
@@ -133,7 +134,8 @@ class DoctorController extends Controller
             'degree' => $request->degree,
             'specialist' => $request->specialist,
             'slot_time' => $request->slot_time,
-            'fees' => $request->fees,
+            'examination_fees' => $request->examination_fees,
+            'followup_fees' => $request->followup_fees,
             'bio' => $request->bio,
         ]);
 
@@ -197,7 +199,8 @@ class DoctorController extends Controller
             'degree' => ['required', 'string', 'max:191'],
             'specialist' => ['required', 'string', 'max:191'],
             'slot_time' => ['required', 'numeric'],
-            'fees' => ['required', 'numeric'],
+            'examination_fees' => ['required', 'numeric'],
+            'followup_fees' => ['required', 'numeric'],
             'bio' => ['nullable', 'string'],
             'receptionist' => ['required', 'integer'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
@@ -270,7 +273,8 @@ class DoctorController extends Controller
                 'degree' => $request->degree,
                 'specialist' => $request->specialist,
                 'slot_time' => $request->slot_time,
-                'fees' => $request->fees,
+                'examination_fees' => $request->examination_fees,
+                'followup_fees' => $request->followup_fees,
                 'bio' => $request->bio,
             ]);
         if ($user || $doctor) {
