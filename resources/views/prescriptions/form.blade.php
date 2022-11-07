@@ -22,22 +22,6 @@
                 </select>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label class="control-label">Symptoms <span
-                        class="text-danger">*</span></label>
-                <textarea class="form-control " name="symptoms"
-                          id="symptoms" placeholder="Add Symptoms"
-                          rows="3"></textarea>
-            </div>
-            <div class="col-md-6 form-group">
-                <label class="control-label">Diagnosis <span
-                        class="text-danger">*</span></label>
-                <textarea class="form-control " name="diagnosis"
-                          id="diagnosis" placeholder="Add Diagnosis"
-                          rows="3"></textarea>
-            </div>
-        </div>
         <blockquote>Medication &amp; Test Reports Details</blockquote>
         <div class="row">
             <div class="col-md-6">

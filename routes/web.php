@@ -194,6 +194,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('/prescriptions', \App\Http\Controllers\PrescriptionController::class);
     Route::resource('/expenses', \App\Http\Controllers\PrescriptionController::class);
     Route::resource('/incomes', \App\Http\Controllers\PrescriptionController::class);
+    Route::resource('/formulas', \App\Http\Controllers\PrescriptionController::class);
     // book appointment
     Route::get('/appointment/get_available_time', [\App\Http\Controllers\AppointmentController::class, 'get_available_time']);
     Route::get('/appointment/get_time_slots', [\App\Http\Controllers\AppointmentController::class, 'get_time_slots']);
