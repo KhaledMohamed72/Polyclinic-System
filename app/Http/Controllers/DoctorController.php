@@ -27,6 +27,7 @@ class DoctorController extends Controller
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->select('users.*', 'doctors.title')
+                ->orderBy('users.id','desc')
                 ->paginate(10);
         } else {
             $rows = DB::table('users')
@@ -34,6 +35,7 @@ class DoctorController extends Controller
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('doctors.receptionist_id', '=', auth()->user()->id)
                 ->select('users.*', 'doctors.title')
+                ->orderBy('users.id','desc')
                 ->paginate(10);
         }
         if (auth()->user()->hasRole(['admin', 'recep'])) {

@@ -20,6 +20,7 @@ class ReceptionistController extends Controller
             ->join('receptionists', 'receptionists.user_id', '=', 'users.id')
             ->where('users.clinic_id', '=', $this->getClinic()->id)
             ->select('users.*')
+            ->orderBy('id','desc')
             ->paginate(10);
         if (auth()->user()->hasRole('admin')) {
             return view('receptionists.index', compact('rows','clinicType','receptionists'));

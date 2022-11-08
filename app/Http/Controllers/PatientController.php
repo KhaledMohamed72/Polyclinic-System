@@ -22,6 +22,7 @@ class PatientController extends Controller
                 ->join('patients', 'patients.user_id', '=', 'users.id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->select('users.*')
+                ->orderBy('users.id','desc')
                 ->paginate(10);
         } elseif (auth()->user()->hasRole('recep')) {
             $rows = DB::table('users')
@@ -29,6 +30,7 @@ class PatientController extends Controller
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('patients.receptionist_id', '=', auth()->user()->id)
                 ->select('users.*')
+                ->orderBy('users.id','desc')
                 ->paginate(10);
         } else {
             $rows = DB::table('users')
@@ -36,6 +38,7 @@ class PatientController extends Controller
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('patients.doctor_id', '=', auth()->user()->id)
                 ->select('users.*')
+                ->orderBy('users.id','desc')
                 ->paginate(10);
         }
         return view('patients.index', compact('rows'));
