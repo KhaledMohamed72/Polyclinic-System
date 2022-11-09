@@ -3,8 +3,6 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-    <!-- summernote -->
-    <link rel="stylesheet" href="{{asset('assets/plugins/summernote/summernote-bs4.min.css')}}">
 @endsection
 @section('title')   Prescriptions    @endsection
 @section('header-title')    Prescriptions    @endsection
@@ -31,34 +29,71 @@
 @section('scripts')
     <!-- Select2 -->
     <script src="{{asset('assets/plugins/select2/js/select2.full.min.js')}}"></script>
-    <!-- Summernote -->
-    <script src="{{asset('assets/plugins/summernote/summernote-bs4.min.js')}}"></script>
-    {{--Counter for slot timw in form--}}
+    <!-- repeater -->
+    <script src="{{asset('assets/plugins/jquery-repeater/jquery-repeater.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/jquery-repeater/form-repeater.int.js')}}"></script>
+    <!-- get appointments of chosen patient -->
     <script>
-        var select = '';
-        for (i = 5; i <= 60; i+=5) {
-            select += '<option value=' + i + '>' + i + '</option>';
-        }
-        $('#some_select').html(select);
-    </script>
-    <script>
-        // Profile photo
-        function triggerClick() {
-            document.querySelector('#profile_photo').click();
-        }
+        $('.sel_patient').on('change', function(e) {
+            e.preventDefault();
+            var patient_id = $(this).val();
+            $.ajax({
+                url: "{{ url('/appointment/get-appointments-of-patient') }}" + "?patient_id=" + patient_id,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    if (data == '') {
+                        $('.sel_appointment').empty();
+                        $('.sel_appointment').append(
+                            '<option>No available appointments</option>'
+                        );
+                    }else{
+                        $('.sel_appointment').empty();
+                        $('.sel_appointment').append('<option disabled selected>Select Appointment</option>');
+                        $.each(data, function (i, appointment) {
+                            //do something
+                            $('.sel_appointment').append(
+                                '<option value="'+appointment.id+'">'+appointment.date+'</option>'
+                            );
+                        });
+                    }
 
-        function displayProfile(e) {
-            if (e.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.querySelector('#profile_display').setAttribute('src', e.target.result);
+                },
+                error: function(res) {
+                    console.log(res);
                 }
-                reader.readAsDataURL(e.files[0]);
-            }
-        }
+            });
+        });
+    </script>
+    <!-- autocomplete for medicines -->
+    <script>
+        $(document).ready(function(){
+
+            $('.medicine').keyup({
+                source: function(query, result)
+                {
+                    $.ajax({
+                        url:"{{url('prescription/get_doctor_medicines')}}",
+                        method:"GET",
+                        data:{query:query},
+                        dataType:"json",
+                        success:function(data)
+                        {
+                            result($.map(data, function(item){
+                                return item.name;
+                            }));
+                        }
+                    })
+                }
+            });
+
+        });
+    </script>
+
+
+    <!-- Libaries configurations  -->
+    <script>
         $(function () {
-            // Summernote
-            $('#summernote').summernote()
             //Initialize Select2 Elements
             $('.select2').select2()
 

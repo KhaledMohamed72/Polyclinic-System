@@ -134,14 +134,14 @@
 
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ (request()->routeIs('prescriptions.*')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user-md"></i>
+                        <span class="nav-icon material-icons">edit_document</span>
                         <p>
                             Prescriptions
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if($user->hasRole('admin','doctor'))
+                        @if($user->hasRole(['admin','doctor']))
                             <li class="nav-item">
                                 <a href="{{route('prescriptions.index')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -154,6 +154,33 @@
                                 <a href="{{route('prescriptions.create')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Create Prescription</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ (request()->routeIs('prescriptions.*')) ? 'active' : '' }}">
+                        <span class="nav-icon material-icons">settings_accessibility</span>
+                        <p>
+                            Sessions
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if($user->hasRole(['admin','doctor']))
+                            <li class="nav-item">
+                                <a href="{{route('prescriptions.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Sessions List</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if($user->hasRole('doctor'))
+                            <li class="nav-item">
+                                <a href="{{route('prescriptions.create')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create Session</p>
                                 </a>
                             </li>
                         @endif
@@ -244,6 +271,12 @@
                                     <p>Period Types</p>
                                 </a>
                             </li>
+                                <li class="nav-item">
+                                    <a href="{{route('session-types.index')}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Session Types</p>
+                                    </a>
+                                </li>
                         @endif
                     </ul>
                 </li>
