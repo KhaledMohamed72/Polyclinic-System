@@ -5,9 +5,9 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Incomes    @endsection
-@section('header-title')    Incomes    @endsection
-@section('header-title-one')    Incomes    @endsection
+@section('title')   Expenses    @endsection
+@section('header-title')    Expenses    @endsection
+@section('header-title-one')    Expenses    @endsection
 @section('header-title-two')    Main   @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        <a href="{{route('incomes.create')}}" class="btn btn-block bg-gradient-success">Add Income</a>
+                        <a href="{{route('expenses.create')}}" class="btn btn-block bg-gradient-success">Add Expense</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -38,17 +38,17 @@
                                 $doctor = \App\Models\user::where('id',$row->doctor_id)->first() ?? NULL ;
                             @endphp
                         <tr>
-                            <td>{{$row->income_id}}</td>
+                            <td>{{$row->expense_id}}</td>
                             <td>{{$row->type}}</td>
                             <td>{{$doctor->name ?? 'general'}}</td>
                             <td>{{$row->date}}</td>
                             <td>{{$row->amount}}</td>
                             <td class="project-actions text-left">
-                                <a class="btn btn-info btn-sm" href="{{route('incomes.edit',$row->income_id)}}" title="Edit">
+                                <a class="btn btn-info btn-sm" href="{{route('expenses.edit',$row->expense_id)}}" title="Edit">
                                 <i class="fas fa-pencil-alt">
                                 </i>
                                 </a>
-                                <form action="{{route('incomes.destroy',$row->income_id)}}" method="POST" style="display: contents;">
+                                <form action="{{route('expenses.destroy',$row->expense_id)}}" method="POST" style="display: contents;">
                                     {{ csrf_field() }}
                                     {{ method_field('delete') }}
                                 <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">

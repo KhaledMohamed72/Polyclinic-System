@@ -10,7 +10,7 @@
                     <option selected="" disabled="">Select Type</option>
                     @foreach($type_rows as $type_row)
                         <option value="{{$type_row->id}}"
-                            {{isset($row) && $row->income_type_id == $type_row->id ? 'selected' : ''}}>{{$type_row->name}}</option>
+                            {{isset($row) && $row->expense_type_id == $type_row->id ? 'selected' : ''}}>{{$type_row->name}}</option>
                     @endforeach
                 </select>
                 @error($input)<span style="color: red;font-size: smaller"

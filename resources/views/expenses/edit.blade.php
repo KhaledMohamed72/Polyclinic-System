@@ -4,9 +4,9 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Incomes    @endsection
-@section('header-title')    Incomes    @endsection
-@section('header-title-one')    Incomes    @endsection
+@section('title')   Expenses    @endsection
+@section('header-title')    Expenses    @endsection
+@section('header-title-one')    Expenses    @endsection
 @section('header-title-two')    Edit   @endsection
 @section('styles')
     <!-- Select2 -->
@@ -16,14 +16,14 @@
 @section('content')
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Edit Income</h3>
+            <h3 class="card-title">Edit Expense</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
 
-        <form method="POST" action="{{route('incomes.update' , $row->id)}}">
+        <form method="POST" action="{{route('expenses.update' , $row->id)}}">
             {{ method_field('put') }}
-            @include('incomes.form')
+            @include('expenses.form')
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary" name="update">Submit</button>
             </div>

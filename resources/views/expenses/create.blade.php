@@ -4,47 +4,33 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Incomes    @endsection
-@section('header-title')    Incomes    @endsection
-@section('header-title-one')    Incomes    @endsection
-@section('header-title-two')    Edit   @endsection
-@section('styles')
-    <!-- Select2 -->
-    <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-@endsection
+@section('title')   Expenses    @endsection
+@section('header-title')    Expenses    @endsection
+@section('header-title-one')    Expenses    @endsection
+@section('header-title-two')    Create   @endsection
+
 @section('content')
+
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Edit Income</h3>
+            <div class="card-title">Add New Expense</div>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-
-        <form method="POST" action="{{route('incomes.update' , $row->id)}}">
-            {{ method_field('put') }}
-            @include('incomes.form')
+        <form method="post" action="{{route('expenses.store')}}">
+            @include('expenses.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="update">Submit</button>
+                <button type="submit" class="btn btn-primary" name="create">Submit</button>
             </div>
         </form>
     </div>
-
 @endsection
 @section('scripts')
     <!-- Select2 -->
     <script src="{{asset('assets/plugins/select2/js/select2.full.min.js')}}"></script>
-    {{--Counter for slot timw in form--}}
-    <script>
-        var select = '';
-        for (i = 5; i <= 60; i+=5) {
-            select += '<option value=' + i + '>' + i + '</option>';
-        }
-        $('#some_select').html(select);
-    </script>
+
     <script>
         $(function () {
-
             //Initialize Select2 Elements
             $('.select2').select2()
 

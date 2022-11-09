@@ -74,7 +74,7 @@
                 @if($user->hasRole('admin'))
                     <li class="nav-item">
                         <a href="#" class="nav-link {{ (request()->routeIs('receptionists.*')) ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user-md"></i>
+                            <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Receptionists
                                 <i class="right fas fa-angle-left"></i>
@@ -189,7 +189,6 @@
                             <i class="nav-icon material-icons">file_download</i>
                             <p>
                                 Incomes
-                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                     </li>
