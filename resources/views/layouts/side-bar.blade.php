@@ -160,7 +160,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ (request()->routeIs('prescriptions.*')) ? 'active' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->routeIs('prescriptionss.*')) ? 'active' : '' }}">
                         <span class="nav-icon material-icons">settings_accessibility</span>
                         <p>
                             Sessions

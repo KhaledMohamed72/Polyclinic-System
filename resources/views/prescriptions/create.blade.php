@@ -34,65 +34,70 @@
     <script src="{{asset('assets/plugins/jquery-repeater/form-repeater.int.js')}}"></script>
     <!-- get appointments of chosen patient -->
     <script>
-        $('.sel_patient').on('change', function(e) {
+        $('.sel_patient').on('change', function (e) {
             e.preventDefault();
             var patient_id = $(this).val();
             $.ajax({
                 url: "{{ url('/appointment/get-appointments-of-patient') }}" + "?patient_id=" + patient_id,
                 type: "GET",
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     if (data == '') {
                         $('.sel_appointment').empty();
                         $('.sel_appointment').append(
                             '<option>No available appointments</option>'
                         );
-                    }else{
+                    } else {
                         $('.sel_appointment').empty();
                         $('.sel_appointment').append('<option disabled selected>Select Appointment</option>');
                         $.each(data, function (i, appointment) {
                             //do something
                             $('.sel_appointment').append(
-                                '<option value="'+appointment.id+'">'+appointment.date+'</option>'
+                                '<option value="' + appointment.id + '">' + appointment.date + '</option>'
                             );
                         });
                     }
 
                 },
-                error: function(res) {
+                error: function (res) {
                     console.log(res);
                 }
             });
         });
     </script>
     <!-- autocomplete for medicines -->
-    <script>
-        $(document).ready(function(){
-
-            $('.medicine').keyup({
-                source: function(query, result)
-                {
-                    $.ajax({
-                        url:"{{url('prescription/get_doctor_medicines')}}",
-                        method:"GET",
-                        data:{query:query},
-                        dataType:"json",
-                        success:function(data)
-                        {
-                            result($.map(data, function(item){
-                                return item.name;
-                            }));
-                        }
-                    })
-                }
+    {{--    <script>
+            $('.medicine').on('keyup', function (e) {
+                var medicine = $(this).val();
+                $.ajax({
+                    url: "{{url('prescription/get_doctor_medicines?medicine=')}}" + medicine,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#myMedicines').empty();
+                        $.each(data, function (i, medicine) {
+                            //do something
+                            $('#myMedicines').append(
+                                '<option value="'+medicine.name+'">'
+                            );
+                        });
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
             });
-
-        });
-    </script>
+        </script>--}}
 
 
     <!-- Libaries configurations  -->
     <script>
+        // display or hide followup date based on investigation type
+        function ShowHideDiv() {
+            var chkYes = document.getElementById("chkYes");
+            var date = document.getElementById("date");
+            date.style.display = chkYes.checked ? "block" : "none";
+        }
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()

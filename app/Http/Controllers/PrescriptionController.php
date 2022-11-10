@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Formula;
 use App\Models\FrequencyType;
 use App\Models\Medicine;
 use App\Models\PeriodType;
+use App\Models\Test;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +22,9 @@ class PrescriptionController extends Controller
             ->orderBy('users.id','desc')
             ->select('users.name as user_name','users.id as user_id')
             ->get();
+        $medicines = Medicine::where('doctor_id',auth()->user()->id)->select('name')->get();
+        $tests = Test::where('doctor_id',auth()->user()->id)->select('name')->get();
+        $formulas = Formula::where('doctor_id',auth()->user()->id)->select('id','name')->get();
         $frequencies = FrequencyType::where('doctor_id',auth()->user()->id)
                         ->where('clinic_id',$this->getClinic()->id)
                         ->orderBy('id','desc')
@@ -28,13 +33,14 @@ class PrescriptionController extends Controller
             ->where('clinic_id',$this->getClinic()->id)
             ->orderBy('id','desc')
             ->get();
-        return view('prescriptions.create',
-            compact('patients','frequencies','periods'));
-    }
-
-    public function get_doctor_medicines(){
-        $rows = Medicine::where('doctor_id',auth()->user()->id)->select('name')->get();
-        return json_encode($rows);
+        return view('prescriptions.create', compact(
+            'patients',
+            'frequencies',
+            'periods',
+            'medicines',
+            'formulas',
+            'tests'
+        ));
     }
 
     public function show(){
