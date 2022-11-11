@@ -6,12 +6,13 @@
                     class="text-danger">*</span></label>
             @php $input = 'examination'; @endphp
             <div class="col-sm-3 form-check form-check-inline" style="margin-left: 10%">
-                <input class="form-check-input" type="radio" name="type" id="chkYes" onclick="ShowHideDiv()" checked value="examination">
+                <input class="form-check-input" type="radio" name="type" id="chkYes" onclick="ShowHideDiv()" checked
+                       value="0">
                 <label class="form-check-label" for="chkYes">Examination</label>
             </div>
             @php $input = 'followup'; @endphp
             <div class="col-sm-3 form-check form-check-inline ml-4">
-                <input class="form-check-input" type="radio" name="type" id="chkNo" onclick="ShowHideDiv()" value="followup">
+                <input class="form-check-input" type="radio" name="type" id="chkNo" onclick="ShowHideDiv()" value="1">
                 <label class="form-check-label" for="chkNo">Followup</label>
             </div>
         </div>
@@ -38,7 +39,7 @@
                     class="text-danger">*</span></label>
             <select
                 class="form-control select2 sel_appointment "
-                name="appointment_id" id="appointment">
+                name="date" id="appointment">
                 <option disabled selected>Select Appointment</option>
             </select>
         </div>
@@ -86,8 +87,9 @@
                                 @endforeach
                             </select>
                         </div>
+                        @php $input = 'medicine_note'; @endphp
                         <div class="col-sm-4 mt-1">
-                                                    <textarea type="text" name="medicine_note" class="form-control"
+                                                    <textarea type="text" name="{{$input}}" class="form-control"
                                                               placeholder="Notes..."></textarea>
                         </div>
                         <div class="col-sm-1">
@@ -105,7 +107,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class='repeater mb-4'>
-                <div data-repeater-list="medicines" class="form-group">
+                <div data-repeater-list="formulas" class="form-group">
                     <label>Formula <span class="text-danger">*</span></label>
                     <div data-repeater-item class="mb-3 row">
                         @php $input = 'formula'; @endphp
@@ -144,7 +146,8 @@
                             </select>
                         </div>
                         <div class="col-sm-4 mt-1">
-                                                    <textarea type="text" name="formula_note" class="form-control"
+                            @php $input = 'formula_note'; @endphp
+                                                    <textarea type="text" name="{{$input}}" class="form-control"
                                                               placeholder="Notes..."></textarea>
                         </div>
                         <div class="col-sm-1">
@@ -162,7 +165,7 @@
     <div class="row">
         <div class="col-sm-9">
             <div class='repeater mb-4'>
-                <div data-repeater-list="test_reports" class="form-group">
+                <div data-repeater-list="tests" class="form-group">
                     <label>Test Reports </label>
                     <div data-repeater-item class="mb-3 row">
                         @php $input = 'test'; @endphp
@@ -205,10 +208,11 @@
     <div class="row">
         @php $input = 'prescription_note' @endphp
         <div class="col-sm-6">
-                <label for="exampleInput{{$input}}">Note</label>
-                <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note" spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
+            <label for="exampleInput{{$input}}">Note</label>
+            <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note"
+                      spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
+            @error($input)<span class="invalid-feedback"
+                                role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
     </div>
     <!-- /.card-body -->

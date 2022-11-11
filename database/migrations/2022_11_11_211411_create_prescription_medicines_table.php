@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prescriptions', function (Blueprint $table) {
+        Schema::create('prescription_medicines', function (Blueprint $table) {
             $table->id();
             $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
-            $table->foreignId('doctor_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('patient_id')->constrained('users')->cascadeOnDelete();
-            $table->boolean('type');
-            $table->string('date');
-            $table->string('followup_date')->nullable();
-
+            $table->foreignId('prescription_id')->constrained('prescriptions')->cascadeOnDelete();
+            $table->foreignId('frequency_type_id')->nullable()->constrained('frequency_types')->cascadeOnDelete();
+            $table->foreignId('period_type_id')->nullable()->constrained('period_types')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('note');
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prescriptions');
+        Schema::dropIfExists('prescription_medicines');
     }
 };

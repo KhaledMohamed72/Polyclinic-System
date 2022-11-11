@@ -43,6 +43,24 @@ class PrescriptionController extends Controller
         ));
     }
 
+    public function store(Request $request){
+
+        $this->validate($request, [
+            'type' => ['required', 'integer'],
+            'patient_id' => ['required', 'integer'],
+            'date' => ['required', 'string'],
+        ]);
+        // get all old medicines
+        $medicine_table = DB::table('medicines')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('doctor_id', auth()->user()->id)
+            ->select('name')
+            ->get()->pluck('name');
+foreach ($request->medicines as $medicine){
+    var_dump($medicine['medicine']);
+    echo "<br>";
+}
+    }
     public function show(){
         return view('prescriptions.show');
     }
