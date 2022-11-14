@@ -34,113 +34,94 @@
                         <div class="col-5">
                             <address>
                                 <strong>Dr</strong>
-                                <br>Sayed Ahmed<br>
-                                <i class="fas fa-sm fa-phone-alt"></i> 01128206779<br>
-                                <i class="fas fa-sm fa-envelope"></i> doctor@clinic.com<br>
+                                <br>{{$doctor->name}}<br>
+                                <i class="fas fa-sm fa-phone-alt"></i> {{$doctor->phone}}<br>
+                                <i class="fas fa-sm fa-envelope"></i> {{$doctor->email}}<br>
                             </address>
                         </div>
                         <div class="col-4">
                             <address>
                                 <strong>Patient</strong>
-                                <br>Khaled Ahmed<br>
-                                <i class="fas fa-sm fa-phone-alt"></i> 01128206779<br>
+                                <br>{{$patient->name}}<br>
+                                <i class="fas fa-sm fa-phone-alt"></i> {{$patient->phone}}<br>
                             </address>
                         </div>
                         <div class="col-3">
                             <address>
-                                <strong>Prescription Date: </strong>2022-10-30 02:05<br>
-                                <strong>Appointment Date: </strong>2022-10-30 12:30<br>
+                                <strong>Prescription
+                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($prescription->created_at))}}<br>
+                                <strong>Appointment
+                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($appointment->date.' '.$appointment->time))}}
+                                <br>
                             </address>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-5 mt-3 text-center">
-                            <address>
-                                <strong>Symptoms:</strong><br>
-                                Dolore itaque quis i
-                                Aut aperiam aliquambr <br>
-                                Aut aperiam aliquambr <br>
-                                Aut aperiam aliquambr
-                            </address>
-                        </div>
-                        <div class="col-5 mt-3 text-center">
-                            <address>
-                                <strong>Diagnosis:</strong><br>
-                                Aut aperiam aliquambr <br>
-                                Aut aperiam aliquambr <br>
-                                Aut aperiam aliquambr
+                    @if(!$medicines->isEmpty())
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="py-2 mt-3">
+                                    <h3 class="font-size-15 font-weight-bold">Medicines</h3>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
 
-                            </address>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="py-2 mt-3">
-                                <h3 class="font-size-15 font-weight-bold">Medications</h3>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 70px;">No.</th>
-                                        <th>Name</th>
-                                        <th>Notes</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Anim officiis volupt</td>
-                                        <td>Nesciunt quam eos i</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Velit consequatur q</td>
-                                        <td>Aut mollit quam obca</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Sed sint dolor inci</td>
-                                        <td>Omnis fugiat modi sa</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                        <tbody>
+                                        @foreach($medicines as $row)
+                                            <tr>
+                                                <td>{{$row->medicine_name}}</td>
+                                                <td>{{$row->frequency_name}}</td>
+                                                <td>{{$row->period_name}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="py-2 mt-3">
-                                <h3 class="font-size-15 font-weight-bold">Test Reports</h3>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 70px;">No.</th>
-                                        <th>Name</th>
-                                        <th>Notes</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td> Incididunt perspicia</td>
-                                        <td> Sit natus deserunt</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td> Necessitatibus eos i</td>
-                                        <td> Corporis sit iusto t</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td> Quis doloribus solut</td>
-                                        <td> Aliquip blanditiis l</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    @endif
+                    @if(!$tests->isEmpty())
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="py-2 mt-3">
+                                    <h3 class="font-size-15 font-weight-bold">Test Reports</h3>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                        @foreach($tests as $row)
+                                            <tr>
+                                                <td>{{$row->name}}</td>
+                                                <td>{{$row->note}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
+                    @if(!$formulas->isEmpty())
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="py-2 mt-3">
+                                    <h3 class="font-size-15 font-weight-bold">Formulas</h3>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                        @foreach($formulas as $row)
+                                            <tr>
+                                                <td>{{$row->formula_name}}</td>
+                                                <td>{{$row->frequency_name}}</td>
+                                                <td>{{$row->period_name}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -155,7 +136,6 @@
     <script src="{{asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
     <script src="{{asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
     <script src="{{asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-
     <script>
         $(function () {
             $("#example1").DataTable({

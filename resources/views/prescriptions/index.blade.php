@@ -16,11 +16,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        @if(auth()->user()->hasRole('admin'))
-                            @if(($clinicType == 0 && $prescriptions < 1) || $clinicType == 1)
+                        @if(auth()->user()->hasRole('doctor'))
                                 <a href="{{route('prescriptions.create')}}" class="btn btn-block bg-gradient-success">Add New
                                     Prescription</a>
-                            @endif
                         @endif
                     </div>
                 </div>
@@ -30,41 +28,38 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Title</th>
-                            <th>Prescription Name</th>
-                            <th>Contact No</th>
-                            <th>Email</th>
-                            <th>Action</th>
+                            <th>Patient</th>
+                            @if(auth()->user()->hasRole(['admin','recep']))
+                            <th>Doctor</th>
+                            @endif
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>action</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($rows as $row)
                             <tr>
                                 <td>{{$row->id}}</td>
-                                <td>{{$row->title ?? 'No Title'}}</td>
-                                <td>{{$row->name}}</td>
-                                <td>{{$row->phone ?? 'No Contact'}}</td>
-                                <td>{{$row->email}}</td>
+                                <td>{{$row->patient_name}}</td>
+                                @if(auth()->user()->hasRole(['admin','recep']))
+                                <td>{{$row->doctor_name}}</td>
+                                @endif
+                                <td>{{date('Y-m-d',strtotime($row->created_at))}}</td>
+                                <td>{{date('h:i a',strtotime($row->created_at))}}</td>
                                 <td class="project-actions text-left">
                                     <a class="btn btn-primary btn-sm" href="{{route('prescriptions.show',$row->id)}}"
                                        title="View">
                                         <i class="fas fa-eye">
                                         </i>
                                     </a>
-                                    @if(auth()->user()->hasRole(['admin','recep']))
-                                        <a class="btn btn-dark btn-sm" href="{{route('schedule-create',$row->id)}}"
-                                           title="Prescription days and time availability">
-                                            <i class="fas fa-calendar-alt">
-                                            </i>
-                                        </a>
-                                    @endif
-                                    @if(auth()->user()->hasRole('admin'))
+
+                                    @if(auth()->user()->hasRole('doctor'))
                                         <a class="btn btn-info btn-sm" href="{{route('prescriptions.edit',$row->id)}}"
                                            title="Edit">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
-                                        @if(($clinicType == 1))
                                             <form action="{{route('prescriptions.destroy',$row->id)}}" method="POST"
                                                   style="display: contents;">
                                                 {{ csrf_field() }}
@@ -75,7 +70,6 @@
                                                     </i>
                                                 </button>
                                             </form>
-                                        @endif
                                     @endif
                                 </td>
                             </tr>
@@ -107,7 +101,7 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],order: [[0, 'desc']]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,

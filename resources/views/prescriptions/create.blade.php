@@ -53,7 +53,7 @@
                         $.each(data, function (i, appointment) {
                             //do something
                             $('.sel_appointment').append(
-                                '<option value="' + appointment.id + '">' + appointment.date + '</option>'
+                                '<option value="' + appointment.date + '">' + appointment.date + '</option>'
                             );
                         });
                     }

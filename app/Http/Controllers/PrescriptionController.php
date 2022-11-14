@@ -14,6 +14,50 @@ use Illuminate\Support\Facades\DB;
 
 class PrescriptionController extends Controller
 {
+    public function index()
+    {
+        // admin
+        if (auth()->user()->hasRole('admin')) {
+            $rows = DB::table('prescriptions')
+                ->join('users as t1', 't1.id', '=', 'prescriptions.doctor_id')
+                ->join('users as t2', 't2.id', '=', 'prescriptions.patient_id')
+                ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
+                ->select('prescriptions.*', 't1.name as doctor_name', 't2.name as patient_name')
+                ->orderBy('prescriptions.id', 'desc')
+                ->get();
+        }
+        // doctor
+        if (auth()->user()->hasRole('doctor')) {
+            $rows = DB::table('prescriptions')
+                ->join('users as t1', 't1.id', '=', 'prescriptions.doctor_id')
+                ->join('users as t2', 't2.id', '=', 'prescriptions.patient_id')
+                ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
+                ->where('prescriptions.doctor_id', '=', auth()->user()->id)
+                ->select('prescriptions.*', 't1.name as doctor_name', 't2.name as patient_name')
+                ->orderBy('prescriptions.id', 'desc')
+                ->get();
+        }
+        // receptionist
+        if (auth()->user()->hasRole('recep')) {
+            $recep_doctors = DB::table('doctors')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('receptionist_id', auth()->user()->id)
+                ->select('user_id')
+                ->get()->pluck('user_id');
+            $recep_doctors_array = $recep_doctors->all();
+            $rows = DB::table('prescriptions')
+                ->join('users as t1', 't1.id', '=', 'prescriptions.doctor_id')
+                ->join('users as t2', 't2.id', '=', 'prescriptions.patient_id')
+                ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
+                ->whereIn('prescriptions.doctor_id', $recep_doctors_array)
+                ->select('prescriptions.*', 't1.name as doctor_name', 't2.name as patient_name')
+                ->orderBy('prescriptions.id', 'desc')
+                ->get();
+        }
+        return view('prescriptions.index', compact('rows'));
+
+    }
+
     public function create()
     {
         $patients = DB::table('users')
@@ -65,6 +109,7 @@ class PrescriptionController extends Controller
             'date' => $request->get('date'),
             'followup_date' => $request->get('followup_date'),
             'note' => $request->get('note'),
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         $prescription_id = DB::getPdo()->lastInsertId();
@@ -82,7 +127,6 @@ class PrescriptionController extends Controller
             }
         }
 
-
         foreach ($request->tests as $test) {
             if ($test['test'] != null) {
                 DB::table('prescription_tests')->insert([
@@ -95,7 +139,7 @@ class PrescriptionController extends Controller
         }
 
         foreach ($request->formulas as $formula) {
-            if ($formula['formula'] != null) {
+            if (isset($formula['formula'])) {
                 DB::table('prescription_formulas')->insert([
                     'clinic_id' => $this->getClinic()->id,
                     'prescription_id' => $prescription_id,
@@ -106,13 +150,82 @@ class PrescriptionController extends Controller
                 ]);
             }
         }
-        return redirect()->route('prescriptions.show', ['id' => $prescription_id]);
+        return redirect()->route('prescriptions.show', ['prescription' => $prescription_id]);
     }
 
     public function show($id)
     {
-        $row = Prescription::find($id);
-        dd($row);
+        $prescription = DB::table('prescriptions')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $id)
+            ->first();
+        $appointment = DB::table('appointments')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('patient_id', $prescription->patient_id)
+            ->where('date', $prescription->date)
+            ->select('date', 'time')
+            ->first();
+
+        $doctor = DB::table('users')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $prescription->doctor_id)
+            ->first();
+        $patient = DB::table('users')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $prescription->patient_id)
+            ->first();
+        $medicines = DB::table('prescription_medicines')
+            ->join('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
+            ->join('period_types', 'period_types.id', '=', 'prescription_medicines.period_type_id')
+            ->where('prescription_medicines.prescription_id', $id)
+            ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
+            ->select('prescription_medicines.name as medicine_name'
+                , 'frequency_types.ar_name as frequency_name',
+                'period_types.ar_name as period_name'
+            )
+            ->get();
+        $formulas = DB::table('prescription_formulas')
+            ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
+            ->join('frequency_types', 'frequency_types.id', '=', 'prescription_formulas.frequency_type_id')
+            ->join('period_types', 'period_types.id', '=', 'prescription_formulas.period_type_id')
+            ->where('prescription_formulas.prescription_id', $id)
+            ->where('formulas.doctor_id', $prescription->doctor_id)
+            ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
+            ->select('formulas.name as formula_name'
+                , 'frequency_types.ar_name as frequency_name',
+                'period_types.ar_name as period_name'
+            )
+            ->get();
+        $tests = DB::table('prescription_tests')
+            ->where('prescription_tests.prescription_id', $id)
+            ->where('prescription_tests.clinic_id', $this->getClinic()->id)
+            ->get();
+
+        return view('prescriptions.show',
+            compact(
+                'prescription',
+                'medicines',
+                'tests',
+                'formulas',
+                'doctor',
+                'patient',
+                'appointment'
+            ));
+    }
+
+    public function destroy($id)
+    {
+        $row = Prescription::where('id', '=', $id)->first();
+        if (auth()->user()->hasRole('doctor')) {
+            $row = $row->delete();
+        }
+        if ($row) {
+            toastr()->success('Successfully Deleted');
+            return redirect()->route('prescriptions.index');
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('prescriptions.index');
+        }
     }
 
     public function get_appointments_of_patient(Request $request)
