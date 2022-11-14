@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row">
-        @php $input = 'patient_id'; @endphp
+        @php $input = 'patient'; @endphp
         <div class="col-md-6 form-group">
             <label class="control-label">Patient <span
                     class="text-danger">*</span></label>
@@ -62,7 +62,7 @@
                                 @endforeach
                             </datalist>
                         </div>
-                        @php $input = 'medicine_frequency'; @endphp
+                        @php $input = 'frequency'; @endphp
                         <div class="col-sm-2 mt-1">
                             <select
                                 class="form-control select2 frequency"
@@ -75,7 +75,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @php $input = 'medicine_period'; @endphp
+                        @php $input = 'period'; @endphp
                         <div class="col-sm-2 mt-1">
                             <select
                                 class="form-control select2 period"
@@ -87,7 +87,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @php $input = 'medicine_note'; @endphp
+                        @php $input = 'note'; @endphp
                         <div class="col-sm-4 mt-1">
                                                     <textarea type="text" name="{{$input}}" class="form-control"
                                                               placeholder="Notes..."></textarea>
@@ -120,7 +120,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @php $input = 'formula_frequency'; @endphp
+                        @php $input = 'frequency'; @endphp
                         <div class="col-sm-2 mt-1">
                             <select
                                 class="form-control select2 frequency"
@@ -133,7 +133,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @php $input = 'formula_period'; @endphp
+                        @php $input = 'period'; @endphp
                         <div class="col-sm-2 mt-1">
                             <select
                                 class="form-control select2 period"
@@ -146,7 +146,7 @@
                             </select>
                         </div>
                         <div class="col-sm-4 mt-1">
-                            @php $input = 'formula_note'; @endphp
+                            @php $input = 'note'; @endphp
                                                     <textarea type="text" name="{{$input}}" class="form-control"
                                                               placeholder="Notes..."></textarea>
                         </div>
@@ -179,7 +179,7 @@
                             </datalist>
                         </div>
                         <div class="col-sm-5 mt-1">
-                                                    <textarea type="text" name="test_note" class="form-control"
+                                                    <textarea type="text" name="note" class="form-control"
                                                               placeholder="Notes..."></textarea>
                         </div>
                         <div class="col-sm-1">

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('frequency_type_id')->nullable()->constrained('frequency_types')->cascadeOnDelete();
             $table->foreignId('period_type_id')->nullable()->constrained('period_types')->cascadeOnDelete();
             $table->string('name');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }
