@@ -49,9 +49,9 @@
                         <div class="col-3">
                             <address>
                                 <strong>Prescription
-                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($prescription->created_at))}}<br>
+                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($prescription->created_at) ?? '')}}<br>
                                 <strong>Appointment
-                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($appointment->date.' '.$appointment->time))}}
+                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($appointment->date.' '.$appointment->time)) ?? ''}}
                                 <br>
                             </address>
                         </div>
@@ -69,8 +69,8 @@
                                         @foreach($medicines as $row)
                                             <tr>
                                                 <td>{{$row->medicine_name}}</td>
-                                                <td>{{$row->frequency_name}}</td>
-                                                <td>{{$row->period_name}}</td>
+                                                <td>{{$row->frequency_name ?? ''}}</td>
+                                                <td>{{$row->period_name ?? ''}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -112,8 +112,8 @@
                                         @foreach($formulas as $row)
                                             <tr>
                                                 <td>{{$row->formula_name}}</td>
-                                                <td>{{$row->frequency_name}}</td>
-                                                <td>{{$row->period_name}}</td>
+                                                <td>{{$row->frequency_name ?? ''}}</td>
+                                                <td>{{$row->period_name ?? ''}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>

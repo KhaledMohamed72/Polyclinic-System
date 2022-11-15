@@ -164,7 +164,7 @@ class DoctorController extends Controller
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
             ->where('users.clinic_id', $this->getClinic()->id)
-            ->select('users.*', 'users.id as userId', 'doctors.*')
+                ->select('users.*', 'users.id as userId', 'doctors.*')
             ->first();
         $receptionists_rows = DB::table('users')
             ->join('receptionists', 'receptionists.user_id', '=', 'users.id')

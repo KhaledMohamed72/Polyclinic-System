@@ -24,7 +24,7 @@
             @php $input = 'doctor_id' @endphp
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Doctor</label>
+                    <label>Doctor<small>( <b style="color: red">Hint: </b>If you don't choose a doctor, The expense will be general)</small></label>
                     <select name="{{$input}}" class="form-control select2" style="width: 100%;">
                         <option selected="" disabled="">Select Doctor</option>
                         @foreach($doctor_rows as $doctor_row)
