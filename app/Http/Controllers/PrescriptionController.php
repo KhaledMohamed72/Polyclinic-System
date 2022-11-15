@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Doctor;
 use App\Models\Formula;
 use App\Models\FrequencyType;
 use App\Models\Medicine;
@@ -10,6 +11,7 @@ use App\Models\PeriodType;
 use App\Models\Prescription;
 use App\Models\Test;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PrescriptionController extends Controller
@@ -97,10 +99,16 @@ class PrescriptionController extends Controller
         ]);
 
         // function to insert a new medicines or tests to suggest it later when go to create new prescriptions
-
-
         $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
         $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
+
+        // get fees based on prescription type
+        $doctor = Doctor::where('user_id',auth()->user()->id)->first();
+        if ($request->type == 0){
+            $fees = $doctor->examination_fees;
+        }else{
+            $fees = $doctor->followup_fees;
+        }
         $prescription = DB::table('prescriptions')->insert([
             'clinic_id' => $this->getClinic()->id,
             'doctor_id' => auth()->user()->id,
@@ -108,6 +116,7 @@ class PrescriptionController extends Controller
             'type' => $request->get('type'),
             'date' => $request->get('date'),
             'followup_date' => $request->get('followup_date'),
+            'fees' => $fees,
             'note' => $request->get('note'),
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
@@ -174,22 +183,24 @@ class PrescriptionController extends Controller
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $prescription->patient_id)
             ->first();
+
+        // control of frequency and period show in prescription for medicines
         $medicines = DB::table('prescription_medicines')
             ->where('prescription_id', $id)
             ->where('clinic_id', $this->getClinic()->id)
-            ->select('*','name as medicine_name')
+            ->select('*', 'name as medicine_name')
             ->get();
-        foreach ($medicines as $medicine){
-        if ($medicine->period_type_id == null && $medicine->frequency_type_id != null){
-            $medicines = DB::table('prescription_medicines')
-                ->join('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
-                ->where('prescription_medicines.prescription_id', $id)
-                ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
-                ->select('prescription_medicines.name as medicine_name'
-                    , 'frequency_types.ar_name as frequency_name',
-                )->get();
-        }
-            if ($medicine->period_type_id != null && $medicine->frequency_type_id == null){
+        foreach ($medicines as $medicine) {
+            if ($medicine->period_type_id == null && $medicine->frequency_type_id != null) {
+                $medicines = DB::table('prescription_medicines')
+                    ->join('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
+                    ->where('prescription_medicines.prescription_id', $id)
+                    ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
+                    ->select('prescription_medicines.name as medicine_name'
+                        , 'frequency_types.ar_name as frequency_name',
+                    )->get();
+            }
+            if ($medicine->period_type_id != null && $medicine->frequency_type_id == null) {
                 $medicines = DB::table('prescription_medicines')
                     ->join('period_types', 'period_types.id', '=', 'prescription_medicines.period_type_id')
                     ->where('prescription_medicines.prescription_id', $id)
@@ -198,7 +209,7 @@ class PrescriptionController extends Controller
                         'period_types.ar_name as period_name'
                     )->get();
             }
-            if ($medicine->period_type_id != null && $medicine->frequency_type_id != null){
+            if ($medicine->period_type_id != null && $medicine->frequency_type_id != null) {
                 $medicines = DB::table('prescription_medicines')
                     ->join('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
                     ->join('period_types', 'period_types.id', '=', 'prescription_medicines.period_type_id')
@@ -209,15 +220,16 @@ class PrescriptionController extends Controller
                         'period_types.ar_name as period_name'
                     )->get();
             }
-    }
+        }
+        // control of frequency and period show in prescription for formulas
         $formulas = DB::table('prescription_formulas')
             ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
             ->where('prescription_formulas.prescription_id', $id)
             ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
-            ->select('prescription_formulas.*','formulas.name as formula_name')
+            ->select('prescription_formulas.*', 'formulas.name as formula_name')
             ->get();
-        foreach ($formulas as $formula){
-            if ($formula->period_type_id == null && $formula->frequency_type_id != null){
+        foreach ($formulas as $formula) {
+            if ($formula->period_type_id == null && $formula->frequency_type_id != null) {
                 $formulas = DB::table('prescription_formulas')
                     ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
                     ->join('frequency_types', 'frequency_types.id', '=', 'prescription_formulas.frequency_type_id')
@@ -227,7 +239,7 @@ class PrescriptionController extends Controller
                         , 'frequency_types.ar_name as frequency_name',
                     )->get();
             }
-            if ($formula->period_type_id != null && $formula->frequency_type_id == null){
+            if ($formula->period_type_id != null && $formula->frequency_type_id == null) {
                 $formulas = DB::table('prescription_formulas')
                     ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
                     ->join('period_types', 'period_types.id', '=', 'prescription_formulas.period_type_id')
@@ -237,7 +249,7 @@ class PrescriptionController extends Controller
                         'period_types.ar_name as period_name'
                     )->get();
             }
-            if ($formula->period_type_id != null && $formula->frequency_type_id != null){
+            if ($formula->period_type_id != null && $formula->frequency_type_id != null) {
                 $formulas = DB::table('prescription_formulas')
                     ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
                     ->join('frequency_types', 'frequency_types.id', '=', 'prescription_formulas.frequency_type_id')
@@ -268,6 +280,118 @@ class PrescriptionController extends Controller
             ));
     }
 
+    public function edit($id){
+        $prescription = DB::table('prescriptions')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $id)
+            ->first();
+        $appointment = DB::table('appointments')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('patient_id', $prescription->patient_id)
+            ->where('date', $prescription->date)
+            ->select('date', 'time')
+            ->first();
+
+        $patient = DB::table('users')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $prescription->patient_id)
+            ->first();
+
+        // control of frequency and period show in prescription for medicines
+        $medicines = DB::table('prescription_medicines')
+            ->where('prescription_id', $id)
+            ->where('clinic_id', $this->getClinic()->id)
+            ->select('*', 'name as medicine_name')
+            ->get();
+        foreach ($medicines as $medicine) {
+            if ($medicine->period_type_id == null && $medicine->frequency_type_id != null) {
+                $medicines = DB::table('prescription_medicines')
+                    ->join('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
+                    ->where('prescription_medicines.prescription_id', $id)
+                    ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
+                    ->select('prescription_medicines.name as medicine_name'
+                        , 'frequency_types.ar_name as frequency_name',
+                    )->get();
+            }
+            if ($medicine->period_type_id != null && $medicine->frequency_type_id == null) {
+                $medicines = DB::table('prescription_medicines')
+                    ->join('period_types', 'period_types.id', '=', 'prescription_medicines.period_type_id')
+                    ->where('prescription_medicines.prescription_id', $id)
+                    ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
+                    ->select('prescription_medicines.name as medicine_name',
+                        'period_types.ar_name as period_name'
+                    )->get();
+            }
+            if ($medicine->period_type_id != null && $medicine->frequency_type_id != null) {
+                $medicines = DB::table('prescription_medicines')
+                    ->join('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
+                    ->join('period_types', 'period_types.id', '=', 'prescription_medicines.period_type_id')
+                    ->where('prescription_medicines.prescription_id', $id)
+                    ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
+                    ->select('prescription_medicines.name as medicine_name'
+                        , 'frequency_types.ar_name as frequency_name',
+                        'period_types.ar_name as period_name'
+                    )->get();
+            }
+        }
+        // control of frequency and period show in prescription for formulas
+        $formulas = DB::table('prescription_formulas')
+            ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
+            ->where('prescription_formulas.prescription_id', $id)
+            ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
+            ->select('prescription_formulas.*', 'formulas.name as formula_name')
+            ->get();
+        foreach ($formulas as $formula) {
+            if ($formula->period_type_id == null && $formula->frequency_type_id != null) {
+                $formulas = DB::table('prescription_formulas')
+                    ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
+                    ->join('frequency_types', 'frequency_types.id', '=', 'prescription_formulas.frequency_type_id')
+                    ->where('prescription_formulas.prescription_id', $id)
+                    ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
+                    ->select('formulas.name as formula_name'
+                        , 'frequency_types.ar_name as frequency_name',
+                    )->get();
+            }
+            if ($formula->period_type_id != null && $formula->frequency_type_id == null) {
+                $formulas = DB::table('prescription_formulas')
+                    ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
+                    ->join('period_types', 'period_types.id', '=', 'prescription_formulas.period_type_id')
+                    ->where('prescription_formulas.prescription_id', $id)
+                    ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
+                    ->select('formulas.name as formula_name',
+                        'period_types.ar_name as period_name'
+                    )->get();
+            }
+            if ($formula->period_type_id != null && $formula->frequency_type_id != null) {
+                $formulas = DB::table('prescription_formulas')
+                    ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
+                    ->join('frequency_types', 'frequency_types.id', '=', 'prescription_formulas.frequency_type_id')
+                    ->join('period_types', 'period_types.id', '=', 'prescription_formulas.period_type_id')
+                    ->where('prescription_formulas.prescription_id', $id)
+                    ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
+                    ->select('formulas.name as formula_name'
+                        , 'frequency_types.ar_name as frequency_name',
+                        'period_types.ar_name as period_name'
+                    )->get();
+            }
+        }
+
+        $tests = DB::table('prescription_tests')
+            ->where('prescription_tests.prescription_id', $id)
+            ->where('prescription_tests.clinic_id', $this->getClinic()->id)
+            ->get();
+
+        return view('prescriptions.edit',
+            compact(
+                'prescription',
+                'medicines',
+                'tests',
+                'formulas',
+                'doctor',
+                'patient',
+                'appointment'
+            ));
+    }
     public function destroy($id)
     {
         $row = Prescription::where('id', '=', $id)->first();
@@ -288,6 +412,7 @@ class PrescriptionController extends Controller
         $appointments = Appointment::where('patient_id', '=', $request->patient_id)
             ->where('doctor_id', '=', auth()->user()->id)
             ->where('status', '=', 'pending')
+            ->whereDate('date', '=', Carbon::today()->toDateString())
             ->orderBy('id', 'desc')
             ->get();
         return response()->json($appointments);
