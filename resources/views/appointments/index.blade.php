@@ -38,6 +38,7 @@
                         }
                         return time.join(''); // return adjusted time or original string
                     }
+
                     var dd = info.date;
                     var date = dd.toLocaleDateString('en-CA');
                     $('#selected_date').html(date);
@@ -46,9 +47,9 @@
                     $('#no_list').empty();
                     $.ajax({
                         type: "GET",
-                        url: "{{url('/appointment/get-appointments-per-date?date=')}}"+date,
+                        url: "{{url('/appointment/get-appointments-per-date?date=')}}" + date,
                         dataType: 'json',
-                        success: function (response,textStatus, xhr) {
+                        success: function (response, textStatus, xhr) {
 
                             if (response == '') {
                                 $('#new_list').empty();
@@ -57,14 +58,20 @@
                                 $('#new_list').empty();
                                 $('#no_list').empty();
                                 for (let i = 0; i < response.length; i++) {
+                                    url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
+                                    link = "<a href="+url+" class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-pencil-alt'></i></a>";
+                                    console.log(link);
                                     $('#new_list').append(
                                         '<tr>' +
-                                        '<td>'+ response[i].id +'</td>' +
-                                        '<td>'+ response[i].patient_name +'</td>' +
-                                        '<td>'+ response[i].doctor_name +'</td>' +
-                                        '<td>'+ tConvert(response[i].time) +'</td>' +
+                                        '<td>' + response[i].id + '</td>' +
+                                        '<td>' + response[i].patient_name + '</td>' +
+                                        '<td>' + response[i].doctor_name + '</td>' +
+                                        '<td>' + tConvert(response[i].time) + '</td>' +
+                                        '<td>' +
+                                        link
+                                        +'</td>' +
                                         '</tr>'
-                                        );
+                                    );
                                 }
                             }
                         },
@@ -79,11 +86,12 @@
         });
     </script>
     <style>
-        .fc .fc-toolbar-title{
+        .fc .fc-toolbar-title {
             font-size: smaller;
             margin-left: 5px;
         }
-        .fc .fc-button-group{
+
+        .fc .fc-button-group {
             font-size: smaller;
         }
     </style>
@@ -123,16 +131,18 @@
                                     <th>Patient</th>
                                     <th>doctor</th>
                                     <th>Time</th>
+                                    <th>action</th>
                                 </tr>
                                 </thead>
                                 <tbody id="new_list">
                                 @foreach($rows as $row)
-                                <tr>
-                                    <td>{{$row->id}}</td>
-                                    <td> {{$row->patient_name}}</td>
-                                    <td>{{$row->doctor_name}}</td>
-                                    <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                </tr>
+                                    <tr>
+                                        <td>{{$row->id}}</td>
+                                        <td> {{$row->patient_name}}</td>
+                                        <td>{{$row->doctor_name}}</td>
+                                        <td>{{date("g:i a", strtotime($row->time))}}</td>
+                                        <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-pen-square"></i></a></td>
+                                    </tr>
                                 @endforeach
                                 </tbody>
                             </table>
@@ -167,30 +177,32 @@
                         <h4 class="card-title mb-4">Appointment List | <label
                                 id="selected_date">{{date("Y-m-d")}}</label>
                         </h4>
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient</th>
+                                <th>doctor</th>
+                                <th>Time</th>
+                                <th>action</th>
+                            </tr>
+                            </thead>
+                            <tbody id="new_list">
+                            <tr>
+                            @foreach($rows as $row)
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Patient</th>
-                                    <th>doctor</th>
-                                    <th>Time</th>
+                                    <td>{{$row->id}}</td>
+                                    <td> {{$row->patient_name}}</td>
+                                    <td>{{$row->doctor_name}}</td>
+                                    <td>{{date("g:i a", strtotime($row->time))}}</td>
+                                    <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-pen-square"></i></a></td>
                                 </tr>
-                                </thead>
-                                <tbody id="new_list">
-                                <tr>
-                                @foreach($rows as $row)
-                                    <tr>
-                                        <td>{{$row->id}}</td>
-                                        <td> {{$row->patient_name}}</td>
-                                        <td>{{$row->doctor_name}}</td>
-                                        <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                    </tr>
-                                    @endforeach
+                                @endforeach
                                 </tr>
 
-                                </tbody>
+                            </tbody>
 
-                            </table>
+                        </table>
                         <div id="no_list" class="text-center"></div>
                         <!-- /.card-body -->
                     </div>
@@ -218,7 +230,7 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],order:[[0,'desc']],
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"], order: [[0, 'desc']],
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,
