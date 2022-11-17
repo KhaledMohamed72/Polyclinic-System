@@ -10,6 +10,7 @@
     <script src="{{asset('assets/fullcalender/lib/main.js')}}"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
@@ -40,6 +41,8 @@
                     }
 
                     var dd = info.date;
+                    var role = "<?php echo auth()->user()->hasRole(['admin','recep']) ?>";
+                    console.log(role);
                     var date = dd.toLocaleDateString('en-CA');
                     $('#selected_date').html(date);
                     $('#new_list').hide();
@@ -50,7 +53,6 @@
                         url: "{{url('/appointment/get-appointments-per-date?date=')}}" + date,
                         dataType: 'json',
                         success: function (response, textStatus, xhr) {
-
                             if (response == '') {
                                 $('#new_list').empty();
                                 $('#no_list').append('No Available Appointments')
@@ -59,19 +61,32 @@
                                 $('#no_list').empty();
                                 for (let i = 0; i < response.length; i++) {
                                     url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
-                                    link = "<a href="+url+" class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-pencil-alt'></i></a>";
-                                    console.log(link);
-                                    $('#new_list').append(
-                                        '<tr>' +
-                                        '<td>' + response[i].id + '</td>' +
-                                        '<td>' + response[i].patient_name + '</td>' +
-                                        '<td>' + response[i].doctor_name + '</td>' +
-                                        '<td>' + tConvert(response[i].time) + '</td>' +
-                                        '<td>' +
-                                        link
-                                        +'</td>' +
-                                        '</tr>'
-                                    );
+                                    link = "<a href="+url+" class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
+                                    // if role is admin or receptionist show doctor name in appointments table else don't show doctor name in appointments table
+                                    if(role == 1) {
+                                        $('#new_list').append(
+                                            '<tr>' +
+                                            '<td>' + response[i].id + '</td>' +
+                                            '<td>' + response[i].patient_name + '</td>' +
+                                            '<td>' + response[i].doctor_name + '</td>' +
+                                            '<td>' + tConvert(response[i].time) + '</td>' +
+                                            '<td>' +
+                                            link
+                                            + '</td>' +
+                                            '</tr>'
+                                        );
+                                    }else{
+                                        $('#new_list').append(
+                                            '<tr>' +
+                                            '<td>' + response[i].id + '</td>' +
+                                            '<td>' + response[i].patient_name + '</td>' +
+                                            '<td>' + tConvert(response[i].time) + '</td>' +
+                                            '<td>' +
+                                            link
+                                            + '</td>' +
+                                            '</tr>'
+                                        );
+                                    }
                                 }
                             }
                         },
@@ -129,7 +144,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Patient</th>
-                                    <th>doctor</th>
+                                    @if(auth()->user()->hasRole(['admin','recep']))
+                                        <th>doctor</th>
+                                    @endif
                                     <th>Time</th>
                                     <th>action</th>
                                 </tr>
@@ -139,9 +156,11 @@
                                     <tr>
                                         <td>{{$row->id}}</td>
                                         <td> {{$row->patient_name}}</td>
-                                        <td>{{$row->doctor_name}}</td>
+                                        @if(auth()->user()->hasRole(['admin','recep']))
+                                            <td>{{$row->doctor_name}}</td>
+                                        @endif
                                         <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                        <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-pen-square"></i></a></td>
+                                        <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-file"></i></a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -182,7 +201,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Patient</th>
+                                @if(auth()->user()->hasRole(['admin','recep']))
                                 <th>doctor</th>
+                                @endif
                                 <th>Time</th>
                                 <th>action</th>
                             </tr>
@@ -193,9 +214,11 @@
                                 <tr>
                                     <td>{{$row->id}}</td>
                                     <td> {{$row->patient_name}}</td>
+                                    @if(auth()->user()->hasRole(['admin','recep']))
                                     <td>{{$row->doctor_name}}</td>
+                                    @endif
                                     <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                    <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-pen-square"></i></a></td>
+                                    <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-file"></i></a></td>
                                 </tr>
                                 @endforeach
                                 </tr>

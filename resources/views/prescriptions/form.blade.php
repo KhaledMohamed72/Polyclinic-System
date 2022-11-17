@@ -27,7 +27,7 @@
                 name="{{$input}}" id="patient">
                 <option disabled selected>Select Patient</option>
                 @foreach($patients as $patient)
-                    <option value="{{$patient->user_id}}" {{ old($input) == $patient->user_id ? 'selected' : ''}}>
+                    <option value="{{$patient->user_id}}" {{ isset(request()->patient_id) && request()->patient_id == $patient->user_id  ? 'selected' : ''}}>
                         {{$patient->user_name}}</option>
                 @endforeach
             </select>
@@ -40,7 +40,11 @@
             <select
                 class="form-control select2 sel_appointment "
                 name="date" id="appointment">
-                <option disabled selected>Select Appointment</option>
+                @if(isset(request()->patient_id))
+                    <option value="{{request()->date}}">{{request()->date}}</option>
+                @else
+                    <option disabled selected>Select Appointment</option>
+                @endif
             </select>
         </div>
     </div>

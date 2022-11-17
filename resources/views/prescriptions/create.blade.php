@@ -89,7 +89,6 @@
             });
         </script>--}}
 
-
     <!-- Libaries configurations  -->
     <script>
         // display or hide followup date based on investigation type

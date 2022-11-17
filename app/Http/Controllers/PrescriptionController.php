@@ -409,7 +409,8 @@ class PrescriptionController extends Controller
 
     public function get_appointments_of_patient(Request $request)
     {
-        $appointments = Appointment::where('patient_id', '=', $request->patient_id)
+        $appointments = DB::table('appointments')
+            ->where('patient_id', '=', $request->patient_id)
             ->where('doctor_id', '=', auth()->user()->id)
             ->where('status', '=', 'pending')
             ->whereDate('date', '=', Carbon::today()->toDateString())

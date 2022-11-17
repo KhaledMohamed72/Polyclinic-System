@@ -83,6 +83,7 @@ class AppointmentController extends Controller
 
     public function get_appointments_per_date(Request $request){
 
+        // admin
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
