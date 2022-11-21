@@ -271,13 +271,19 @@
                                     <p>Period Types</p>
                                 </a>
                             </li>
-                                <li class="nav-item">
-                                    <a href="{{route('session-types.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Session Types</p>
-                                    </a>
-                                </li>
-                        @endif
+                            <li class="nav-item">
+                                <a href="{{route('session-types.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Session Types</p>
+                                </a>
+                            </li>
+                            @endif
+                            <li class="nav-item">
+                                <a href="{{route('prescription-designs.index')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Prescription Design</p>
+                                </a>
+                            </li>
                     </ul>
                 </li>
             </ul>

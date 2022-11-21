@@ -22,38 +22,34 @@
             <div class="card">
                 <div class="card-body">
                     <div class="invoice-title">
-                        <h4 class="float-right font-size-16">Prescription #1</h4>
-                        <div class="mb-4">
+                        <strong class="float-right font-size-16">Prescription #{{$prescription->id}}</strong>
+
                             <img src="{{asset('assets/dist/img/pulpo-logo.jpg')}}" alt="logo"
-                                 height="50"/>
-                            <strong>PULPO CLINIC</strong>
-                        </div>
+                                 height="30"/>
+                            <small>PULPO CLINIC</small>
+
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-5">
+                        <div class="col-4 text-center">
                             <address>
-                                <strong>Dr</strong>
-                                <br>{{$doctor->name}}<br>
-                                <i class="fas fa-sm fa-phone-alt"></i> {{$doctor->phone}}<br>
-                                <i class="fas fa-sm fa-envelope"></i> {{$doctor->email}}<br>
+                                <strong>المريض</strong>
+                                <div>
+                                    <span>{{$patient->name}}</span><strong> : الاسم </strong>
+                                </div>
+                                <div>
+                                    <span>{{$prescription->date}}</span><strong> : التاريخ </strong>
+                                </div>
+                                <div>
+                                    <span>{{$patient->address}}</span><strong> : العنوان </strong>
+                                </div>
                             </address>
                         </div>
-                        <div class="col-4">
-                            <address>
-                                <strong>Patient</strong>
-                                <br>{{$patient->name}}<br>
-                                <i class="fas fa-sm fa-phone-alt"></i> {{$patient->phone}}<br>
-                            </address>
+                        <div class="col-2">
+
                         </div>
-                        <div class="col-3">
-                            <address>
-                                <strong>Prescription
-                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($prescription->created_at) ?? '')}}<br>
-                                <strong>Appointment
-                                    Date: </strong>{{date('Y-m-d h:i a', strtotime($appointment->date.' '.$appointment->time)) ?? ''}}
-                                <br>
-                            </address>
+                        <div class="col-6">
+                            {!! $prescription_design->header !!}
                         </div>
                     </div>
                     @if(!$medicines->isEmpty())
@@ -64,7 +60,6 @@
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
-
                                         <tbody>
                                         @foreach($medicines as $row)
                                             <tr>
@@ -122,6 +117,10 @@
                             </div>
                         </div>
                     @endif
+                    <hr>
+                    <div class="row">
+                        {!! $prescription_design->footer !!}
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Formula;
 use App\Models\FrequencyType;
@@ -103,10 +102,10 @@ class PrescriptionController extends Controller
         $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
 
         // get fees based on prescription type
-        $doctor = Doctor::where('user_id',auth()->user()->id)->first();
-        if ($request->type == 0){
+        $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+        if ($request->type == 0) {
             $fees = $doctor->examination_fees;
-        }else{
+        } else {
             $fees = $doctor->followup_fees;
         }
         $prescription = DB::table('prescriptions')->insert([
@@ -122,7 +121,7 @@ class PrescriptionController extends Controller
         ]);
 
         $prescription_id = DB::getPdo()->lastInsertId();
-
+        $prescription = Prescription::find($prescription_id);
         foreach ($request->medicines as $medicine) {
             if ($medicine['medicine'] != null) {
                 DB::table('prescription_medicines')->insert([
@@ -159,7 +158,18 @@ class PrescriptionController extends Controller
                 ]);
             }
         }
-        return redirect()->route('prescriptions.show', ['prescription' => $prescription_id]);
+
+        $updateAppointmentStatus = DB::table('appointments')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('patient_id', $prescription->patient_id)
+            ->where('doctor_id', $prescription->doctor_id)
+            ->where('date', $prescription->date)
+            ->update([
+                'status' => 'complete'
+            ]);
+        if ($updateAppointmentStatus) {
+            return redirect()->route('prescriptions.show', ['prescription' => $prescription_id]);
+        }
     }
 
     public function show($id)
@@ -168,6 +178,11 @@ class PrescriptionController extends Controller
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
             ->first();
+        $prescription_design = DB::table('prescription_designs')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('doctor_id', $prescription->doctor_id)
+            ->first();
+
         $appointment = DB::table('appointments')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('patient_id', $prescription->patient_id)
@@ -180,8 +195,9 @@ class PrescriptionController extends Controller
             ->where('id', $prescription->doctor_id)
             ->first();
         $patient = DB::table('users')
-            ->where('clinic_id', $this->getClinic()->id)
-            ->where('id', $prescription->patient_id)
+            ->join('patients', 'patients.user_id', '=', 'users.id')
+            ->where('users.clinic_id', $this->getClinic()->id)
+            ->where('users.id', $prescription->patient_id)
             ->first();
 
         // control of frequency and period show in prescription for medicines
@@ -275,12 +291,14 @@ class PrescriptionController extends Controller
                 'tests',
                 'formulas',
                 'doctor',
+                'prescription_design',
                 'patient',
                 'appointment'
             ));
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $prescription = DB::table('prescriptions')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
@@ -392,6 +410,7 @@ class PrescriptionController extends Controller
                 'appointment'
             ));
     }
+
     public function destroy($id)
     {
         $row = Prescription::where('id', '=', $id)->first();

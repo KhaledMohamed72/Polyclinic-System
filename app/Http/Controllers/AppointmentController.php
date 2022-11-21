@@ -12,6 +12,7 @@ class AppointmentController extends Controller
 {
     public function index()
     {
+        // admin
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
                 ->join('users as t1','t1.id','=','appointments.doctor_id')

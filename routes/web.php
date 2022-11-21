@@ -202,6 +202,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::resource('/frequency-types', \App\Http\Controllers\FrequencyTypeController::class);
         Route::resource('/period-types', \App\Http\Controllers\PeriodTypeController::class);
         Route::resource('/session-types', \App\Http\Controllers\SessionTypeController::class);
+        Route::resource('/prescription-designs', \App\Http\Controllers\PrescriptionDesignController::class);
     });
 
     // get appointments of patients ajax

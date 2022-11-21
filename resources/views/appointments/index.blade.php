@@ -10,7 +10,6 @@
     <script src="{{asset('assets/fullcalender/lib/main.js')}}"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
@@ -41,8 +40,7 @@
                     }
 
                     var dd = info.date;
-                    var role = "<?php echo auth()->user()->hasRole(['admin','recep']) ?>";
-                    console.log(role);
+                    var roleAdminRecep = "<?php echo auth()->user()->hasRole(['admin', 'recep']) ?>";
                     var date = dd.toLocaleDateString('en-CA');
                     $('#selected_date').html(date);
                     $('#new_list').hide();
@@ -61,21 +59,18 @@
                                 $('#no_list').empty();
                                 for (let i = 0; i < response.length; i++) {
                                     url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
-                                    link = "<a href="+url+" class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
+                                    link = "<a href=" + url + " class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
                                     // if role is admin or receptionist show doctor name in appointments table else don't show doctor name in appointments table
-                                    if(role == 1) {
+                                    if (roleAdminRecep == 1) {
                                         $('#new_list').append(
                                             '<tr>' +
                                             '<td>' + response[i].id + '</td>' +
                                             '<td>' + response[i].patient_name + '</td>' +
                                             '<td>' + response[i].doctor_name + '</td>' +
                                             '<td>' + tConvert(response[i].time) + '</td>' +
-                                            '<td>' +
-                                            link
-                                            + '</td>' +
                                             '</tr>'
                                         );
-                                    }else{
+                                    } else {
                                         $('#new_list').append(
                                             '<tr>' +
                                             '<td>' + response[i].id + '</td>' +
@@ -117,6 +112,10 @@
 @section('header-title-two')    Calender   @endsection
 
 @section('content')
+    @php
+        $hasRoleAdminNRecep = auth()->user()->hasRole(['admin','recep']);
+        $hasRoleDoctor = auth()->user()->hasRole('doctor');
+    @endphp
     @if(\Jenssegers\Agent\Facades\Agent::isMobile())
         <div class="row">
             <div class="col-md-12">
@@ -136,19 +135,26 @@
                                 Appointment</a>
                         </div>
                     </div>
+
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div id="appointment_list">
+
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Patient</th>
-                                    @if(auth()->user()->hasRole(['admin','recep']))
+                                    @if($hasRoleAdminNRecep)
                                         <th>doctor</th>
                                     @endif
                                     <th>Time</th>
-                                    <th>action</th>
+                                    @if($hasRoleAdminNRecep)
+                                        <th>doctor</th>
+                                    @endif
+                                    @if($hasRoleDoctor)
+                                        <th>action</th>
+                                    @endif
                                 </tr>
                                 </thead>
                                 <tbody id="new_list">
@@ -156,11 +162,16 @@
                                     <tr>
                                         <td>{{$row->id}}</td>
                                         <td> {{$row->patient_name}}</td>
-                                        @if(auth()->user()->hasRole(['admin','recep']))
+                                        @if($hasRoleAdminNRecep)
                                             <td>{{$row->doctor_name}}</td>
                                         @endif
                                         <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                        <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-file"></i></a></td>
+                                        @if($hasRoleDoctor)
+                                            <td>
+                                                <a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                                   class="btn btn-info btn-sm" title="create prescription"><i
+                                                        class="fas fa-file"></i></a></td>
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -201,11 +212,13 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Patient</th>
-                                @if(auth()->user()->hasRole(['admin','recep']))
-                                <th>doctor</th>
+                                @if($hasRoleAdminNRecep)
+                                    <th>doctor</th>
                                 @endif
                                 <th>Time</th>
-                                <th>action</th>
+                                @if($hasRoleDoctor)
+                                    <th>action</th>
+                                @endif
                             </tr>
                             </thead>
                             <tbody id="new_list">
@@ -214,11 +227,16 @@
                                 <tr>
                                     <td>{{$row->id}}</td>
                                     <td> {{$row->patient_name}}</td>
-                                    @if(auth()->user()->hasRole(['admin','recep']))
-                                    <td>{{$row->doctor_name}}</td>
+                                    @if($hasRoleAdminNRecep)
+                                        <td>{{$row->doctor_name}}</td>
                                     @endif
                                     <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                    <td><a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}" class="btn btn-info btn-sm" title="create prescription"><i class="fas fa-file"></i></a></td>
+                                    @if($hasRoleDoctor)
+                                        <td>
+                                            <a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                               class="btn btn-info btn-sm" title="create prescription"><i
+                                                    class="fas fa-file"></i></a></td>
+                                    @endif
                                 </tr>
                                 @endforeach
                                 </tr>

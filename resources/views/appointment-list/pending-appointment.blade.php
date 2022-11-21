@@ -12,6 +12,7 @@
 @section('header-title-one')    Appointment List    @endsection
 @section('header-title-two')    Main   @endsection
 
+@php $roleAdminNRecep = auth()->user()->hasRole(['admin','recep']); @endphp
 @section('content')
     <div class="row">
         <div class="col-xl-12">
@@ -27,7 +28,9 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
+                                        @if($roleAdminNRecep)
                                         <th>Doctor</th>
+                                        @endif
                                         <th>Patient</th>
                                         <th>Contact No</th>
                                         <th>Date</th>
@@ -39,17 +42,21 @@
                                     @foreach($rows as $row)
                                         <tr>
                                             <td>{{$row->id}}</td>
-                                            <td>{{$row->doctor_name}}</td>
+                                            @if($roleAdminNRecep)
+<td>{{$row->doctor_name}}</td>
+                                        @endif
                                             <td>{{$row->patient_name}}</td>
                                             <td>{{$row->phone}}</td>
                                             <td>{{$row->date}}</td>
                                             <td>{{date("g:i A", strtotime($row->time))}}</td>
                                             <td>
-                                                    <a class="btn btn-primary btn-sm"
-                                                       href="{{route('complete-action',$row->id)}}"
-                                                       title="Complete">
-                                                        Complete
-                                                    </a>
+                                                @if(auth()->user()->hasRole('doctor'))
+                                                <a class="btn btn-primary btn-sm"
+                                                   href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                                   title="Complete">
+                                                    Create Prescription
+                                                </a>
+                                                @endif
                                                     <a class="btn btn-danger btn-sm"
                                                        href="{{route('cancel-action',$row->id)}}"
                                                        title="Cancel">
