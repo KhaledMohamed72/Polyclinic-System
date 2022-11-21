@@ -170,7 +170,7 @@
                     <ul class="nav nav-treeview">
                         @if($user->hasRole(['admin','doctor']))
                             <li class="nav-item">
-                                <a href="{{route('prescriptions.index')}}" class="nav-link">
+                                <a href="{{route('sessions.index')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Sessions List</p>
                                 </a>
@@ -178,7 +178,7 @@
                         @endif
                         @if($user->hasRole('doctor'))
                             <li class="nav-item">
-                                <a href="{{route('prescriptions.create')}}" class="nav-link">
+                                <a href="{{route('sessions.create')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Create Session</p>
                                 </a>

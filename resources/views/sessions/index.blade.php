@@ -5,9 +5,9 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Doctors    @endsection
-@section('header-title')    Doctors    @endsection
-@section('header-title-one')    Doctors    @endsection
+@section('title')   Sessions    @endsection
+@section('header-title')    Sessions    @endsection
+@section('header-title-one')    Sessions    @endsection
 @section('header-title-two')    Main   @endsection
 
 @section('content')
@@ -16,11 +16,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        @if(auth()->user()->hasRole('admin'))
-                            @if(($clinicType == 0 && $doctors < 1) || $clinicType == 1)
-                                <a href="{{route('doctors.create')}}" class="btn btn-block bg-gradient-success">Add New
-                                    Doctor</a>
-                            @endif
+                        @if(auth()->user()->hasRole('doctor'))
+
+                                <a href="{{route('sessions.create')}}" class="btn btn-block bg-gradient-success">Add New
+                                Session
                         @endif
                     </div>
                 </div>
@@ -28,44 +27,37 @@
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
-                        <tr>
                             <th>ID</th>
-                            <th>Title</th>
-                            <th>Doctor Name</th>
-                            <th>Contact No</th>
-                            <th>Email</th>
+                            @if(auth()->user()->hasRole(['admin','recep']))
+                            <th>Doctor</th>
+                            @endif
+                            <th>Patient</th>
+                            <th>Session Type</th>
+                            <th>Fees</th>
+                        @if(auth()->user()->hasRole('doctor'))
                             <th>Action</th>
+                            @endif
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($rows as $row)
                             <tr>
                                 <td>{{$row->id}}</td>
-                                <td>{{$row->title ?? 'No Title'}}</td>
-                                <td>{{$row->name}}</td>
-                                <td>{{$row->phone ?? 'No Contact'}}</td>
-                                <td>{{$row->email}}</td>
-                                <td class="project-actions text-left">
-                                    <a class="btn btn-primary btn-sm" href="{{route('doctors.show',$row->id)}}"
-                                       title="View">
-                                        <i class="fas fa-eye">
-                                        </i>
-                                    </a>
-                                    @if(auth()->user()->hasRole(['admin','recep']))
-                                        <a class="btn btn-dark btn-sm" href="{{route('schedule-create',$row->id)}}"
-                                           title="Doctor days and time availability">
-                                            <i class="fas fa-calendar-alt">
-                                            </i>
-                                        </a>
-                                    @endif
-                                    @if(auth()->user()->hasRole('admin'))
-                                        <a class="btn btn-info btn-sm" href="{{route('doctors.edit',$row->id)}}"
+                                @if(auth()->user()->hasRole(['admin','recep']))
+                                <td>{{$row->doctor_name}}</td>
+                                @endif
+                                <td>{{$row->patient_name}}</td>
+                                <td>{{$row->session_name}}</td>
+                                <td>{{$row->fees}}</td>
+
+                                    @if(auth()->user()->hasRole('doctor'))
+                                    <td class="project-actions text-left">
+                                        <a class="btn btn-info btn-sm" href="{{route('sessions.edit',$row->id)}}"
                                            title="Edit">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
-                                        @if(($clinicType == 1))
-                                            <form action="{{route('doctors.destroy',$row->id)}}" method="POST"
+                                        <form action="{{route('sessions.destroy',$row->id)}}" method="POST"
                                                   style="display: contents;">
                                                 {{ csrf_field() }}
                                                 {{ method_field('delete') }}
@@ -75,7 +67,6 @@
                                                     </i>
                                                 </button>
                                             </form>
-                                        @endif
                                     @endif
                                 </td>
                             </tr>

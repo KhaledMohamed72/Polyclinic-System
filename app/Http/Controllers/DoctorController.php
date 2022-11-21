@@ -101,7 +101,7 @@ class DoctorController extends Controller
         }
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
-            'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
+            'date' => ['required', 'string'],
             'password' => ['min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
             'password_confirmation' => ['min:8'],
             'phone' => ['required', 'numeric', 'digits:11'],

@@ -194,6 +194,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('/prescriptions', \App\Http\Controllers\PrescriptionController::class);
     Route::resource('/incomes', \App\Http\Controllers\IncomeController::class);
     Route::resource('/expenses', \App\Http\Controllers\ExpenseController::class);
+    Route::resource('/sessions', \App\Http\Controllers\SessionController::class);
     // settings
     Route::group(['prefix'=>'settings'],function (){
         Route::resource('/expense-types', \App\Http\Controllers\ExpenseTypeController::class);
