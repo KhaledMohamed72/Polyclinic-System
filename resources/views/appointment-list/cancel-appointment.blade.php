@@ -29,7 +29,7 @@
                                     <tr>
                                         <th>ID</th>
                                         @if($roleAdminNRecep)
-                                        <th>Doctor</th>
+                                            <th>Doctor</th>
                                         @endif
                                         <th>Patient</th>
                                         <th>Contact No</th>
@@ -42,8 +42,8 @@
                                         <tr>
                                             <td>{{$row->id}}</td>
                                             @if($roleAdminNRecep)
-<td>{{$row->doctor_name}}</td>
-                                        @endif
+                                                <td>{{$row->doctor_name}}</td>
+                                            @endif
                                             <td>{{$row->patient_name}}</td>
                                             <td>{{$row->phone}}</td>
                                             <td>{{$row->date}}</td>
@@ -81,7 +81,7 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],order: [[0, 'desc']],
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"], order: [[0, 'desc']],
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,

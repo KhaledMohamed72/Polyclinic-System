@@ -8,6 +8,7 @@ use App\Models\Receptionist;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -327,11 +328,85 @@ class DoctorController extends Controller
             ->orderBy('doctor_schedules.id', 'asc')
             ->select('doctor_schedules.*')
             ->get();
+        $appointments_count = DB::table('appointments')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->where('doctor_id','=',$id)
+            ->count();
+        $today_appointments_count = DB::table('appointments')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->where('doctor_id','=',$id)
+            ->count();
+        $tomorrow_appointments_count = DB::table('appointments')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->whereDate('date', '=', Carbon::tomorrow()->toDateString())
+            ->where('doctor_id','=',$id)
+            ->count();
+        $upcomming_appointments_count = DB::table('appointments')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->whereDate('date', '>', Carbon::today()->toDateString())
+            ->where('doctor_id','=',$id)
+            ->count();
+        $today_prescriptions_sum = DB::table('prescriptions')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->where('doctor_id','=',$id)
+            ->sum('fees');
+        $today_incomes_sum = DB::table('incomes')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->where('doctor_id','=',$id)
+            ->sum('amount');
+        $today_sessions_sum = DB::table('sessions_info')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->where('doctor_id','=',$id)
+            ->sum('fees');
+        $total_prescriptions_sum = DB::table('prescriptions')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->where('doctor_id','=',$id)
+            ->sum('fees');
+        $total_incomes_sum = DB::table('incomes')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->where('doctor_id','=',$id)
+            ->sum('amount');
+        $total_sessions_sum = DB::table('sessions_info')
+            ->where('clinic_id','=',$this->getClinic()->id)
+            ->where('doctor_id','=',$id)
+            ->sum('fees');
+        $appointments = DB::table('appointments')
+            ->join('users as t2','t2.id','=','appointments.patient_id')
+            ->where('appointments.clinic_id','=',$this->getClinic()->id)
+            ->where('appointments.doctor_id','=',$id)
+            ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
+            ->select('appointments.*','t2.name as patient_name','t2.phone')
+            ->orderBy('appointments.date','desc')->get();
+        $prescriptions = DB::table('prescriptions')
+            ->join('users as t2', 't2.id', '=', 'prescriptions.patient_id')
+            ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
+            ->where('prescriptions.doctor_id', '=', $id)
+            ->select('prescriptions.*', 't2.name as patient_name')
+            ->orderBy('prescriptions.date', 'desc')
+            ->get();
+
+        $today_earrings = $today_prescriptions_sum + $today_incomes_sum + $today_sessions_sum;
+        $revenue = $total_prescriptions_sum + $total_incomes_sum + $total_sessions_sum;
         if ($row) {
-            if (auth()->user()->hasRole(['admin', 'recep'])) {
-                return view('doctors.show', compact('row', 'schedule_rows'));
+            if (auth()->user()->hasRole(['admin', 'recep','doctor'])) {
+                return view('doctors.show', compact(
+                    'row',
+                    'schedule_rows',
+                    'appointments_count',
+                    'today_appointments_count',
+                    'tomorrow_appointments_count',
+                    'upcomming_appointments_count',
+                    'today_earrings',
+                    'revenue',
+                    'appointments',
+                    'prescriptions'
+                ));
             } else {
-                toastr()->warning('You can not allowed for this route !');
+                toastr()->warning('You are not allowed for this route !');
                 return redirect()->route('doctors.index');
             }
         } else {

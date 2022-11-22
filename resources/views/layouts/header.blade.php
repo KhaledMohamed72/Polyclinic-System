@@ -31,14 +31,27 @@
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-user"></i>
             </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="dropdown-item">
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                <a href="{{ route('change-password') }}" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
+                                <span class="text-sm text-primary"><i class="fas fa-edit"></i></span>
+                                {{ __('Change Password') }}
+                            </h3>
+                        </div>
+                    </div>
+                    <!-- Message End -->
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="dropdown-item mt-2">
+                    <!-- Message Start -->
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 class="dropdown-item-title text-red">
+                                <span class="text-sm text-danger"><i class="fas fa-sign-out-alt"></i></span>
                                 {{ __('Logout') }}
-                                <span class="float-right text-sm text-danger"><i class="fas fa-sign-out-alt"></i></span>
                             </h3>
                         </div>
                     </div>

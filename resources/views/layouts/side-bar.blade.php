@@ -1,4 +1,15 @@
-@php $user = auth()->user(); @endphp
+@php
+    $user = auth()->user();
+    if($user->hasRole('admin')){
+        $profile_route = '#';
+    }
+    if($user->hasRole('doctor')){
+        $profile_route = route('doctors.show', auth()->user()->id);
+    }
+    if($user->hasRole('recep')){
+        $profile_route = route('receptionists.show', auth()->user()->id);
+    }
+@endphp
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{route('home')}}" class="brand-link">
@@ -18,7 +29,10 @@
                     class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{$user->name}}</a>
+
+                <a href="{{$profile_route}}" class="d-block">{{$user->name}}</a>
+
+
             </div>
         </div>
 
@@ -168,14 +182,12 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if($user->hasRole(['admin','doctor']))
-                            <li class="nav-item">
-                                <a href="{{route('sessions.index')}}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Sessions List</p>
-                                </a>
-                            </li>
-                        @endif
+                        <li class="nav-item">
+                            <a href="{{route('sessions.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sessions List</p>
+                            </a>
+                        </li>
                         @if($user->hasRole('doctor'))
                             <li class="nav-item">
                                 <a href="{{route('sessions.create')}}" class="nav-link">
@@ -186,7 +198,7 @@
                         @endif
                     </ul>
                 </li>
-                <li class="nav-item">
+{{--                <li class="nav-item">
                     <a href="#" class="nav-link {{ (request()->routeIs('invoices.*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-receipt"></i>
                         <p>
@@ -208,7 +220,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li>--}}
                 @if($user->hasRole('admin'))
                     <li class="nav-item">
                         <a href="{{route('incomes.index')}}"
@@ -277,13 +289,13 @@
                                     <p>Session Types</p>
                                 </a>
                             </li>
-                            @endif
-                            <li class="nav-item">
-                                <a href="{{route('prescription-designs.index')}}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Prescription Design</p>
-                                </a>
-                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a href="{{route('prescription-designs.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Prescription Design</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

@@ -17,9 +17,9 @@
                 <div class="card-header">
                     <div class="col-md-2 float-right">
                         @if(auth()->user()->hasRole('doctor'))
-
-                                <a href="{{route('sessions.create')}}" class="btn btn-block bg-gradient-success">Add New
+                            <a href="{{route('sessions.create')}}" class="btn btn-block bg-gradient-success">Add New
                                 Session
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -27,15 +27,16 @@
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
+                        <tr>
                             <th>ID</th>
                             @if(auth()->user()->hasRole(['admin','recep']))
-                            <th>Doctor</th>
+                                <th>Doctor</th>
                             @endif
                             <th>Patient</th>
                             <th>Session Type</th>
                             <th>Fees</th>
-                        @if(auth()->user()->hasRole('doctor'))
-                            <th>Action</th>
+                            @if(auth()->user()->hasRole('doctor'))
+                                <th>Action</th>
                             @endif
                         </tr>
                         </thead>
@@ -44,13 +45,13 @@
                             <tr>
                                 <td>{{$row->id}}</td>
                                 @if(auth()->user()->hasRole(['admin','recep']))
-                                <td>{{$row->doctor_name}}</td>
+                                    <td>{{$row->doctor_name}}</td>
                                 @endif
                                 <td>{{$row->patient_name}}</td>
                                 <td>{{$row->session_name}}</td>
                                 <td>{{$row->fees}}</td>
 
-                                    @if(auth()->user()->hasRole('doctor'))
+                                @if(auth()->user()->hasRole('doctor'))
                                     <td class="project-actions text-left">
                                         <a class="btn btn-info btn-sm" href="{{route('sessions.edit',$row->id)}}"
                                            title="Edit">
@@ -58,17 +59,17 @@
                                             </i>
                                         </a>
                                         <form action="{{route('sessions.destroy',$row->id)}}" method="POST"
-                                                  style="display: contents;">
-                                                {{ csrf_field() }}
-                                                {{ method_field('delete') }}
-                                                <button type="submit" class="btn btn-danger btn-sm" href="#"
-                                                        title="Delete">
-                                                    <i class="fas fa-trash">
-                                                    </i>
-                                                </button>
-                                            </form>
-                                    @endif
-                                </td>
+                                              style="display: contents;">
+                                            {{ csrf_field() }}
+                                            {{ method_field('delete') }}
+                                            <button type="submit" class="btn btn-danger btn-sm" href="#"
+                                                    title="Delete">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>
@@ -98,7 +99,7 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],order: [[0, 'desc']],
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"], order: [[0, 'desc']],
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,

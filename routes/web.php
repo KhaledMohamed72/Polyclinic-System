@@ -72,9 +72,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
             ->middleware(['guest:' . config('fortify.guard')])
             ->name('password.email');
 
-        Route::post('/reset-password', [NewPasswordController::class, 'store'])
-            ->middleware(['guest:' . config('fortify.guard')])
-            ->name('password.update');
+
     }
 
     // Registration...
@@ -204,6 +202,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::resource('/period-types', \App\Http\Controllers\PeriodTypeController::class);
         Route::resource('/session-types', \App\Http\Controllers\SessionTypeController::class);
         Route::resource('/prescription-designs', \App\Http\Controllers\PrescriptionDesignController::class);
+        Route::get('/change-password', [\App\Http\Controllers\SettingController::class,'changePassword'])->name('change-password');
+        Route::post('/change-password', [\App\Http\Controllers\SettingController::class,'updatePassword'])->name('update-password');
     });
 
     // get appointments of patients ajax
