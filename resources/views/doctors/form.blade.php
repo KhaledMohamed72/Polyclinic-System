@@ -108,6 +108,8 @@
                             value="{{$i}}" {{isset($row) && $row->slot_time == $i ? 'selected' : ''}}>{{$i}}</option>
                     @endfor
                 </select>
+                @error($input)<span class="invalid-feedback"
+                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
         @php $input = 'examination_fees' @endphp
@@ -145,7 +147,7 @@
                             value="{{$receptionist->id}}" {{ (isset($row) && $receptionist->id == $row->receptionist_id ? 'selected' : '') }}>{{$receptionist->name}}</option>
                     @endforeach
                 </select>
-                @error($input)<span class="invalid-feedback"
+                @error($input)<span class="badge badge-danger"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
@@ -153,7 +155,6 @@
     <div class="row">
         @php $input = 'bio' @endphp
         <div class="col-md-6">
-
             <label for="exampleInput{{$input}}">Short Biography</label>
             <textarea id="summernote" name="{{$input}}">
 

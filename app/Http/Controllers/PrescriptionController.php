@@ -309,7 +309,13 @@ class PrescriptionController extends Controller
             ->where('date', $prescription->date)
             ->select('date', 'time')
             ->first();
-
+        $patients = DB::table('users')
+            ->join('patients', 'patients.user_id', '=', 'users.id')
+            ->where('patients.doctor_id', '=', auth()->user()->id)
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
+            ->orderBy('users.id', 'desc')
+            ->select('users.name as user_name', 'users.id as user_id')
+            ->get();
         $patient = DB::table('users')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $prescription->patient_id)
@@ -405,8 +411,8 @@ class PrescriptionController extends Controller
                 'medicines',
                 'tests',
                 'formulas',
-                'doctor',
                 'patient',
+                'patients',
                 'appointment'
             ));
     }

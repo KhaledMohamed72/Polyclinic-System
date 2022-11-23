@@ -27,7 +27,7 @@
                 name="{{$input}}" id="patient">
                 <option disabled selected>Select Patient</option>
                 @foreach($patients as $patient)
-                    <option value="{{$patient->user_id}}" {{ $patient->id == $patient->user_id ? 'selected' : ''}}>
+                    <option value="{{$patient->user_id}}" {{ $patient->id == $prescription->patient_id ? 'selected' : ''}}>
                         {{$patient->user_name}}</option>
                 @endforeach
             </select>

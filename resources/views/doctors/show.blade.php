@@ -258,7 +258,7 @@
                                                 <tbody>
                                                 @foreach($appointments as $row)
                                                     <tr>
-                                                        <td>{{$row->id}}</td>
+                                                        <td>{{$row->patient_id}}</td>
                                                         <td>{{$row->patient_name}}</td>
                                                         <td>{{$row->phone}}</td>
                                                         <td>{{$row->date}}</td>
@@ -275,19 +275,24 @@
                                                             @endif
                                                         </td>
                                                         <td>
+                                                            <a class="btn btn-info btn-sm"
+                                                               href="{{route('patients.show',$row->patient_id)}}"
+                                                               title="Cancel">
+                                                                <span><i class="fa fa-eye"></i></span>
+                                                            </a>
                                                             @if($row->status == 'pending')
                                                                 @if(auth()->user()->hasRole('doctor'))
                                                                     <a class="btn btn-primary btn-sm"
                                                                        href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
-                                                                       title="Complete">
-                                                                        Create Prescription
+                                                                       title="Create Prescription">
+                                                                        <span><i class="fas fa-file"></i></span>
                                                                     </a>
                                                                 @endif
 
                                                                 <a class="btn btn-danger btn-sm"
                                                                    href="{{route('cancel-action',$row->id)}}"
-                                                                   title="Complete">
-                                                                    Cancel
+                                                                   title="Cancel">
+                                                                    <span><i class="fa fa-sign-out-alt"></i></span>
                                                                 </a>
                                                             @endif
                                                         </td>

@@ -58,8 +58,12 @@
                                 $('#new_list').empty();
                                 $('#no_list').empty();
                                 for (let i = 0; i < response.length; i++) {
-                                    url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
-                                    link = "<a href=" + url + " class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
+                                    prescription_url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
+                                    prescription_link = "<a href=" + prescription_url + " class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
+                                    patient_id = response[i].patient_id;
+                                    patient_url = "{{route('patients.show', ':patient_id')}}";
+                                    patient_url = patient_url.replace(':patient_id', patient_id);
+                                    patient_link = "<a href=" + patient_url + " class='btn btn-primary btn-sm mr-2' title='Patient Profile'><i class='fas fa-eye'></i></a>";
                                     // if role is admin or receptionist show doctor name in appointments table else don't show doctor name in appointments table
                                     if (roleAdminRecep == 1) {
                                         $('#new_list').append(
@@ -77,8 +81,9 @@
                                             '<td>' + response[i].patient_name + '</td>' +
                                             '<td>' + tConvert(response[i].time) + '</td>' +
                                             '<td>' +
-                                            link
-                                            + '</td>' +
+                                            patient_link +
+                                            prescription_link +
+                                            '</td>' +
                                             '</tr>'
                                         );
                                     }
@@ -226,13 +231,16 @@
                             @foreach($rows as $row)
                                 <tr>
                                     <td>{{$row->id}}</td>
-                                    <td> {{$row->patient_name}}</td>
+                                    <td> {{$row->patient_name}} </td>
                                     @if($hasRoleAdminNRecep)
                                         <td>{{$row->doctor_name}}</td>
                                     @endif
                                     <td>{{date("g:i a", strtotime($row->time))}}</td>
                                     @if($hasRoleDoctor)
                                         <td>
+                                            <a href="{{route('patients.show',$row->patient_id) . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                               class="btn btn-primary btn-sm" title="Patient Profile"><i
+                                                    class="fas fa-eye"></i></a>
                                             <a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
                                                class="btn btn-info btn-sm" title="create prescription"><i
                                                     class="fas fa-file"></i></a></td>
@@ -284,33 +292,5 @@
             });
         });
 
-        $(function () {
-
-            var calendarEl = document.getElementById('calendar');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-
-
-                scrollTime: '00:00', // undo default 6am scrollTime
-                editable: false, // enable draggable events
-                selectable: true,
-                height: 650,
-                aspectRatio: 1.8,
-                headerToolbar: {
-                    left: 'prev,next',
-                    center: 'title',
-                    right: 'timeGridWeek,dayGridMonth,listWeek'
-                },
-
-                initialView: 'dayGridMonth',
-
-                events: '{{route('get-all-appointments')}}',
-            });
-            dateClick: function ss(info) {
-                alert('ddddddd');
-            }
-            calendar.render();
-
-        })
     </script>
 @endsection

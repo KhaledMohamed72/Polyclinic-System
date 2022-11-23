@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -332,12 +333,44 @@ class PatientController extends Controller
             ->where('doctors.user_id','=',$row->doctor_id)
             ->select('users.*')
             ->first();
-
+        $appointments_count = DB::table('appointments')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->where('patient_id',$id)
+            ->count();
+        $prescriptions_count = DB::table('prescriptions')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->where('patient_id',$id)
+            ->count();
+        $sessions_count = DB::table('sessions_info')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->where('patient_id',$id)
+            ->count();
+        $appointments = DB::table('appointments')
+            ->join('users as t2','t2.id','=','appointments.patient_id')
+            ->where('appointments.clinic_id','=',$this->getClinic()->id)
+            ->where('appointments.patient_id','=',$id)
+            ->select('appointments.*','t2.name as patient_name','t2.phone')
+            ->orderBy('appointments.date','desc')->get();
+        $prescriptions = DB::table('prescriptions')
+            ->join('users as t2', 't2.id', '=', 'prescriptions.patient_id')
+            ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
+            ->where('prescriptions.patient_id', '=', $id)
+            ->select('prescriptions.*', 't2.name as patient_name')
+            ->orderBy('prescriptions.date', 'desc')
+            ->get();
         if ($row) {
             if (auth()->user()->hasRole(['admin', 'recep','doctor'])) {
-                return view('patients.show', compact('row','doctor'));
+                return view('patients.show', compact(
+                    'row',
+                    'doctor',
+                    'appointments',
+                    'appointments_count',
+                    'sessions_count',
+                    'prescriptions_count',
+                    'prescriptions'
+                ));
             } else {
-                toastr()->warning('You can not allowed for this route !');
+                toastr()->warning('You are not allowed for this route !');
                 return redirect()->route('patients.index');
             }
         } else {

@@ -25,9 +25,9 @@
         <!-- /.card-header -->
         <!-- form start -->
 
-        <form method="POST" action="{{route('prescriptions.update' , $row->userId)}}" enctype="multipart/form-data">
+        <form method="POST" action="{{route('prescriptions.update' , $prescription->id)}}" enctype="multipart/form-data">
             {{ method_field('put') }}
-            @include('prescriptions.form')
+            @include('prescriptions.edit_form')
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary" name="update">Submit</button>
             </div>

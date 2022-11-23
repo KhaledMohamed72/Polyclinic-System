@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Clinic;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ClinicSeeder extends Seeder
 {
@@ -15,12 +16,10 @@ class ClinicSeeder extends Seeder
      */
     public function run()
     {
-        Clinic::create([
-            'name' => 'itg',
-            'domain' => 'itg',
-            'phone' => '01128206779',
-            'active' => '1',
-            'type' => '1'
+        DB::table('super_users')->insert([
+            'name' => 'super admin',
+            'email' =>'superadmin@clinic.com',
+            'password' => bcrypt('password')
         ]);
     }
 }

@@ -181,6 +181,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+
     Route::get('/dashboard', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
     Route::resource('/doctors', \App\Http\Controllers\DoctorController::class);

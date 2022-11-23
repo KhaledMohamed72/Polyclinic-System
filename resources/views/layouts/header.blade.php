@@ -1,4 +1,15 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light" >
+@php
+    if (auth()->user()->hasRole('admin')){
+    $profile_route = route('home');
+}
+    if (auth()->user()->hasRole('doctor')){
+    $profile_route = route('doctors.show', auth()->user()->id);
+}
+    if (auth()->user()->hasRole('recep')){
+    $profile_route = route('receptionists.show', auth()->user()->id);
+}
+@endphp
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -32,6 +43,32 @@
                 <i class="far fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                <a href="{{ $profile_route }}" class="dropdown-item">
+                    <!-- Message Start -->
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 class="dropdown-item-title">
+                                <span class="text-sm text-primary"><i class="fas fa-user-circle"></i></span>
+                                {{ __('Profile') }}
+                            </h3>
+                        </div>
+                    </div>
+                    <!-- Message End -->
+                </a>
+                @if(auth()->user()->hasRole('doctor'))
+                    <a href="{{ route('schedule-create',auth()->user()->id) }}" class="dropdown-item">
+                        <!-- Message Start -->
+                        <div class="media">
+                            <div class="media-body">
+                                <h3 class="dropdown-item-title">
+                                    <span class="text-sm text-primary"><i class="fas fa-calendar-week"></i></span>
+                                    {{ __('Schedule') }}
+                                </h3>
+                            </div>
+                        </div>
+                        <!-- Message End -->
+                    </a>
+                @endif
                 <a href="{{ route('change-password') }}" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
@@ -45,7 +82,9 @@
                     <!-- Message End -->
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="dropdown-item mt-2">
+                <a href="{{ route('logout') }}"
+                   onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                   class="dropdown-item mt-2">
                     <!-- Message Start -->
                     <div class="media">
                         <div class="media-body">
@@ -71,7 +110,8 @@
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="assets/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                        <img src="assets/dist/img/user1-128x128.jpg" alt="User Avatar"
+                             class="img-size-50 mr-3 img-circle">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 Brad Diesel
@@ -87,7 +127,8 @@
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="assets/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                        <img src="assets/dist/img/user8-128x128.jpg" alt="User Avatar"
+                             class="img-size-50 img-circle mr-3">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 John Pierce
@@ -103,7 +144,8 @@
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="assets/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                        <img src="assets/dist/img/user3-128x128.jpg" alt="User Avatar"
+                             class="img-size-50 img-circle mr-3">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 Nora Silvester

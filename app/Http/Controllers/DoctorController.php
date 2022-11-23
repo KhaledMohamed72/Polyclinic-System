@@ -102,7 +102,7 @@ class DoctorController extends Controller
         }
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
-            'date' => ['required', 'string'],
+            'email' => ['required', 'string'],
             'password' => ['min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
             'password_confirmation' => ['min:8'],
             'phone' => ['required', 'numeric', 'digits:11'],
@@ -380,7 +380,7 @@ class DoctorController extends Controller
             ->where('appointments.doctor_id','=',$id)
             ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
             ->select('appointments.*','t2.name as patient_name','t2.phone')
-            ->orderBy('appointments.date','desc')->get();
+            ->orderBy('appointments.time','desc')->get();
         $prescriptions = DB::table('prescriptions')
             ->join('users as t2', 't2.id', '=', 'prescriptions.patient_id')
             ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
