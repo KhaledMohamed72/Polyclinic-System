@@ -19,7 +19,6 @@ class AppointmentController extends Controller
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->where('appointments.status','=','pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -31,7 +30,6 @@ class AppointmentController extends Controller
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.doctor_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->where('appointments.status','=','pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -43,7 +41,6 @@ class AppointmentController extends Controller
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.receptionist_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->where('appointments.status','=','pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -55,7 +52,6 @@ class AppointmentController extends Controller
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
                 ->where('clinic_id',$this->getClinic()->id)
-                ->where('status','=','pending')
                 ->select('date', DB::raw('concat(count(*), " appointments") as title'))
                 ->groupBy('date')
                 ->get();
@@ -63,7 +59,6 @@ class AppointmentController extends Controller
         // doctor
         if (auth()->user()->hasRole('doctor')) {
             $rows = DB::table('appointments')
-                ->where('status','=','pending')
                 ->where('clinic_id',$this->getClinic()->id)
                 ->where('doctor_id',auth()->user()->id)
                 ->select('date', DB::raw('concat(count(*), " appointments") as title'),)
@@ -73,7 +68,6 @@ class AppointmentController extends Controller
         // receptionist
         if (auth()->user()->hasRole('recep')) {
             $rows = DB::table('appointments')
-                ->where('status','=','pending')
                 ->where('clinic_id',$this->getClinic()->id)
                 ->where('receptionist_id',auth()->user()->id)
                 ->select('date', DB::raw('concat(count(*), " appointments") as title'),)
@@ -97,7 +91,6 @@ class AppointmentController extends Controller
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->whereDate('appointments.date', '=', $request->date)
-                ->where('appointments.status','=','pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -109,7 +102,6 @@ class AppointmentController extends Controller
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.doctor_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '=', $request->date)
-                ->where('appointments.status','=','pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -121,7 +113,6 @@ class AppointmentController extends Controller
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.receptionist_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '=', $request->date)
-                ->where('appointments.status','=','pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }

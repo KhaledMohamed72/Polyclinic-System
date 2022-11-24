@@ -58,8 +58,14 @@
                                 $('#new_list').empty();
                                 $('#no_list').empty();
                                 for (let i = 0; i < response.length; i++) {
-                                    prescription_url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
-                                    prescription_link = "<a href=" + prescription_url + " class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
+                                    if (response[i].status == 'pending') {
+                                        prescription_url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
+                                        prescription_link = "<a href=" + prescription_url + " class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
+                                    }else{
+                                        prescription_url = '';
+                                        prescription_link = '';
+
+                                    }
                                     patient_id = response[i].patient_id;
                                     patient_url = "{{route('patients.show', ':patient_id')}}";
                                     patient_url = patient_url.replace(':patient_id', patient_id);
@@ -171,12 +177,18 @@
                                             <td>{{$row->doctor_name}}</td>
                                         @endif
                                         <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                        @if($hasRoleDoctor)
-                                            <td>
+                                        <td>
+                                            @if($hasRoleDoctor)
+                                                <a href="{{route('patients.show',$row->patient_id) . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                                   class="btn btn-primary btn-sm" title="Patient Profile"><i
+                                                        class="fas fa-eye"></i></a>
+                                            @endif
+                                            @if($hasRoleDoctor && $row->status == 'pending')
                                                 <a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
                                                    class="btn btn-info btn-sm" title="create prescription"><i
-                                                        class="fas fa-file"></i></a></td>
-                                        @endif
+                                                        class="fas fa-file"></i></a>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -236,15 +248,19 @@
                                         <td>{{$row->doctor_name}}</td>
                                     @endif
                                     <td>{{date("g:i a", strtotime($row->time))}}</td>
-                                    @if($hasRoleDoctor)
-                                        <td>
+                                    <td>
+                                        @if($hasRoleDoctor)
                                             <a href="{{route('patients.show',$row->patient_id) . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
                                                class="btn btn-primary btn-sm" title="Patient Profile"><i
                                                     class="fas fa-eye"></i></a>
+                                        @endif
+                                        @if($hasRoleDoctor && $row->status == 'pending')
                                             <a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
                                                class="btn btn-info btn-sm" title="create prescription"><i
-                                                    class="fas fa-file"></i></a></td>
-                                    @endif
+                                                    class="fas fa-file"></i></a>
+                                        @endif
+                                    </td>
+
                                 </tr>
                                 @endforeach
                                 </tr>
