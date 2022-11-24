@@ -94,7 +94,7 @@ class PrescriptionController extends Controller
         $this->validate($request, [
             'type' => ['required', 'integer'],
             'patient' => ['required', 'integer'],
-            'date' => ['required', 'string'],
+            'date' => ['required', 'date'],
         ]);
 
         // function to insert a new medicines or tests to suggest it later when go to create new prescriptions

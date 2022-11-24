@@ -159,7 +159,7 @@
             <textarea id="summernote" name="{{$input}}">
 
               </textarea>
-            @error($input)<span class="invalid-feedback"
+            @error($input)<span class="badge badge-danger"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
         @php $input = 'image' @endphp

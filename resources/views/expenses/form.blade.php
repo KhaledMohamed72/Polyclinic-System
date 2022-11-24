@@ -70,7 +70,7 @@
         <div class="col-md-6">
             <label for="exampleInput{{$input}}">Note</label>
             <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note" spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
-            @error($input)<span class="invalid-feedback"
+            @error($input)<span class="badge badge-danger"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>

@@ -475,7 +475,7 @@ class DoctorController extends Controller
 
         if ($updateSchedule) {
             toastr()->success('Successfully Updated');
-            return redirect()->route('doctors.index');
+            return redirect()->route('home');
         }
     }
 }

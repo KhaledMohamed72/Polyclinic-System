@@ -34,18 +34,21 @@
             @error($input)<span style="color: red;font-size: smaller"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
+        @php $input = 'date'; @endphp
         <div class="col-md-6 form-group">
             <label class="control-label">Appointment <span
                     class="text-danger">*</span></label>
             <select
                 class="form-control select2 sel_appointment "
-                name="date" id="appointment">
+                name="{{$input}}" id="appointment">
                 @if(isset(request()->patient_id))
                     <option value="{{request()->date}}">{{request()->date}}</option>
                 @else
                     <option disabled selected>Select Appointment</option>
                 @endif
             </select>
+            @error($input)<span class="badge badge-danger"
+                                role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
     </div>
 
@@ -215,7 +218,7 @@
             <label for="exampleInput{{$input}}">Note</label>
             <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note"
                       spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
-            @error($input)<span class="invalid-feedback"
+            @error($input)<span class="badge badge-danger"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
     </div>
