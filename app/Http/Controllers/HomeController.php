@@ -49,14 +49,17 @@ class HomeController extends Controller
         $revenue = $total_prescriptions_sum + $total_incomes_sum + $total_sessions_sum;
         $appointments = DB::table('appointments')
             ->join('users as t2', 't2.id', '=', 'appointments.patient_id')
+            ->join('users as t3', 't3.id', '=', 'appointments.doctor_id')
             ->where('appointments.clinic_id', '=', $this->getClinic()->id)
             ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-            ->select('appointments.*', 't2.name as patient_name', 't2.phone')
+            ->select('appointments.*', 't2.name as patient_name', 't2.phone','t3.name as doctor_name')
             ->orderBy('appointments.date', 'desc')->get();
+
         $prescriptions = DB::table('prescriptions')
             ->join('users as t2', 't2.id', '=', 'prescriptions.patient_id')
+            ->join('users as t3', 't3.id', '=', 'prescriptions.doctor_id')
             ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
-            ->select('prescriptions.*', 't2.name as patient_name')
+            ->select('prescriptions.*', 't2.name as patient_name','t3.name as doctor_name')
             ->orderBy('prescriptions.date', 'desc')
             ->get();
         $last_month_prescriptions_sum = DB::table('prescriptions')

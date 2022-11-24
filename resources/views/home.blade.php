@@ -193,7 +193,8 @@
                                                     <thead>
                                                     <tr>
                                                         <th>ID</th>
-                                                        <th>Patient Name</th>
+                                                        <th>Patient</th>
+                                                        <th>Doctor</th>
                                                         <th>Phone</th>
                                                         <th>Date</th>
                                                         <th>time</th>
@@ -206,6 +207,7 @@
                                                         <tr>
                                                             <td>{{$row->id}}</td>
                                                             <td>{{$row->patient_name}}</td>
+                                                            <td>{{$row->doctor_name}}</td>
                                                             <td>{{$row->phone}}</td>
                                                             <td>{{$row->date}}</td>
                                                             <td>{{date("g:i A", strtotime($row->time))}}</td>
@@ -261,6 +263,7 @@
                                                     <tr>
                                                         <th>ID</th>
                                                         <th>Patient</th>
+                                                        <th>Doctor</th>
                                                         <th>Date</th>
                                                         <th>Time</th>
                                                         <th>action</th>
@@ -271,6 +274,7 @@
                                                         <tr>
                                                             <td>{{$row->id}}</td>
                                                             <td>{{$row->patient_name}}</td>
+                                                            <td>{{$row->doctor_name}}</td>
                                                             <td>{{date('Y-m-d',strtotime($row->created_at))}}</td>
                                                             <td>{{date('h:i a',strtotime($row->created_at))}}</td>
                                                             <td class="project-actions text-left">
