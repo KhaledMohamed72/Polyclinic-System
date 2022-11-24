@@ -334,7 +334,7 @@ class PrescriptionController extends Controller
                     ->where('prescription_medicines.prescription_id', $id)
                     ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
                     ->select('prescription_medicines.name as medicine_name'
-                        , 'frequency_types.ar_name as frequency_name',
+                        ,'frequency_types.ar_name as frequency_name',
                     )->get();
             }
             if ($medicine->period_type_id != null && $medicine->frequency_type_id == null) {

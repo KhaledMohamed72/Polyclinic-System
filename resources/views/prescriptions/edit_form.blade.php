@@ -6,13 +6,14 @@
                     class="text-danger">*</span></label>
             @php $input = 'examination'; @endphp
             <div class="col-sm-3 form-check form-check-inline" style="margin-left: 10%">
-                <input class="form-check-input" type="radio" name="type" id="chkYes" onclick="ShowHideDiv()" checked
-                       value="0">
+                <input class="form-check-input" type="radio" name="type" id="chkYes" onclick="ShowHideDiv()"
+                       {{isset($prescription) && $prescription->type == 0 ? 'checked' : ''}} value="0">
                 <label class="form-check-label" for="chkYes">Examination</label>
             </div>
             @php $input = 'followup'; @endphp
             <div class="col-sm-3 form-check form-check-inline ml-4">
-                <input class="form-check-input" type="radio" name="type" id="chkNo" onclick="ShowHideDiv()" value="1">
+                <input class="form-check-input" type="radio" name="type" id="chkNo" onclick="ShowHideDiv()"
+                       {{isset($prescription) && $prescription->type == 1 ? 'checked' : ''}} value="1">
                 <label class="form-check-label" for="chkNo">Followup</label>
             </div>
         </div>
@@ -27,21 +28,26 @@
                 name="{{$input}}" id="patient">
                 <option disabled selected>Select Patient</option>
                 @foreach($patients as $patient)
-                    <option value="{{$patient->user_id}}" {{ $patient->id == $prescription->patient_id ? 'selected' : ''}}>
+                    <option value="{{$patient->user_id}}"
+                        {{ isset($prescription) && $prescription->patient_id ==  $patient->user_id ? 'selected' : ''}}>
                         {{$patient->user_name}}</option>
                 @endforeach
             </select>
             @error($input)<span style="color: red;font-size: smaller"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
+        @php $input = 'date'; @endphp
         <div class="col-md-6 form-group">
             <label class="control-label">Appointment <span
                     class="text-danger">*</span></label>
             <select
                 class="form-control select2 sel_appointment "
-                name="date" id="appointment">
+                name="{{$input}}" id="appointment">
                 <option disabled selected>Select Appointment</option>
+                <option value="{{$prescription->date}}" selected>{{{$prescription->date}}}</option>
             </select>
+            @error($input)<span class="badge badge-danger"
+                                role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>
     </div>
 
@@ -69,8 +75,7 @@
                                 name="{{$input}}" id="frequency">
                                 <option disabled selected>Frequency</option>
                                 @foreach($frequencies as $frequency)
-                                    <option
-                                        value="{{$frequency->id}}" {{ old($input) == $frequency->name ? 'selected' : ''}}>
+                                    <option value="{{$frequency->id}}" {{ old($input) == $frequency->name ? 'selected' : ''}}>
                                         {{$frequency->name}}</option>
                                 @endforeach
                             </select>
@@ -89,8 +94,8 @@
                         </div>
                         @php $input = 'note'; @endphp
                         <div class="col-sm-4 mt-1">
-                                                    <textarea type="text" name="{{$input}}" class="form-control"
-                                                              placeholder="Notes..."></textarea>
+                                            <textarea type="text" name="{{$input}}" class="form-control"
+                                                      placeholder="Notes..."></textarea>
                         </div>
                         <div class="col-sm-1">
                             <input data-repeater-delete type="button"
@@ -99,9 +104,9 @@
                         </div>
                     </div>
                 </div>
-                <input data-repeater-create type="button" class="btn btn-success"
-                       value="Add Medicine"/>
             </div>
+            <input data-repeater-create type="button" class="btn btn-success"
+                   value="Add Medicine"/>
         </div>
     </div>
     <div class="row">
@@ -179,8 +184,8 @@
                             </datalist>
                         </div>
                         <div class="col-sm-5 mt-1">
-                                                    <textarea type="text" name="note" class="form-control"
-                                                              placeholder="Notes..."></textarea>
+                                            <textarea type="text" name="note" class="form-control"
+                                                      placeholder="Notes..."></textarea>
                         </div>
                         <div class="col-sm-1">
                             <input data-repeater-delete type="button"
