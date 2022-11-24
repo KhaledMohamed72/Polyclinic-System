@@ -60,7 +60,7 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.status', '=', 'pending')
+                ->where('appointments.status', '=', 'pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -70,8 +70,8 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.doctor_id', '=', auth()->user()->id)
-                ->whereDate('appointments.status', '=', 'pending')
+                ->where('appointments.doctor_id', '=', auth()->user()->id)
+                ->where('appointments.status', '=', 'pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -81,8 +81,8 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.receptionist_id', '=', auth()->user()->id)
-                ->whereDate('appointments.status', '=', 'pending')
+                ->where('appointments.receptionist_id', '=', auth()->user()->id)
+                ->where('appointments.status', '=', 'pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -143,7 +143,7 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.status', '=', 'complete')
+                ->where('appointments.status', '=', 'complete')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -153,8 +153,8 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.doctor_id', '=', auth()->user()->id)
-                ->whereDate('appointments.status', '=', 'complete')
+                ->where('appointments.doctor_id', '=', auth()->user()->id)
+                ->where('appointments.status', '=', 'complete')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -164,8 +164,8 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.receptionist_id', '=', auth()->user()->id)
-                ->whereDate('appointments.status', '=', 'complete')
+                ->where('appointments.receptionist_id', '=', auth()->user()->id)
+                ->where('appointments.status', '=', 'complete')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -184,7 +184,7 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.status', '=', 'cancel')
+                ->where('appointments.status', '=', 'cancel')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -194,8 +194,8 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.doctor_id', '=', auth()->user()->id)
-                ->whereDate('appointments.status', '=', 'cancel')
+                ->where('appointments.doctor_id', '=', auth()->user()->id)
+                ->where('appointments.status', '=', 'cancel')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -205,8 +205,8 @@ class AppointmentListController extends Controller
                 ->join('users as t1','t1.id','=','appointments.doctor_id')
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.receptionist_id', '=', auth()->user()->id)
-                ->whereDate('appointments.status', '=', 'cancel')
+                ->where('appointments.receptionist_id', '=', auth()->user()->id)
+                ->where('appointments.status', '=', 'cancel')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
