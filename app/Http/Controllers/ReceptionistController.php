@@ -228,6 +228,63 @@ class ReceptionistController extends Controller
             ->where('users.id', '=', $id)
             ->select('users.*')
             ->first();
+        $doctors = DB::table('users')
+            ->join('doctors', 'doctors.user_id', '=', 'users.id')
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
+            ->where('doctors.receptionist_id', '=', $id)
+            ->select('users.*')
+            ->get();
+
+        $appointments_count = DB::table('appointments')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->where('receptionist_id',$id)
+            ->count();
+        $prescriptions_count = DB::table('prescriptions')
+            ->join('doctors','doctors.user_id','=','prescriptions.doctor_id')
+            ->where('doctors.receptionist_id',$id)
+            ->where('prescriptions.clinic_id',$this->getClinic()->id)
+            ->count();
+        $sessions_count = DB::table('sessions_info')
+            ->join('doctors','doctors.user_id','=','sessions_info.doctor_id')
+            ->where('doctors.receptionist_id',$id)
+            ->where('sessions_info.clinic_id',$this->getClinic()->id)
+            ->count();
+        $appointments = DB::table('appointments')
+            ->join('users as t2','t2.id','=','appointments.patient_id')
+            ->join('users as t1','t1.id','=','appointments.doctor_id')
+            ->where('appointments.clinic_id','=',$this->getClinic()->id)
+            ->select('appointments.*','t2.name as patient_name','t2.phone','t1.name as doctor_name')
+            ->orderBy('appointments.date','desc')->get();
+
+        $prescriptions = DB::table('prescriptions')
+            ->join('users as t1', 't1.id', '=', 'prescriptions.patient_id')
+            ->join('patients as t2','t2.user_id','=','t1.id')
+            ->join('doctors as t3', 't3.user_id', '=', 't2.doctor_id')
+            ->where('t3.receptionist_id','=',$id)
+            ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
+            ->select('prescriptions.*', 't1.name as patient_name')
+            ->orderBy('prescriptions.date', 'desc')
+            ->get();
+
+        if ($row) {
+            if (auth()->user()->hasRole(['admin', 'recep','doctor'])) {
+                return view('receptionists.show', compact(
+                    'row',
+                    'doctors',
+                    'appointments',
+                    'appointments_count',
+                    'sessions_count',
+                    'prescriptions_count',
+                    'prescriptions'
+                ));
+            } else {
+                toastr()->warning('You are not allowed for this route !');
+                return redirect()->route('patients.index');
+            }
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('patients.index');
+        }
 
         if ($row) {
             if(auth()->user()->hasRole('admin')) {

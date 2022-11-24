@@ -139,15 +139,15 @@
                                 <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
                                    href="#custom-content-below-appointment" role="tab"
                                    aria-controls="custom-content-below-appointment" aria-selected="true">
-                                    <span><i class="fa fa-user"></i></span>&ensp;&ensp;
+                                    <span><i class="fa fa-user-plus"></i></span>&ensp;&ensp;
                                 </a>
                             </li>
-                            &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-content-below-prescription-tab" data-toggle="pill"
                                    href="#custom-content-below-prescription" role="tab"
                                    aria-controls="custom-content-below-prescription" aria-selected="false">
-                                    &ensp;&ensp;<span><i class="fa fa-envelope"></i></span>&ensp;&ensp;
+                                    &ensp;&ensp;<span><i class="fa fa-file"></i></span>&ensp;&ensp;
                                 </a>
                             </li>
                             {{--                            <li class="nav-item">
