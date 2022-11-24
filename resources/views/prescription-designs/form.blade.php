@@ -19,7 +19,12 @@
         </div>
     </div>
     @else
-        <input type="hidden" value="{{$doctorsWithNoPrescription->id}}" name="has_one_doctor_id">
+        @if(auth()->user()->hasRole('admin'))
+            <input type="hidden" value="{{$doctorsWithNoPrescription[0]->doctor_id}}" name="has_one_doctor_id">
+        @endif
+        @if(auth()->user()->hasRole('doctor'))
+            <input type="hidden" value="{{$doctorsWithNoPrescription->doctor_id}}" name="has_one_doctor_id">
+        @endif
     @endif
     <div class="row">
         @php $input = 'header' @endphp

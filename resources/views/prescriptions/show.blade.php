@@ -24,9 +24,9 @@
                     <div class="invoice-title">
                         <strong class="float-right font-size-16">Prescription #{{$prescription->id}}</strong>
 
-                            <img src="{{asset('assets/dist/img/pulpo-logo.jpg')}}" alt="logo"
-                                 height="30"/>
-                            <small>PULPO CLINIC</small>
+                        <img src="{{asset('assets/dist/img/pulpo-logo.jpg')}}" alt="logo"
+                             height="30"/>
+                        <small>PULPO CLINIC</small>
 
                     </div>
                     <hr>
@@ -49,7 +49,7 @@
 
                         </div>
                         <div class="col-6">
-                            {!! $prescription_design->header !!}
+                            {!! $prescription_design->header ?? '' !!}
                         </div>
                     </div>
                     @if(!$medicines->isEmpty())
@@ -119,7 +119,7 @@
                     @endif
                     <hr>
                     <div class="row">
-                        {!! $prescription_design->footer !!}
+                        {!! $prescription_design->footer ?? '' !!}
                     </div>
                 </div>
             </div>
