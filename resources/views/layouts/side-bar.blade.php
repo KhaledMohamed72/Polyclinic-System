@@ -58,7 +58,7 @@
                     </a>
                 </li>
                 @ability('admin,recep','')
-                <li class="nav-item">
+                <li class="nav-item {{ (request()->routeIS('doctors.*')) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ (request()->routeIS('doctors.*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-md"></i>
                         <p>
@@ -68,14 +68,16 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route('doctors.index')}}" class="nav-link">
+                            <a href="{{route('doctors.index')}}"
+                               class="nav-link {{ (request()->routeIS('doctors.index')) ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Doctors List</p>
                             </a>
                         </li>
                         @role('admin')
                         <li class="nav-item">
-                            <a href="{{route('doctors.create')}}" class="nav-link">
+                            <a href="{{route('doctors.create')}}"
+                               class="nav-link {{ (request()->routeIS('doctors.create')) ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add New Doctor</p>
                             </a>
@@ -86,7 +88,7 @@
                 @endability
 
                 @if($user->hasRole('admin'))
-                    <li class="nav-item">
+                    <li class="nav-item {{ (request()->routeIS('receptionists.*')) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ (request()->routeIs('receptionists.*')) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
@@ -96,13 +98,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('receptionists.index')}}" class="nav-link">
+                                <a href="{{route('receptionists.index')}}"
+                                   class="nav-link {{ (request()->routeIs('receptionists.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Receptionists List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('receptionists.create')}}" class="nav-link">
+                                <a href="{{route('receptionists.create')}}"
+                                   class="nav-link {{ (request()->routeIs('receptionists.create')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Add Receptionist</p>
                                 </a>
@@ -112,7 +116,7 @@
                 @endif
 
                 @if($user->hasRole(['admin','recep','doctor']))
-                    <li class="nav-item">
+                    <li class="nav-item {{ (request()->routeIS('patients.*')) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ (request()->routeIs('patients.*')) ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user-plus"></i>
                             <p>
@@ -122,13 +126,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('patients.index')}}" class="nav-link">
+                                <a href="{{route('patients.index')}}"
+                                   class="nav-link {{ (request()->routeIS('patients.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Patients List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('patients.create')}}" class="nav-link">
+                                <a href="{{route('patients.create')}}"
+                                   class="nav-link {{ (request()->routeIS('patients.create')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Add New Patient</p>
                                 </a>
@@ -146,7 +152,7 @@
                     </li>
                 @endif
 
-                <li class="nav-item">
+                <li class="nav-item {{ (request()->routeIS('prescriptions.*')) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ (request()->routeIs('prescriptions.*')) ? 'active' : '' }}">
                         <span class="nav-icon material-icons">edit_document</span>
                         <p>
@@ -157,7 +163,7 @@
                     <ul class="nav nav-treeview">
                         @if($user->hasRole(['admin','doctor']))
                             <li class="nav-item">
-                                <a href="{{route('prescriptions.index')}}" class="nav-link">
+                                <a href="{{route('prescriptions.index')}}" class="nav-link {{ (request()->routeIs('prescriptions.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Prescriptions List</p>
                                 </a>
@@ -165,7 +171,7 @@
                         @endif
                         @if($user->hasRole('doctor'))
                             <li class="nav-item">
-                                <a href="{{route('prescriptions.create')}}" class="nav-link">
+                                <a href="{{route('prescriptions.create')}}" class="nav-link {{ (request()->routeIs('prescriptions.create')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Create Prescription</p>
                                 </a>
@@ -174,7 +180,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ (request()->routeIs('prescriptionss.*')) ? 'active' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->routeIs('sessions.*')) ? 'active' : '' }}">
                         <span class="nav-icon material-icons">settings_accessibility</span>
                         <p>
                             Sessions
@@ -183,14 +189,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route('sessions.index')}}" class="nav-link">
+                            <a href="{{route('sessions.index')}}" class="nav-link {{ (request()->routeIs('sessions.index')) ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sessions List</p>
                             </a>
                         </li>
                         @if($user->hasRole('doctor'))
                             <li class="nav-item">
-                                <a href="{{route('sessions.create')}}" class="nav-link">
+                                <a href="{{route('sessions.create')}}" class="nav-link {{ (request()->routeIs('sessions.create')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Create Session</p>
                                 </a>
@@ -198,29 +204,6 @@
                         @endif
                     </ul>
                 </li>
-{{--                <li class="nav-item">
-                    <a href="#" class="nav-link {{ (request()->routeIs('invoices.*')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-receipt"></i>
-                        <p>
-                            Invoices
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('patients.index')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Invoices List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('patients.create')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add New Invoice</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>--}}
                 @if($user->hasRole('admin'))
                     <li class="nav-item">
                         <a href="{{route('incomes.index')}}"
@@ -241,7 +224,7 @@
                         </a>
                     </li>
                 @endif
-                <li class="nav-item">
+                <li class="nav-item {{ Request::segment(1) === 'settings' ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Request::segment(1) === 'settings' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
@@ -252,13 +235,13 @@
                     <ul class="nav nav-treeview">
                         @if($user->hasRole('admin'))
                             <li class="nav-item">
-                                <a href="{{route('expense-types.index')}}" class="nav-link">
+                                <a href="{{route('expense-types.index')}}" class="nav-link {{ (request()->routeIs('expense-types.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Expense Types</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('income-types.index')}}" class="nav-link">
+                                <a href="{{route('income-types.index')}}" class="nav-link {{ (request()->routeIs('income-types.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Income Types</p>
                                 </a>
@@ -266,32 +249,32 @@
                         @endif
                         @if($user->hasRole('doctor'))
                             <li class="nav-item">
-                                <a href="{{route('formulas.index')}}" class="nav-link">
+                                <a href="{{route('formulas.index')}}" class="nav-link {{ (request()->routeIs('formulas.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Formulas</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('frequency-types.index')}}" class="nav-link">
+                                <a href="{{route('frequency-types.index')}}" class="nav-link {{ (request()->routeIs('frequency-types.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Frequency Types</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('period-types.index')}}" class="nav-link">
+                                <a href="{{route('period-types.index')}}" class="nav-link {{ (request()->routeIs('period-types.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Period Types</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('session-types.index')}}" class="nav-link">
+                                <a href="{{route('session-types.index')}}" class="nav-link {{ (request()->routeIs('session-types.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Session Types</p>
                                 </a>
                             </li>
                         @endif
                         <li class="nav-item">
-                            <a href="{{route('prescription-designs.index')}}" class="nav-link">
+                            <a href="{{route('prescription-designs.index')}}" class="nav-link {{ (request()->routeIs('prescription-designs.index')) ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Prescription Design</p>
                             </a>
