@@ -226,5 +226,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     // calender
     Route::get('/appointment/get-all-appointments', [\App\Http\Controllers\AppointmentController::class, 'get_all_appointments'])->name('get-all-appointments');
     Route::get('/appointment/get-appointments-per-date', [\App\Http\Controllers\AppointmentController::class, 'get_appointments_per_date']);
+    // download prescription as pdf
+    Route::get('/prescription/download-as-pdf/{id}', [\App\Http\Controllers\PrescriptionController::class, 'pdf_prescription'])->name('prescription-pdf');
 
 });

@@ -209,9 +209,11 @@ class DoctorController extends Controller
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
-        if ($request->hasFile('image') && (isset($request->password) && $request->password != "")) {
-            if (!empty($row->profile_photo_path)) {
-                unlink(public_path('images/users/' . $row->profile_photo_path));
+
+            if (!empty($row->profile_photo_path) && file_exists(public_path('images/users/' . $row->profile_photo_path))) {
+                if ($request->hasFile('image') && $request->file('image')){
+                    unlink(public_path('images/users/' . $row->profile_photo_path));
+                }
             }
             $user = DB::table('users')
                 ->where('id', '=', $id)
@@ -219,54 +221,12 @@ class DoctorController extends Controller
                 ->update([
                     'name' => $request->name,
                     'email' => $request->email,
-                    'password' => Hash::make($request->password),
+                    'password' =>  ($request->password != '' ? Hash::make($request->password) : $row->password),
                     'phone' => $request->phone,
-                    'profile_photo_path' => $this->storeImage($request),
-                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'profile_photo_path' =>  ($request->hasFile('image') && $request->file('image') != '' ? $this->storeImage($request) : $row->profile_photo_path),
                     'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
                 ]);
-        }
-        if (!$request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')
-                ->where('id', '=', $id)
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                ]);
-        }
-        if ($request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
-            if (!empty($row->profile_photo_path)) {
-                unlink(public_path('images/users/' . $row->profile_photo_path));
-            }
-            $user = DB::table('users')
-                ->where('id', '=', $id)
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                    'profile_photo_path' => $this->storeImage($request),
-                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                ]);
-        }
-        if (!$request->hasFile('image') && (isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')
-                ->where('id', '=', $id)
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'phone' => $request->phone,
-                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                ]);
-        }
+
         $doctor = DB::table('doctors')
             ->where('user_id', '=', $id)
             ->where('doctors.clinic_id', '=', $this->getClinic()->id)

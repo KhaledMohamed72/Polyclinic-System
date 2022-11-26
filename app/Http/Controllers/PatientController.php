@@ -106,7 +106,7 @@ class PatientController extends Controller
             'pulse' => ['nullable', 'numeric'],
             'allergy' => ['nullable', 'string', 'max:191'],
         ]);
-        // patient email not required so i have to escape this because DB does'nt accept this
+        // patient email not required so i have to escape this because DB doesn't accept this
 
         if (empty($request->email)) {
             $request->email = 'patient' . time() . '' . random_int(100,100000) . '@gmail.com';
@@ -244,7 +244,7 @@ class PatientController extends Controller
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->update([
                 'name' => $request->name,
-                'email' => $request->email,
+                'email' => $row->email,
                 'phone' => $request->phone,
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
@@ -279,20 +279,6 @@ class PatientController extends Controller
             )
         );
 
-/*        $patient = DB::statement('update `patients` set
-                      doctor_id = ' .$doctor_id. ',
-                      receptionist_id = ' .$receptionist_id. ',
-                      gender = ' .$request->gender. ',
-                      age = ' .$request->age. ',
-                      address = ' . $request->address. ',
-                      height = ' .$request->height. ',
-                      weight = ' .$request->weight. ',
-                      blood_group = ' .$request->blood_group. ',
-                      blood_pressure = ' .$request->blood_pressure. ',
-                      pulse = ' .$request->pulse. ',
-                      allergy = ' .$request->allergy. '
-                      where id = ' .$id. '
-                    ');*/
 
         if ($user && $patient) {
             toastr()->success('Successfully Updated');

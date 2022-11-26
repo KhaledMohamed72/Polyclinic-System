@@ -36,43 +36,7 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
-        @php $input = 'email' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Email</label>
-                <input type="email" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    {{--    <div class="row">
-            @php $input = 'password' @endphp
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="exampleInput{{$input}}">Password</label>
-                    <input type="password" name="{{$input}}"
-                           class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                           placeholder="Enter {{$input}}">
-                    @error($input)<span class="invalid-feedback"
-                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
-                </div>
-            </div>
-            @php $input = 'password_confirmation' @endphp
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="exampleInput{{$input}}">Confirm Password</label>
-                    <input type="password" name="{{$input}}"
-                           class="form-control" id="exampleInput{{$input}}"
-                           placeholder="Confirm your password">
-                    @error('password_confirmation')<span class="invalid-feedback"
-                                                         role="alert"><strong>{{ $message }}</strong></span>@enderror
-                </div>
-            </div>
-        </div>--}}
-    <div class="row">
+
         @php $input = 'phone' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -84,6 +48,8 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
+    </div>
+    <div class="row">
         @php $input = 'gender' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -97,8 +63,6 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
-    </div>
-    <div class="row">
         @php $input = 'age' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -110,6 +74,8 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
+    </div>
+    <div class="row">
         @php $input = 'address' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -121,8 +87,7 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
-    </div>
-    <div class="row">
+
         @php $input = 'height' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -134,6 +99,8 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
+    </div>
+    <div class="row">
         @php $input = 'weight' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -145,8 +112,7 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
-    </div>
-    <div class="row">
+
         @php $input = 'blood_group' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -166,6 +132,8 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
+    </div>
+    <div class="row">
         @php $input = 'blood_pressure' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -177,8 +145,6 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
-    </div>
-    <div class="row">
         @php $input = 'pulse' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -190,6 +156,8 @@
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
+    </div>
+    <div class="row">
         @php $input = 'allergy' @endphp
         <div class="col-md-6">
             <div class="form-group">

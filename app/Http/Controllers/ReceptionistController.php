@@ -141,62 +141,23 @@ class ReceptionistController extends Controller
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
-        if ($request->hasFile('image') && (isset($request->password) && $request->password != "")) {
-            if (!empty($row->profile_photo_path)){
-                unlink(public_path('images/users/'.$row->profile_photo_path));
+        if (!empty($row->profile_photo_path) && file_exists(public_path('images/users/' . $row->profile_photo_path))) {
+            if ($request->hasFile('image') && $request->file('image')){
+                unlink(public_path('images/users/' . $row->profile_photo_path));
             }
-            $user = DB::table('users')->where('id','=',$id)->update([
+        }
+        $user = DB::table('users')
+            ->where('id', '=', $id)
+            ->where('users.clinic_id', '=', $this->getClinic()->id)
+            ->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' =>  ($request->password != '' ? Hash::make($request->password) : $row->password),
                 'phone' => $request->phone,
-                'profile_photo_path' => $this->storeImage($request),
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'profile_photo_path' =>  ($request->hasFile('image') && $request->file('image') != '' ? $this->storeImage($request) : $row->profile_photo_path),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
-        }
-        if (!$request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->where('id','=',$id)->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                ]);
-        }
-        if ($request->hasFile('image') && !(isset($request->password) && $request->password != "")) {
-            if (!empty($row->profile_photo_path)){
-                unlink(public_path('images/users/'.$row->profile_photo_path));
-            }
-            $user = DB::table('users')->where('id','=',$id)->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'profile_photo_path' => $this->storeImage($request),
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
-        }
-        if (!$request->hasFile('image') && (isset($request->password) && $request->password != "")) {
-            $user = DB::table('users')->where('id','=',$id)->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'phone' => $request->phone,
-                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
-        }
 
-        // this commit code below for future updating attributes in receptionists table
-/*        $receptionist = DB::table('receptionists')->where('user_id','=',$id)->update([
-            'title' => $request->title,
-            'degree' => $request->degree,
-            'specialist' => $request->specialist,
-            'slot_time' => $request->slot_time,
-            'fees' => $request->fees,
-            'bio' => $request->bio,
-        ]);*/
         if ($user){
             toastr()->success('Successfully Updated');
             return redirect()->route('receptionists.index');
@@ -252,6 +213,8 @@ class ReceptionistController extends Controller
         $appointments = DB::table('appointments')
             ->join('users as t2','t2.id','=','appointments.patient_id')
             ->join('users as t1','t1.id','=','appointments.doctor_id')
+            ->join('doctors as t3', 't3.user_id', '=', 't2.id')
+            ->where('t3.receptionist_id','=',$id)
             ->where('appointments.clinic_id','=',$this->getClinic()->id)
             ->select('appointments.*','t2.name as patient_name','t2.phone','t1.name as doctor_name')
             ->orderBy('appointments.date','desc')->get();

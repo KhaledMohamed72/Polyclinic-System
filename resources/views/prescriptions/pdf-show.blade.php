@@ -1,58 +1,29 @@
-@extends('layouts.app')
+@extends('layouts.pdf-app')
 @section('styles')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 @endsection
-@section('title')   PRESCRIPTION DETAILS    @endsection
-@section('header-title')    PRESCRIPTION DETAILS    @endsection
-@section('header-title-one')    PRESCRIPTIONS     @endsection
-@section('header-title-two')    PRESCRIPTION DETAILS   @endsection
 
 @section('content')
-    <div class="row d-print-none">
-        <div class="col-12 text-center">
-            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mb-4 ml-3" title="Print">
-                <i class="fa fa-print"></i>
-            </a>
-            <a href="{{route('prescription-pdf',$prescription->id)}}" class="btn btn-warning waves-effect waves-light mb-4" title="Print">
-                <i class="fa fa-file-pdf"></i>
-            </a>
-        </div>
-    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="invoice-title">
-                        <strong class="float-right font-size-16">Prescription #{{$prescription->id}}</strong>
-
-                        <img src="{{asset('assets/dist/img/pulpo-logo.jpg')}}" alt="logo"
-                             height="30"/>
-                        <small>PULPO CLINIC</small>
-
-                    </div>
-                    <hr>
                     <div class="row">
                         <div class="col-4 text-center">
                             <address>
-                                <strong>المريض</strong>
+                                <strong>Patient</strong>
                                 <div>
-                                    <span>{{$patient->name}}</span><strong> : الاسم </strong>
+                                    <strong> Name: </strong><span>{{$patient->name}}</span>
                                 </div>
                                 <div>
-                                    <span>{{$prescription->date}}</span><strong> : التاريخ </strong>
+                                    <strong>  Date: </strong> <span>{{$prescription->date}}</span>
                                 </div>
                                 <div>
-                                    <span>{{$patient->address}}</span><strong> : العنوان </strong>
+                                    <strong> Address: </strong><span>{{$patient->address}}</span>
                                 </div>
                             </address>
-                        </div>
-                        <div class="col-2">
-
-                        </div>
-                        <div class="col-6">
-                            {!! $prescription_design->header ?? '' !!}
                         </div>
                     </div>
                     @if(!$medicines->isEmpty())
@@ -66,8 +37,8 @@
                                         <tbody>
                                         @foreach($medicines as $row)
                                             <tr>
-                                                <td>{{$row->medicine_name}}</td>
-                                                <td>{{$row->frequency_name ?? ''}}</td>
+                                                <td>{{$row->medicine_name}}</td><d style="padding-left:3em;" > </d>
+                                                <td>{{$row->frequency_name ?? ''}}</td><d style="padding-left:3em;" > </d>
                                                 <td>{{$row->period_name ?? ''}}</td>
                                             </tr>
                                         @endforeach
@@ -88,7 +59,7 @@
                                         <tbody>
                                         @foreach($tests as $row)
                                             <tr>
-                                                <td>{{$row->name}}</td>
+                                                <td>{{$row->name}}</td><d style="padding-left:3em;" > </d>
                                                 <td>{{$row->note}}</td>
                                             </tr>
                                         @endforeach
@@ -109,8 +80,8 @@
                                         <tbody>
                                         @foreach($formulas as $row)
                                             <tr>
-                                                <td>{{$row->formula_name}}</td>
-                                                <td>{{$row->frequency_name ?? ''}}</td>
+                                                <td>{{$row->formula_name}}</td><d style="padding-left:3em;" > </d>
+                                                <td>{{$row->frequency_name ?? ''}}</td><d style="padding-left:3em;" > </d>
                                                 <td>{{$row->period_name ?? ''}}</td>
                                             </tr>
                                         @endforeach
@@ -120,20 +91,6 @@
                             </div>
                         </div>
                     @endif
-                    <hr>
-                    <div class="row">
-                        {!! $prescription_design->footer ?? '' !!}
-                    </div>
-                    <div class="row d-print-none">
-                        <div class="col-12 text-center">
-                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mb-4 ml-3" title="Print">
-                                <i class="fa fa-print"></i>
-                            </a>
-                            <a href="{{route('prescription-pdf',$prescription->id)}}" class="btn btn-warning waves-effect waves-light mb-4" title="Print">
-                                <i class="fa fa-file-pdf"></i>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
