@@ -370,6 +370,40 @@ class DoctorController extends Controller
             ->groupBy('month')
             ->orderBy('month')
             ->get();
+        $current_month_prescriptions_sum = DB::table('prescriptions')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_id', '=', auth()->user()->id)
+            ->whereMonth('date', '=', Carbon::now()->format('m'))
+            ->sum('fees');
+        $current_month_incomes_sum = DB::table('incomes')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_id', '=', auth()->user()->id)
+            ->whereMonth('date', '=', Carbon::now()->format('m'))
+            ->sum('amount');
+        $current_month_sessions_sum = DB::table('sessions_info')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_id', '=', auth()->user()->id)
+            ->whereMonth('date', '=', Carbon::now()->format('m'))
+            ->sum('fees');
+        $current_monthly_earrings = $current_month_prescriptions_sum + $current_month_incomes_sum + $current_month_sessions_sum;
+
+        $last_month_prescriptions_sum = DB::table('prescriptions')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_id', '=', auth()->user()->id)
+            ->whereMonth('date', '=', Carbon::now()->format('m') - 1)
+            ->sum('fees');
+        $last_month_incomes_sum = DB::table('incomes')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_id', '=', auth()->user()->id)
+            ->whereMonth('date', '=', Carbon::now()->format('m') - 1)
+            ->sum('amount');
+        $last_month_sessions_sum = DB::table('sessions_info')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_id', '=', auth()->user()->id)
+            ->whereMonth('date', '=', Carbon::now()->format('m') - 1)
+            ->sum('fees');
+        $last_monthly_earrings = $last_month_prescriptions_sum + $last_month_incomes_sum + $last_month_sessions_sum;
+        $earring_percentage = $last_monthly_earrings != 0 ? ($last_monthly_earrings / $current_monthly_earrings) * 100 : 100;
         if ($row) {
             if (auth()->user()->hasRole(['admin', 'recep','doctor'])) {
                 return view('doctors.show', compact(
@@ -380,6 +414,9 @@ class DoctorController extends Controller
                     'tomorrow_appointments_count',
                     'upcomming_appointments_count',
                     'today_earrings',
+                    'earring_percentage',
+                    'current_monthly_earrings',
+                    'last_monthly_earrings',
                     'revenue',
                     'appointments',
                     'prescriptions',

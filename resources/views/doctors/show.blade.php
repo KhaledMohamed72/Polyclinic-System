@@ -30,7 +30,30 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
+            <div class="card card-white">
+                <div class="card-header mb-6">
+                    <h3 class="card-title font-weight-bold">Monthly Earning</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="month_earring_rate"></div>
+                        </div>
+                        <div class="col-sm-12">
+                            <p class="text-muted">This month</p>
+                            <h3>{{$current_monthly_earrings}}£</h3>
+                            <p class="text-muted">
+                            <span class=" text-success  mr-2">
+                                {{$earring_percentage}}% <i class="fa fa-arrow-up"></i>
+                            </span>From previous month
+                            </p>
+                        </div>
 
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
             <!-- About Me Box -->
             <div class="card card-white">
                 <div class="card-header mb-6">
@@ -602,6 +625,24 @@
             var chart = new google.charts.Bar(document.getElementById('prescriptions_rate'));
 
             chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Month', 'Earring per Month'],
+                ['Current Month', {{$current_monthly_earrings}}],
+                ['last Month', {{$last_monthly_earrings}}],
+            ]);
+
+            var options = {
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('month_earring_rate'));
+            chart.draw(data, options);
         }
     </script>
 @endsection

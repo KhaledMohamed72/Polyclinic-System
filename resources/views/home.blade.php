@@ -36,6 +36,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
+                                <div id="month_earring_rate"></div>
+                            </div>
+                            <div class="col-sm-12">
                                 <p class="text-muted">This month</p>
                                 <h3>{{$current_monthly_earrings}}£</h3>
                                 <p class="text-muted">
@@ -44,6 +47,7 @@
                             </span>From previous month
                                 </p>
                             </div>
+
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -547,6 +551,24 @@
             var chart = new google.charts.Bar(document.getElementById('prescriptions_rate'));
 
             chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Month', 'Earring per Month'],
+                ['Current Month', {{$current_monthly_earrings}}],
+                ['last Month', {{$last_monthly_earrings}}],
+            ]);
+
+            var options = {
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('month_earring_rate'));
+            chart.draw(data, options);
         }
     </script>
 @endsection

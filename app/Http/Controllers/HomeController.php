@@ -116,6 +116,7 @@ class HomeController extends Controller
                 'appointments',
                 'prescriptions',
                 'current_monthly_earrings',
+                'last_monthly_earrings',
                 'earring_percentage',
                 'monthly_patients_counts',
                 'monthly_prescriptions_counts'
