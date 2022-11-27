@@ -597,7 +597,6 @@
                 title: 'patients growth rate',
                 legend: { position: 'bottom' }
             };
-
             var chart = new google.visualization.LineChart(document.getElementById('patients_rate'));
 
             chart.draw(data, options);
