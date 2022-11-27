@@ -610,7 +610,7 @@
         function drawChart() {
             var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
             var data = google.visualization.arrayToDataTable([
-                ['Year', 'Prescriptions'],
+                ['Month', 'Prescriptions'],
                     @foreach($monthly_prescriptions_counts as $row)
                 [months[{{$row->month}}], {{$row->count}}],
                 @endforeach
