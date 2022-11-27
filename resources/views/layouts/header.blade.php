@@ -30,7 +30,7 @@
     </form>--}}
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav" style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:9rem; @else margin-left:auto; @endif">
+    <ul class="navbar-nav" style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:12rem; @else margin-left:auto; @endif">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
