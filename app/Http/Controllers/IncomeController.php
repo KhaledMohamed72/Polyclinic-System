@@ -86,7 +86,6 @@ class IncomeController extends Controller
             'amount' => $request->amount,
             'note' => $request->note,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         if ($row) {

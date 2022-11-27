@@ -148,6 +148,8 @@ class PatientController extends Controller
             'blood_pressure' => $request->blood_pressure,
             'pulse' => $request->pulse,
             'allergy' => $request->allergy,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         // Give a role

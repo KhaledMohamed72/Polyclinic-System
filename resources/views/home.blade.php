@@ -130,6 +130,22 @@
                         <!-- /.info-box -->
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="patients_rate"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="prescriptions_rate"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
@@ -484,5 +500,53 @@
                 order: [[0, 'desc']]
             });
         });
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+            var data = google.visualization.arrayToDataTable([
+                ['Month', 'Patients'],
+                @foreach($monthly_patients_counts as $row)
+                [months[{{$row->month}}], {{$row->count}}],
+                @endforeach
+            ]);
+
+            var options = {
+                title: 'patients growth rate',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('patients_rate'));
+
+            chart.draw(data, options);
+        }
+    </script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['bar']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+            var data = google.visualization.arrayToDataTable([
+                ['Year', 'Prescriptions'],
+                @foreach($monthly_prescriptions_counts as $row)
+                [months[{{$row->month}}], {{$row->count}}],
+                @endforeach
+            ]);
+
+            var options = {
+                chart: {
+                    title: 'prescriptions rate',
+                }
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('prescriptions_rate'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
     </script>
 @endsection

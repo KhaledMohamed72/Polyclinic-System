@@ -98,7 +98,6 @@ class SessionController extends Controller
             'fees' => $request->fees,
             'note' => $request->note,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         if ($row) {

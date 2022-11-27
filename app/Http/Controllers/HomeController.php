@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -26,15 +27,15 @@ class HomeController extends Controller
             ->count();
         $today_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->whereDate('created_at', '=', Carbon::today()->toDateString())
             ->sum('fees');
         $today_incomes_sum = DB::table('incomes')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->whereDate('created_at', '=', Carbon::today()->toDateString())
             ->sum('amount');
         $today_sessions_sum = DB::table('sessions_info')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->whereDate('created_at', '=', Carbon::today()->toDateString())
             ->sum('fees');
         $today_earrings = $today_prescriptions_sum + $today_incomes_sum + $today_sessions_sum;
         $total_prescriptions_sum = DB::table('prescriptions')
@@ -62,19 +63,19 @@ class HomeController extends Controller
             ->select('prescriptions.*', 't2.name as patient_name','t3.name as doctor_name')
             ->orderBy('prescriptions.date', 'desc')
             ->get();
-        $last_month_prescriptions_sum = DB::table('prescriptions')
+        $current_month_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->whereMonth('date', '=', Carbon::now()->format('m'))
             ->sum('fees');
-        $last_month_incomes_sum = DB::table('incomes')
+        $current_month_incomes_sum = DB::table('incomes')
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->whereMonth('date', '=', Carbon::now()->format('m'))
             ->sum('amount');
-        $last_month_sessions_sum = DB::table('sessions_info')
+        $current_month_sessions_sum = DB::table('sessions_info')
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->whereMonth('date', '=', Carbon::now()->format('m'))
             ->sum('fees');
-        $current_monthly_earrings = $last_month_prescriptions_sum + $last_month_incomes_sum + $last_month_sessions_sum;
+        $current_monthly_earrings = $current_month_prescriptions_sum + $current_month_incomes_sum + $current_month_sessions_sum;
 
         $last_month_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id', '=', $this->getClinic()->id)
@@ -90,6 +91,20 @@ class HomeController extends Controller
             ->sum('fees');
         $last_monthly_earrings = $last_month_prescriptions_sum + $last_month_incomes_sum + $last_month_sessions_sum;
         $earring_percentage = $last_monthly_earrings != 0 ? ($last_monthly_earrings / $current_monthly_earrings) * 100 : 100;
+        $monthly_patients_counts = DB::table('patients')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->selectRaw('month(created_at) as month')
+            ->selectRaw('count(*) as count')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+        $monthly_prescriptions_counts = DB::table('prescriptions')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->selectRaw('month(created_at) as month')
+            ->selectRaw('count(*) as count')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
         if (auth()->user()->hasRole('admin')) {
             return view('home', compact(
                 'appointments_count',
@@ -101,7 +116,9 @@ class HomeController extends Controller
                 'appointments',
                 'prescriptions',
                 'current_monthly_earrings',
-                'earring_percentage'
+                'earring_percentage',
+                'monthly_patients_counts',
+                'monthly_prescriptions_counts'
             ));
         } elseif (auth()->user()->hasRole('doctor')) {
             return redirect()->route('doctors.show', auth()->user()->id);

@@ -140,6 +140,8 @@ class DoctorController extends Controller
             'examination_fees' => $request->examination_fees,
             'followup_fees' => $request->followup_fees,
             'bio' => $request->bio,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
         // Give a role
@@ -309,17 +311,17 @@ class DoctorController extends Controller
             ->count();
         $today_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id','=',$this->getClinic()->id)
-            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->whereDate('created_at', '=', Carbon::today()->toDateString())
             ->where('doctor_id','=',$id)
             ->sum('fees');
         $today_incomes_sum = DB::table('incomes')
             ->where('clinic_id','=',$this->getClinic()->id)
-            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->whereDate('created_at', '=', Carbon::today()->toDateString())
             ->where('doctor_id','=',$id)
             ->sum('amount');
         $today_sessions_sum = DB::table('sessions_info')
             ->where('clinic_id','=',$this->getClinic()->id)
-            ->whereDate('date', '=', Carbon::today()->toDateString())
+            ->whereDate('created_at', '=', Carbon::today()->toDateString())
             ->where('doctor_id','=',$id)
             ->sum('fees');
         $total_prescriptions_sum = DB::table('prescriptions')
@@ -351,6 +353,23 @@ class DoctorController extends Controller
 
         $today_earrings = $today_prescriptions_sum + $today_incomes_sum + $today_sessions_sum;
         $revenue = $total_prescriptions_sum + $total_incomes_sum + $total_sessions_sum;
+
+        $monthly_patients_counts = DB::table('patients')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->where('doctor_id',auth()->user()->id)
+            ->selectRaw('month(created_at) as month')
+            ->selectRaw('count(*) as count')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+        $monthly_prescriptions_counts = DB::table('prescriptions')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->where('doctor_id',auth()->user()->id)
+            ->selectRaw('month(created_at) as month')
+            ->selectRaw('count(*) as count')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
         if ($row) {
             if (auth()->user()->hasRole(['admin', 'recep','doctor'])) {
                 return view('doctors.show', compact(
@@ -363,7 +382,9 @@ class DoctorController extends Controller
                     'today_earrings',
                     'revenue',
                     'appointments',
-                    'prescriptions'
+                    'prescriptions',
+                    'monthly_patients_counts',
+                    'monthly_prescriptions_counts',
                 ));
             } else {
                 toastr()->warning('You are not allowed for this route !');
