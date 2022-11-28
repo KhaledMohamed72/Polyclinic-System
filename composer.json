@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "barryvdh/laravel-dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
         "jenssegers/agent": "^2.6",
@@ -17,6 +16,7 @@
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.5",
         "mindscms/entrust": "^2.5",
+        "mpdf/mpdf": "^8.1",
         "yoeunes/toastr": "^2.0"
     },
     "require-dev": {

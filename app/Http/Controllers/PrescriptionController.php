@@ -561,7 +561,7 @@ class PrescriptionController extends Controller
                     ->where('prescription_medicines.prescription_id', $id)
                     ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
                     ->select('prescription_medicines.name as medicine_name'
-                        , 'frequency_types.name as frequency_name',
+                        , 'frequency_types.ar_name as frequency_name',
                     )->get();
             }
             if ($medicine->period_type_id != null && $medicine->frequency_type_id == null) {
@@ -570,7 +570,7 @@ class PrescriptionController extends Controller
                     ->where('prescription_medicines.prescription_id', $id)
                     ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
                     ->select('prescription_medicines.name as medicine_name',
-                        'period_types.name as period_name'
+                        'period_types.ar_name as period_name'
                     )->get();
             }
             if ($medicine->period_type_id != null && $medicine->frequency_type_id != null) {
@@ -580,8 +580,8 @@ class PrescriptionController extends Controller
                     ->where('prescription_medicines.prescription_id', $id)
                     ->where('prescription_medicines.clinic_id', $this->getClinic()->id)
                     ->select('prescription_medicines.name as medicine_name'
-                        , 'frequency_types.name as frequency_name',
-                        'period_types.name as period_name'
+                        , 'frequency_types.ar_name as frequency_name',
+                        'period_types.ar_name as period_name'
                     )->get();
             }
         }
@@ -600,7 +600,7 @@ class PrescriptionController extends Controller
                     ->where('prescription_formulas.prescription_id', $id)
                     ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
                     ->select('formulas.name as formula_name'
-                        , 'frequency_types.name as frequency_name',
+                        , 'frequency_types.ar_name as frequency_name',
                     )->get();
             }
             if ($formula->period_type_id != null && $formula->frequency_type_id == null) {
@@ -610,7 +610,7 @@ class PrescriptionController extends Controller
                     ->where('prescription_formulas.prescription_id', $id)
                     ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
                     ->select('formulas.name as formula_name',
-                        'period_types.name as period_name'
+                        'period_types.ar_name as period_name'
                     )->get();
             }
             if ($formula->period_type_id != null && $formula->frequency_type_id != null) {
@@ -621,8 +621,8 @@ class PrescriptionController extends Controller
                     ->where('prescription_formulas.prescription_id', $id)
                     ->where('prescription_formulas.clinic_id', $this->getClinic()->id)
                     ->select('formulas.name as formula_name'
-                        , 'frequency_types.name as frequency_name',
-                        'period_types.name as period_name'
+                        , 'frequency_types.ar_name as frequency_name',
+                        'period_types.ar_name as period_name'
                     )->get();
             }
         }
@@ -639,8 +639,17 @@ class PrescriptionController extends Controller
         $data['prescription_designs'] = $prescription_design;
         $data['appointment'] = $appointment;
         $data['patient'] = $patient;
-        $pdf = Pdf::loadView('prescriptions.pdf-show', $data)->setOptions(['defaultFont' => 'sans-serif']);
-        return $pdf->download('prescription#'.$prescription->id.'-'.$patient->name.'-'.$prescription->date.'.pdf');
+        $mpdf = new \Mpdf\Mpdf();
 
+        $html = view('prescriptions.pdf-show',compact(
+            'prescription','medicines','tests',
+            'formulas','doctor','prescription_design','appointment','patient'
+        ))->render();
+
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
     }
 }
