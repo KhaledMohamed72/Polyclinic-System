@@ -403,7 +403,7 @@ class DoctorController extends Controller
             ->whereMonth('date', '=', Carbon::now()->format('m') - 1)
             ->sum('fees');
         $last_monthly_earrings = $last_month_prescriptions_sum + $last_month_incomes_sum + $last_month_sessions_sum;
-        $earring_percentage = $last_monthly_earrings != 0 ? ($last_monthly_earrings / $current_monthly_earrings) * 100 : 100;
+        $earring_percentage = $last_monthly_earrings != 0 ? (($current_monthly_earrings - $last_monthly_earrings) /  $last_monthly_earrings)* 100 : 100;
         if ($row) {
             if (auth()->user()->hasRole(['admin', 'recep','doctor'])) {
                 return view('doctors.show', compact(
