@@ -35,9 +35,8 @@
 
             </div>
         </div>
-
         <!-- Sidebar Menu -->
-        <nav class="mt-2">
+        <nav class="mt-2" style="font-size: small">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
@@ -220,6 +219,17 @@
                             <i class="nav-icon material-icons">file_upload</i>
                             <p>
                                 Expenses
+                            </p>
+                        </a>
+                    </li>
+                @endif
+                @if($user->hasRole(['admin','doctor']))
+                    <li class="nav-item">
+                        <a href="{{route('reports.index')}}"
+                           class="nav-link {{ (request()->routeIs('reports.*')) ? 'active' : '' }}">
+                            <i class="nav-icon material-icons">summarize</i>
+                            <p>
+                                Reports
                             </p>
                         </a>
                     </li>

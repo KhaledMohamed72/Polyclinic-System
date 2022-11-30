@@ -631,14 +631,6 @@ class PrescriptionController extends Controller
             ->where('prescription_tests.prescription_id', $id)
             ->where('prescription_tests.clinic_id', $this->getClinic()->id)
             ->get();
-        $data['prescription'] = $prescription;
-        $data['medicines'] = $medicines;
-        $data['tests'] = $tests;
-        $data['formulas'] = $formulas;
-        $data['doctor'] = $doctor;
-        $data['prescription_designs'] = $prescription_design;
-        $data['appointment'] = $appointment;
-        $data['patient'] = $patient;
         $mpdf = new \Mpdf\Mpdf();
 
         $html = view('prescriptions.pdf-show',compact(

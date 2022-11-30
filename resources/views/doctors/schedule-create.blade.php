@@ -126,7 +126,7 @@
                                                                value="{{isset($row[$i]) ? $row[$i]->first_end_time : ''}}"
                                                                class="form-control" id="first_to{{$i}}"/>
                                                         @error('first_end_time')<span class="invalid-feedback"
-                                                                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                                                                      role="alert"><strong>{{ $message }}</strong></span>@enderror
                                                     </div>
                                                     <!-- /.input group -->
                                                 </div>
@@ -146,7 +146,7 @@
                                                                value="{{isset($row[$i]) ? $row[$i]->second_start_time : ''}}"
                                                                class="form-control" id="second_from{{$i}}"/>
                                                         @error('second_start_time')<span class="invalid-feedback"
-                                                                                      role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                                                                         role="alert"><strong>{{ $message }}</strong></span>@enderror
                                                     </div>
                                                     <!-- /.input group -->
                                                 </div>
