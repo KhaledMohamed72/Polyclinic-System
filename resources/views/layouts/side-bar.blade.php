@@ -223,6 +223,17 @@
                         </a>
                     </li>
                 @endif
+                @if($user->hasRole('doctor'))
+                    <li class="nav-item">
+                        <a href="{{route('care-companies.index')}}"
+                           class="nav-link {{ (request()->routeIs('care-companies.*')) ? 'active' : '' }}">
+                            <i class="nav-icon material-icons">corporate_fare</i>
+                            <p>
+                                Care Companies
+                            </p>
+                        </a>
+                    </li>
+                @endif
                 @if($user->hasRole(['admin','doctor']))
                     <li class="nav-item">
                         <a href="{{route('reports.index')}}"

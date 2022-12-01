@@ -4,82 +4,133 @@ namespace App\Http\Controllers;
 
 use App\Models\CareCompany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CareCompanyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $rows = DB::table('care_companies')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_id', '=', auth()->user()->id)
+            ->get();
+
+        if (auth()->user()->hasRole('doctor')) {
+            return view('care-companies.index', compact('rows'));
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('home');
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        if (auth()->user()->hasRole('doctor')) {
+            return view('care-companies.create');
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('home');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        if (!auth()->user()->hasRole('doctor')) {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('home');
+        }
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:191'],
+            'from' => ['required', 'date'],
+            'to' => ['required', 'date', 'after_or_equal:from'],
+            'discount_rate' => ['required', 'integer', 'min:1', 'max:100'],
+            'note' => ['nullable']
+        ]);
+
+        $row = DB::table('care_companies')
+            ->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'doctor_id' => auth()->user()->id,
+                'name' => $request->name,
+                'from' => $request->from,
+                'to' => $request->to,
+                'discount_rate' => $request->discount_rate,
+                'note' => $request->note,
+            ]);
+        if ($row) {
+            toastr()->success('Successfully Created');
+            return redirect()->route('care-companies.index');
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('care-companies.index');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CareCompany  $careCompany
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CareCompany $careCompany)
+
+    public function edit($id)
     {
-        //
+        $row = DB::table('care_companies')
+            ->where('id', $id)
+            ->where('doctor_id', auth()->user()->id)
+            ->where('clinic_id', $this->getClinic()->id)
+            ->first();
+        if (auth()->user()->hasRole('doctor')) {
+            return view('care-companies.edit', compact('row'));
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('home');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CareCompany  $careCompany
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CareCompany $careCompany)
+    public function update(Request $request, $id)
     {
-        //
+        if (!auth()->user()->hasRole('doctor')) {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('home');
+        }
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:191'],
+            'from' => ['required', 'date'],
+            'to' => ['required', 'date', 'after_or_equal:from'],
+            'discount_rate' => ['required', 'integer', 'min:1', 'max:100'],
+            'note' => ['nullable']
+        ]);
+
+        $row = DB::table('care_companies')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('doctor_id', auth()->user()->id)
+            ->update([
+                'name' => $request->name,
+                'from' => $request->from,
+                'to' => $request->to,
+                'discount_rate' => $request->discount_rate,
+                'note' => $request->note,
+            ]);
+
+        if ($row) {
+            toastr()->success('Successfully Updated');
+            return redirect()->route('care-companies.index');
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('care-companies.index');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CareCompany  $careCompany
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CareCompany $careCompany)
+    public function destroy($id)
     {
-        //
-    }
+        $row = Db::table('care_companies')
+            ->where('id', $id)
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('doctor_id',auth::user()->id)
+            ->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CareCompany  $careCompany
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CareCompany $careCompany)
-    {
-        //
+        if ($row) {
+            toastr()->success('Successfully Deleted');
+            return redirect()->route('care-companies.index');
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->route('care-companies.index');
+        }
     }
 }

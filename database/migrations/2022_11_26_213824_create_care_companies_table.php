@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('care_companies', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
+            $table->foreignId('doctor_id')->constrained('users')->cascadeOnDelete();
+            $table->string('name');
+            $table->decimal('discount_rate');
+            $table->string('from');
+            $table->string('to');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }
