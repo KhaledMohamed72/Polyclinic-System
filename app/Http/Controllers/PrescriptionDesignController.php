@@ -84,6 +84,7 @@ class PrescriptionDesignController extends Controller
             $doctorsWithNoPrescription = DB::table('users')
                 ->where('id', auth()->user()->id)
                 ->where('clinic_id', $this->getClinic()->id)
+                ->select('users.name as doctor_name', 'users.id as doctor_id')
                 ->first();
         }
 
@@ -93,13 +94,17 @@ class PrescriptionDesignController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'doctor' => ['required', 'integer'],
-        ]);
+
 
         if ($request->has('doctor')) {
+            $this->validate($request, [
+                'doctor' => ['required', 'integer'],
+            ]);
             $doctor_id = $request->doctor;
         } else {
+            $this->validate($request, [
+                'has_one_doctor_id' => ['required', 'integer'],
+            ]);
             $doctor_id = $request->has_one_doctor_id;
         }
 
