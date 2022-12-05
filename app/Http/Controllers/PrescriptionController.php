@@ -81,13 +81,18 @@ class PrescriptionController extends Controller
             ->where('clinic_id', $this->getClinic()->id)
             ->orderBy('id', 'desc')
             ->get();
+        $care_companies = DB::table('care_companies')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('doctor_id', auth()->user()->id)
+            ->get();
         return view('prescriptions.create', compact(
             'patients',
             'frequencies',
             'periods',
             'medicines',
             'formulas',
-            'tests'
+            'tests',
+            'care_companies'
         ));
     }
 
@@ -98,7 +103,6 @@ class PrescriptionController extends Controller
             'patient' => ['required', 'integer'],
             'date' => ['required', 'date'],
         ]);
-
         // function to insert a new medicines or tests to suggest it later when go to create new prescriptions
         $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
         $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
@@ -107,8 +111,26 @@ class PrescriptionController extends Controller
         $doctor = Doctor::where('user_id', auth()->user()->id)->first();
         if ($request->type == 0) {
             $fees = $doctor->examination_fees;
+            if ($request->has('care_company_id') && $request->care_company_id != '') {
+                $discount_rate = DB::table('care_companies')
+                    ->where('id', $request->care_company_id)
+                    ->where('clinic_id', $this->getClinic()->id)
+                    ->select('discount_rate')
+                    ->first();
+                $discount_rate = $discount_rate->discount_rate;
+                $fees = $fees - (($fees/100)*$discount_rate);
+            }
         } else {
             $fees = $doctor->followup_fees;
+            if ($request->has('care_company_id') && $request->care_company_id != '') {
+                $discount_rate = DB::table('care_companies')
+                    ->where('id', $request->care_company_id)
+                    ->where('clinic_id', $this->getClinic()->id)
+                    ->select('discount_rate')
+                    ->first();
+                $discount_rate = $discount_rate->discount_rate;
+                $fees = $fees - (($fees / 100) * $discount_rate);
+            }
         }
         $prescription = DB::table('prescriptions')->insert([
             'clinic_id' => $this->getClinic()->id,
@@ -521,7 +543,8 @@ class PrescriptionController extends Controller
         }
     }
 
-    public function pdf_prescription($id){
+    public function pdf_prescription($id)
+    {
         $prescription = DB::table('prescriptions')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
@@ -633,9 +656,9 @@ class PrescriptionController extends Controller
             ->get();
         $mpdf = new \Mpdf\Mpdf();
 
-        $html = view('prescriptions.pdf-show',compact(
-            'prescription','medicines','tests',
-            'formulas','doctor','prescription_design','appointment','patient'
+        $html = view('prescriptions.pdf-show', compact(
+            'prescription', 'medicines', 'tests',
+            'formulas', 'doctor', 'prescription_design', 'appointment', 'patient'
         ))->render();
 
         $mpdf->autoScriptToLang = true;

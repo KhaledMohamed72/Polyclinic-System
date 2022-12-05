@@ -18,39 +18,65 @@
             <div class="card card-primary card-outline card-tabs">
                 <div class="card-header p-0 pt-1 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-three-patient-history-tab" data-toggle="pill" href="#custom-tabs-three-patient-history" role="tab" aria-controls="custom-tabs-three-patient-history" aria-selected="false">Patients History</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="true">Report 2</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill" href="#custom-tabs-three-messages" role="tab" aria-controls="custom-tabs-three-messages" aria-selected="false">Report 3</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-three-settings-tab" data-toggle="pill" href="#custom-tabs-three-settings" role="tab" aria-controls="custom-tabs-three-settings" aria-selected="false">Report 4</a>
-                        </li>
+                        {{-- patient history --}}
+                        @if(auth()->user()->hasRole('doctor'))
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-three-patient-history-tab" data-toggle="pill"
+                                   href="#custom-tabs-three-patient-history" role="tab"
+                                   aria-controls="custom-tabs-three-patient-history" aria-selected="false">Patients
+                                    History</a>
+                            </li>
+                        @endif
+                        {{-- Doctor history --}}
+                        @if(auth()->user()->hasRole(['admin','doctor']))
+                            <li class="nav-item">
+                                <a class="nav-link {{auth()->user()->hasRole('admin') ? 'active' : ''}}" id="custom-tabs-three-doctor-history-tab" data-toggle="pill"
+                                   href="#custom-tabs-three-doctor-history" role="tab"
+                                   aria-controls="custom-tabs-three-doctor-history" aria-selected="true">Doctor
+                                    History</a>
+                            </li>
+                        @endif
+                        {{--Care Companies--}}
+                        @if(auth()->user()->hasRole('doctor'))
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-patient-care-company-tab" data-toggle="pill"
+                                   href="#custom-tabs-three-care-company" role="tab"
+                                   aria-controls="custom-tabs-three-care-company" aria-selected="false">Care Companies</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
-                        <div class="tab-pane fade active show" id="custom-tabs-three-patient-history" role="tabpanel" aria-labelledby="custom-tabs-three-patient-history-tab">
-                            <form method="get" action="{{route('patient-history')}}">
-                            @include('reports.forms.patient-history-form')
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary float-right" name="get">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
-                            Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.
-                        </div>
-                        <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel" aria-labelledby="custom-tabs-three-messages-tab">
-                            Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna.
-                        </div>
-                        <div class="tab-pane fade" id="custom-tabs-three-settings" role="tabpanel" aria-labelledby="custom-tabs-three-settings-tab">
-                            Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
-                        </div>
+                        {{-- patient-history--}}
+                        @if(auth()->user()->hasRole('doctor'))
+                            <div class="tab-pane fade active show" id="custom-tabs-three-patient-history"
+                                 role="tabpanel" aria-labelledby="custom-tabs-three-patient-history-tab">
+                                <form method="get" action="{{route('patient-history')}}">
+                                    @include('reports.forms.patient-history-form')
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary float-right"
+                                                name="get-patient-history">Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
+                        {{-- Doctor history --}}
+                        @if(auth()->user()->hasRole(['admin','doctor']))
+                            <div class="tab-pane fade {{auth()->user()->hasRole('admin') ? 'active show' : ''}}" id="custom-tabs-three-doctor-history" role="tabpanel"
+                                 aria-labelledby="custom-tabs-three-doctor-history-tab">
+                                <form method="get" action="{{route('doctor-history')}}">
+                                    @include('reports.forms.doctor-history-form')
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary float-right"
+                                                name="get-doctor-history">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

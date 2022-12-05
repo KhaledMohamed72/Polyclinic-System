@@ -515,7 +515,7 @@
             var data = google.visualization.arrayToDataTable([
                 ['Month', 'Patients'],
                 @foreach($monthly_patients_counts as $row)
-                [months[{{$row->month}}], {{$row->count}}],
+                [months[{{$row->month}}-1], {{$row->count}}],
                 @endforeach
             ]);
 
@@ -538,7 +538,7 @@
             var data = google.visualization.arrayToDataTable([
                 ['Month', 'Prescriptions'],
                 @foreach($monthly_prescriptions_counts as $row)
-                [months[{{$row->month}}], {{$row->count}}],
+                [months[{{$row->month}}-1], {{$row->count}}],
                 @endforeach
             ]);
 

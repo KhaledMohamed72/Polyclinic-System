@@ -201,6 +201,25 @@
             </div>
         </div>
     </div>
+    @if(!$care_companies->isEmpty())
+    <div class="row">
+        <div class="col-sm-6 form-group">
+            <label class="control-label">Health Care Company</label>
+            @php $input = 'care_company_id'; @endphp
+            <select
+                class="form-control select2"
+                name="{{$input}}">
+                <option disabled selected>Select Company</option>
+                @foreach($care_companies as $company)
+                    <option value="{{$company->id}}">
+                        {{$company->name}}</option>
+                @endforeach
+            </select>
+            @error($input)<span style="color: red;font-size: smaller"
+                                role="alert"><strong>{{ $message }}</strong></span>@enderror
+        </div>
+    </div>
+    @endif
     <div class="row" id="date">
         @php $input = 'followup_date' @endphp
         <div class="col-sm-6">
