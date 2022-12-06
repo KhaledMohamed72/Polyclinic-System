@@ -136,6 +136,7 @@ class PrescriptionController extends Controller
             'clinic_id' => $this->getClinic()->id,
             'doctor_id' => auth()->user()->id,
             'patient_id' => $request->get('patient'),
+            'care_company_id' => $request->care_company_id,
             'type' => $request->get('type'),
             'date' => $request->get('date'),
             'followup_date' => $request->get('followup_date'),
