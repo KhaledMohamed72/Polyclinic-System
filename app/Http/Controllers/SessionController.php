@@ -65,8 +65,11 @@ class SessionController extends Controller
                 ->where('doctor_id', '=', auth()->user()->id)
                 ->where('clinic_id', '=', $this->getClinic()->id)
                 ->get();
-
-            return view('sessions.create', compact('patient_rows', 'session_rows'));
+            $care_companies = DB::table('care_companies')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('doctor_id', auth()->user()->id)
+                ->get();
+            return view('sessions.create', compact('patient_rows', 'session_rows','care_companies'));
         }else {
             toastr()->success('Something went wrong!');
             return redirect()->route('sessions.index');
@@ -86,6 +89,7 @@ class SessionController extends Controller
             'type' => ['required', 'integer'],
             'date' => ['required', 'string'],
             'fees' => ['required', 'numeric'],
+            'care_company_id' => ['nullable', 'integer'],
             'note' => ['nullable', 'string'],
         ]);
 
@@ -96,6 +100,7 @@ class SessionController extends Controller
             'session_type_id' => $request->type,
             'date' => $request->date,
             'fees' => $request->fees,
+            'care_company_id' => $request->care_company_id ?? null,
             'note' => $request->note,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
@@ -130,13 +135,17 @@ class SessionController extends Controller
                 ->where('doctor_id', '=', auth()->user()->id)
                 ->where('clinic_id', '=', $this->getClinic()->id)
                 ->get();
+            $care_companies = DB::table('care_companies')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('doctor_id', auth()->user()->id)
+                ->get();
             $row = DB::table('sessions_info')
                 ->where('clinic_id', $this->getClinic()->id)
                 ->where('id', $id)
                 ->where('doctor_id', auth()->user()->id)
                 ->first();
 
-            return view('sessions.edit', compact('patient_rows', 'session_rows', 'row'));
+            return view('sessions.edit', compact('patient_rows', 'session_rows', 'row','care_companies'));
         }else {
             toastr()->success('Something went wrong!');
             return redirect()->route('sessions.index');
@@ -157,6 +166,7 @@ class SessionController extends Controller
             'type' => ['required', 'integer'],
             'date' => ['required', 'string'],
             'fees' => ['required', 'numeric'],
+            'care_company_id' => ['nullable', 'integer'],
             'note' => ['nullable', 'string'],
         ]);
         $row = DB::table('sessions_info')
@@ -166,6 +176,7 @@ class SessionController extends Controller
                 'session_type_id' => $request->type,
                 'date' => $request->date,
                 'fees' => $request->fees,
+                'care_company_id' => $request->care_company_id ?? null,
                 'note' => $request->note,
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);

@@ -23,7 +23,7 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-tabs-three-patient-history-tab" data-toggle="pill"
                                    href="#custom-tabs-three-patient-history" role="tab"
-                                   aria-controls="custom-tabs-three-patient-history" aria-selected="false">Patients
+                                   aria-controls="custom-tabs-three-patient-history" aria-selected="false">Patient
                                     History</a>
                             </li>
                         @endif
@@ -71,6 +71,20 @@
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
                                                 name="get-doctor-history">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
+                        @if(auth()->user()->hasRole('doctor'))
+                            <div class="tab-pane fade" id="custom-tabs-three-care-company" role="tabpanel"
+                                 aria-labelledby="custom-tabs-three-care-company-tab">
+                                <form method="get" action="{{route('care-company')}}">
+                                    @include('reports.forms.care-company-form')
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary float-right"
+                                                name="get-care-company">
                                             Submit
                                         </button>
                                     </div>

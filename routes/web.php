@@ -233,5 +233,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('/patients-history', [\App\Http\Controllers\ReportController::class, 'patient_history'])->name('patient-history');
     Route::get('/doctors-history', [\App\Http\Controllers\ReportController::class, 'doctor_history'])->name('doctor-history');
+    Route::get('/care-company', [\App\Http\Controllers\ReportController::class, 'care_company'])->name('care-company');
 
 });

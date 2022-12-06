@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('patient_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('doctor_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('session_type_id')->constrained('session_types')->cascadeOnDelete();
+            $table->foreignId('care_company_id')->nullable()->constrained('care_companies')->restrictOnDelete();
             $table->string('date');
             $table->float('fees');
             $table->string('note')->nullable();;

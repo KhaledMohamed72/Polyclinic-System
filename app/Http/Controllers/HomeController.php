@@ -61,33 +61,33 @@ class HomeController extends Controller
             ->join('users as t3', 't3.id', '=', 'prescriptions.doctor_id')
             ->where('prescriptions.clinic_id', '=', $this->getClinic()->id)
             ->select('prescriptions.*', 't2.name as patient_name','t3.name as doctor_name')
-            ->orderBy('prescriptions.date', 'desc')
+            ->orderBy('prescriptions.created_at', 'desc')
             ->get();
         $current_month_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereMonth('date', '=', Carbon::now()->format('m'))
+            ->whereMonth('created_at', '=', Carbon::now()->format('m'))
             ->sum('fees');
         $current_month_incomes_sum = DB::table('incomes')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereMonth('date', '=', Carbon::now()->format('m'))
+            ->whereMonth('created_at', '=', Carbon::now()->format('m'))
             ->sum('amount');
         $current_month_sessions_sum = DB::table('sessions_info')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereMonth('date', '=', Carbon::now()->format('m'))
+            ->whereMonth('created_at', '=', Carbon::now()->format('m'))
             ->sum('fees');
         $current_monthly_earrings = $current_month_prescriptions_sum + $current_month_incomes_sum + $current_month_sessions_sum;
 
         $last_month_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereMonth('date', '=', Carbon::now()->format('m') - 1)
+            ->whereMonth('created_at', '=', Carbon::now()->format('m') - 1)
             ->sum('fees');
         $last_month_incomes_sum = DB::table('incomes')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereMonth('date', '=', Carbon::now()->format('m') - 1)
+            ->whereMonth('created_at', '=', Carbon::now()->format('m') - 1)
             ->sum('amount');
         $last_month_sessions_sum = DB::table('sessions_info')
             ->where('clinic_id', '=', $this->getClinic()->id)
-            ->whereMonth('date', '=', Carbon::now()->format('m') - 1)
+            ->whereMonth('created_at', '=', Carbon::now()->format('m') - 1)
             ->sum('fees');
         $last_monthly_earrings = $last_month_prescriptions_sum + $last_month_incomes_sum + $last_month_sessions_sum;
         $earring_percentage = $last_monthly_earrings != 0 ? (($current_monthly_earrings - $last_monthly_earrings) /  $last_monthly_earrings)* 100 : 100;
