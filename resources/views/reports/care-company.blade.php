@@ -93,6 +93,10 @@
                         <th>المريض</th>
                         <th>التاريخ</th>
                         <th>النوع</th>
+                        <th>السعر</th>
+                        <th>الخصم</th>
+                        <th>الناتج</th>
+
                     </tr>
                     </thead>
 
@@ -103,6 +107,9 @@
                             <td>{{$session->patient_name}}</td>
                             <td>{{date('Y-m-d',strtotime($session->created_at))}}</td>
                             <td>{{$session->session_type}}</td>
+                            <td>{{$session->fees + ($session->fees/100)*$company->discount_rate}}</td>
+                            <td>{{$company->discount_rate.'%'}}</td>
+                            <td>{{$session->fees}}</td>
                         </tr>
                     @endforeach
                     <hr>

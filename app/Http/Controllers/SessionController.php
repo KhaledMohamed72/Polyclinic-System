@@ -92,6 +92,16 @@ class SessionController extends Controller
             'care_company_id' => ['nullable', 'integer'],
             'note' => ['nullable', 'string'],
         ]);
+        $fees = $request->fees;
+        if ($request->has('care_company_id') && $request->care_company_id != '') {
+            $discount_rate = DB::table('care_companies')
+                ->where('id', $request->care_company_id)
+                ->where('clinic_id', $this->getClinic()->id)
+                ->select('discount_rate')
+                ->first();
+            $discount_rate = $discount_rate->discount_rate;
+            $fees = $fees - (($fees/100)*$discount_rate);
+        }
 
         $row = DB::table('sessions_info')->insert([
             'clinic_id' => $this->getClinic()->id,
@@ -99,7 +109,7 @@ class SessionController extends Controller
             'doctor_id' => auth()->user()->id,
             'session_type_id' => $request->type,
             'date' => $request->date,
-            'fees' => $request->fees,
+            'fees' => $fees,
             'care_company_id' => $request->care_company_id ?? null,
             'note' => $request->note,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
