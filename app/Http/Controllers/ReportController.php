@@ -194,8 +194,8 @@ class ReportController extends Controller
         $prescriptions_examination_count = $prescriptions->where('type','=', 0)->count();
         $prescriptions_followup_count = $prescriptions->where('type','=', 1)->count();
 
-        $sessions_count = null;
-        $sessions =null;
+        $sessions_count = 0;
+        $sessions = [];
         if ($request->sessions != null) {
             $sessions = DB::table('sessions_info')
                 ->join('users','users.id','=','sessions_info.patient_id')

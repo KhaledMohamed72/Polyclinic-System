@@ -78,7 +78,7 @@
         </div>
     </div>
 </div>
-@if(!$sessions->isEmpty())
+@if(count($sessions))
 <div class="row" style="margin-top: 3rem">
     <div class="col-lg-12">
         <div class="card">
