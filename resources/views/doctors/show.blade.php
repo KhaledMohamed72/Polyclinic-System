@@ -45,7 +45,7 @@
                             <h3>{{$current_monthly_earrings}}£</h3>
                             <p class="text-muted">
                             <span class=" text-success  mr-2">
-                                {{$earring_percentage}}% <i class="fa fa-arrow-up"></i>
+                                {{number_format($earring_percentage, 2, '.', '')}}% <i class="fa fa-arrow-up"></i>
                             </span>From previous month
                             </p>
                         </div>
