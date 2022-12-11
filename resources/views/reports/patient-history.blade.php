@@ -8,11 +8,11 @@
 <div class="row">
     <div class="card">
         @if(request()->get('from') != null)
-        <div class="card-title text-center mt-2">
-            <h5>
-                <span>{{request()->get('to').' '}}</span><span>تقرير من  </span><span>{{request()->get('from').' '}}</span><span>الي</span>
-            </h5>
-        </div>
+            <div class="card-title text-center mt-2">
+                <h5>
+                    <span>{{request()->get('to').' '}}</span><span>تقرير من  </span><span>{{request()->get('from').' '}}</span><span>الي</span>
+                </h5>
+            </div>
         @endif
     </div>
 </div>
@@ -147,19 +147,19 @@
         </div>
     </div>
 @endforeach
+<hr>
+<h2>Sessions</h2>
 @foreach($sessions as $session)
-    <hr>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-title">
-                    <h2>Sessions</h2>
                 </div>
                 <div class="card-body">
                     <div class="card-header">
                         <table class="table">
                             <tbody>
-                            <tr>
+                            <tr style="background-color: #b8daff;">
                                 <td><strong class="font-size-16">Session #{{$session->id}}</strong></strong></td>
                                 <td><strong> التاريخ
                                         : </strong><span>{{date('Y-m-d',strtotime($session->created_at))}}</span></span>
