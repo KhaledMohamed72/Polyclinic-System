@@ -35,7 +35,7 @@
                 <div class="card-body">
                     <table class="table">
                         <tbody>
-                        <tr style="background-color: #3ab0c3">
+                        <tr style="background-color: #b8daff;">
                             <td><strong class="font-size-16">Prescription #{{$prescription->id}}</strong></td>
                             <td><strong> التاريخ
                                     : </strong><span>{{date('Y-m-d',strtotime($prescription->created_at))}}</span>

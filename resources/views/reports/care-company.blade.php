@@ -46,7 +46,7 @@
             <div class="card-body">
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
-                    <tr>
+                    <tr style="background-color: #b8daff;">
                         <th>#</th>
                         <th>المريض</th>
                         <th>التاريخ</th>
@@ -88,7 +88,7 @@
             <div class="card-body">
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
-                    <tr>
+                    <tr style="background-color: #b8daff;">
                         <th>#</th>
                         <th>المريض</th>
                         <th>التاريخ</th>
