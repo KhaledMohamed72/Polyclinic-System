@@ -1,207 +1,97 @@
-@csrf
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
 
-<div class="card-body">
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            scrollTime: '00:00', // undo default 6am scrollTime
+            editable: false, // enable draggable events
+            selectable: true,
+            height: 650,
+            aspectRatio: 1.8,
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'timeGridWeek,dayGridMonth,dayGridDay'
+            },
+            events: '{{route('get-all-appointments')}}',
 
-    {{--get nOf doctors to show doctor drop down menu if nOf doctors is more than one and hide it if equal to one--}}
-    @if($count_doctors > 1)
-        <div class="row">
-            @php $input = 'doctor_id' @endphp
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Doctor</label>
-                    <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                        <option selected="" disabled="">Select Doctor</option>
-                        @foreach($doctor_rows as $doctor_row)
-                            <option value="{{$doctor_row->id}}"
-                                {{isset($row) && $row->doctor_id == $doctor_row->id ? 'selected' : ''}}>{{$doctor_row->name}}</option>
-                        @endforeach
-                    </select>
-                    @error($input)<span class="invalid-feedback"
-                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
-                </div>
-            </div>
-        </div>
-    @else
-        <input type="hidden" value="{{$doctor_rows[0]->id}}" name="has_one_doctor_id">
-    @endif
-    <div class="row">
-        @php $input = 'name' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Patient name</label>
-                <input type="text" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-        @php $input = 'email' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Email</label>
-                <input type="email" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    {{--    <div class="row">
-            @php $input = 'password' @endphp
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="exampleInput{{$input}}">Password</label>
-                    <input type="password" name="{{$input}}"
-                           class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                           placeholder="Enter {{$input}}">
-                    @error($input)<span class="invalid-feedback"
-                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
-                </div>
-            </div>
-            @php $input = 'password_confirmation' @endphp
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="exampleInput{{$input}}">Confirm Password</label>
-                    <input type="password" name="{{$input}}"
-                           class="form-control" id="exampleInput{{$input}}"
-                           placeholder="Confirm your password">
-                    @error('password_confirmation')<span class="invalid-feedback"
-                                                         role="alert"><strong>{{ $message }}</strong></span>@enderror
-                </div>
-            </div>
-        </div>--}}
-    <div class="row">
-        @php $input = 'phone' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Contact Number</label>
-                <input type="text" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-        @php $input = 'gender' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Gender</label>
-                <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                    <option selected="" disabled="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        @php $input = 'age' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Age</label>
-                <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-        @php $input = 'address' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Address</label>
-                <input type="text" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        @php $input = 'height' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Height</label>
-                <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-        @php $input = 'weight' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Weight</label>
-                <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        @php $input = 'blood_group' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Blood Group</label>
-                <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                    <option selected="" disabled="">Select Blood Group</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
-                </select>
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-        @php $input = 'blood_pressure' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Blood Pressure</label>
-                <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        @php $input = 'pulse' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInput{{$input}}">Pulse</label>
-                <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-        @php $input = 'allergy' @endphp
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Allergy</label>
-                <input type="text" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
-                       class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
-                @error($input)<span class="invalid-feedback"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
-            </div>
-        </div>
-    </div>
-    <!-- /.card-body -->
-</div>
+            dateClick: function (info) {
+                function tConvert(time) {
+                    // Check correct time format and split into components
+                    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
+                    if (time.length > 1) { // If time format correct
+                        time = time.slice(1);  // Remove full string match value
+                        time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+                        time[0] = +time[0] % 12 || 12; // Adjust hours
+                    }
+                    return time.join(''); // return adjusted time or original string
+                }
+
+                var dd = info.date;
+                var roleAdminRecep = "<?php echo auth()->user()->hasRole(['admin', 'recep']) ?>";
+                var date = dd.toLocaleDateString('en-CA');
+                $('#selected_date').html(date);
+                $('#new_list').hide();
+                $('#new_list').show();
+                $('#no_list').empty();
+                $.ajax({
+                    type: "GET",
+                    url: "{{url('/appointment/get-appointments-per-date?date=')}}" + date,
+                    dataType: 'json',
+                    success: function (response, textStatus, xhr) {
+                        if (response == '') {
+                            $('#new_list').empty();
+                            $('#no_list').append('No Available Appointments')
+                        } else {
+                            $('#new_list').empty();
+                            $('#no_list').empty();
+                            for (let i = 0; i < response.length; i++) {
+                                if (response[i].status == 'pending') {
+                                    prescription_url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id
+                                    prescription_link = "<a href=" + prescription_url + " class='btn btn-info btn-sm' title='Create Prescription'><i class='fas fa-file'></i></a>";
+                                }else{
+                                    prescription_url = '';
+                                    prescription_link = '';
+
+                                }
+                                patient_id = response[i].patient_id;
+                                patient_url = "{{route('patients.show', ':patient_id')}}";
+                                patient_url = patient_url.replace(':patient_id', patient_id);
+                                patient_link = "<a href=" + patient_url + " class='btn btn-primary btn-sm mr-2' title='Patient Profile'><i class='fas fa-eye'></i></a>";
+                                // if role is admin or receptionist show doctor name in appointments table else don't show doctor name in appointments table
+                                if (roleAdminRecep == 1) {
+                                    $('#new_list').append(
+                                        '<tr>' +
+                                        '<td>' + response[i].id + '</td>' +
+                                        '<td>' + response[i].patient_name + '</td>' +
+                                        '<td>' + response[i].doctor_name + '</td>' +
+                                        '<td>' + tConvert(response[i].time) + '</td>' +
+                                        '</tr>'
+                                    );
+                                } else {
+                                    $('#new_list').append(
+                                        '<tr>' +
+                                        '<td>' + response[i].id + '</td>' +
+                                        '<td>' + response[i].patient_name + '</td>' +
+                                        '<td>' + tConvert(response[i].time) + '</td>' +
+                                        '<td>' +
+                                        patient_link +
+                                        prescription_link +
+                                        '</td>' +
+                                        '</tr>'
+                                    );
+                                }
+                            }
+                        }
+                    },
+                    error: function () {
+                        console.log('Errors...Something went wrong!!!!');
+                    }
+                });
+            }
+        });
+        calendar.changeView('dayGridMonth');
+        calendar.render();
+    });
+</script>

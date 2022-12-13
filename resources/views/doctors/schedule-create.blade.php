@@ -37,11 +37,11 @@
     @endif
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title"> {{isset($row[0]) ? $row[0]->title.'.'.$row[0]->name.' ' : 'Doctor'}}Schedule </h3>
+            <h3 class="card-title"> {{isset($doctor) ? 'Dr. '.$doctor->name.' ' : 'Doctor'}}Schedule </h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form method="POST" action="{{route('schedule-update',$row[0]->user_id)}}">
+        <form method="POST" action="{{route('schedule-update',$doctor->userId)}}">
         @csrf
         <!-- iCheck -->
             <div class="card-body">

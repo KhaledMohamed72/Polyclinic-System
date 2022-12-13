@@ -435,15 +435,17 @@ class DoctorController extends Controller
 
     public function scheduleCreate($id)
     {
-        $row = DB::table('users')
-            ->join('doctors', 'doctors.user_id', '=', 'users.id')
-            ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
-            ->where('users.clinic_id', '=', $this->getClinic()->id)
-            ->where('users.id', '=', $id)
-            ->orderBy('doctor_schedules.id', 'asc')
-            ->select('users.name as name', 'users.id as userId', 'doctor_schedules.*', 'doctors.title as title')
+        $doctor = DB::table('users')
+            ->where('clinic_id',$this->getClinic()->id)
+            ->where('id',$id)
+            ->select('name','id as userId')
+            ->first();
+        $row = DB::table('doctor_schedules')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('user_id', '=', $id)
+            ->orderBy('id', 'asc')
             ->get();
-        return view('doctors.schedule-create', compact('row'));
+        return view('doctors.schedule-create', compact('row','doctor'));
     }
 
     public function scheduleUpdate($id, Request $request)

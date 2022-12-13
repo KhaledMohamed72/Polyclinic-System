@@ -97,6 +97,7 @@
             var date = document.getElementById("date");
             date.style.display = chkYes.checked ? "block" : "none";
         }
+
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()
