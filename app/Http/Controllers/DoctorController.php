@@ -361,6 +361,7 @@ class DoctorController extends Controller
             ->selectRaw('count(*) as count')
             ->groupBy('month')
             ->orderBy('month')
+            ->take(12)
             ->get();
         $monthly_prescriptions_counts = DB::table('prescriptions')
             ->where('clinic_id',$this->getClinic()->id)
@@ -369,6 +370,7 @@ class DoctorController extends Controller
             ->selectRaw('count(*) as count')
             ->groupBy('month')
             ->orderBy('month')
+            ->take(12)
             ->get();
         $current_month_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id', '=', $this->getClinic()->id)

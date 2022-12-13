@@ -97,6 +97,7 @@ class HomeController extends Controller
             ->selectRaw('count(*) as count')
             ->groupBy('month')
             ->orderBy('month')
+            ->take(12)
             ->get();
         $monthly_prescriptions_counts = DB::table('prescriptions')
             ->where('clinic_id',$this->getClinic()->id)
@@ -104,6 +105,7 @@ class HomeController extends Controller
             ->selectRaw('count(*) as count')
             ->groupBy('month')
             ->orderBy('month')
+            ->take(12)
             ->get();
         if (auth()->user()->hasRole('admin')) {
             return view('home', compact(
