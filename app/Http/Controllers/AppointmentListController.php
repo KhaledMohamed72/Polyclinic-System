@@ -103,6 +103,7 @@ class AppointmentListController extends Controller
                 ->join('users as t2','t2.id','=','appointments.patient_id')
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->whereDate('appointments.date', '>', Carbon::today()->toDateString())
+                ->where('appointments.status', '=', 'pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -114,6 +115,7 @@ class AppointmentListController extends Controller
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.doctor_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '>', Carbon::today()->toDateString())
+                ->where('appointments.status', '=', 'pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
@@ -125,6 +127,7 @@ class AppointmentListController extends Controller
                 ->where('appointments.clinic_id','=',$this->getClinic()->id)
                 ->where('appointments.receptionist_id','=',auth()->user()->id)
                 ->whereDate('appointments.date', '>', Carbon::today()->toDateString())
+                ->where('appointments.status', '=', 'pending')
                 ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
                 ->orderBy('appointments.id','desc')->get();
         }
