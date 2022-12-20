@@ -4,9 +4,9 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Health Care Companies    @endsection
-@section('header-title')    Health Care Companies   @endsection
-@section('header-title-one')    Health Care Companies    @endsection
+@section('title')   Insurance Companies    @endsection
+@section('header-title')    Insurance Companies   @endsection
+@section('header-title-one')    Insurance Companies    @endsection
 @section('header-title-two')    Edit   @endsection
 
 @section('content')

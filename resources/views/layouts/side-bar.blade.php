@@ -229,7 +229,7 @@
                            class="nav-link {{ (request()->routeIs('care-companies.*')) ? 'active' : '' }}">
                             <i class="nav-icon material-icons">corporate_fare</i>
                             <p>
-                                Care Companies
+                                Insurance Companies
                             </p>
                         </a>
                     </li>

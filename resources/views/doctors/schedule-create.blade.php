@@ -101,7 +101,7 @@
                                     <div class="tab-content" id="custom-tabs-three-tabContent">
                                         <div class="tab-pane fade show active" id="custom-tabs-three-f{{$i}}"
                                              role="tabpanel" aria-labelledby="custom-tabs-three-f{{$i}}-tab">
-                                            <div class="col-md-8 col-sm-4">
+                                            <div class="col-md-12 col-sm-6">
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -117,7 +117,7 @@
                                                 <!-- /.form group -->
                                             </div>
 
-                                            <div class="col-md-8 col-sm-4">
+                                            <div class="col-md-12 col-sm-4">
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -136,7 +136,7 @@
                                         </div>
                                         <div class="tab-pane fade" id="custom-tabs-three-s{{$i}}" role="tabpanel"
                                              aria-labelledby="custom-tabs-three-s{{$i}}-tab">
-                                            <div class="col-md-8 col-sm-4">
+                                            <div class="col-md-12 col-sm-4">
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -152,7 +152,7 @@
                                                 </div>
                                                 <!-- /.form group -->
                                             </div>
-                                            <div class="col-md-8 col-sm-4">
+                                            <div class="col-md-12 col-sm-4">
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">

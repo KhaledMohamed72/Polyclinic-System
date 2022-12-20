@@ -36,12 +36,12 @@
                                     History</a>
                             </li>
                         @endif
-                        {{--Care Companies--}}
+                        {{--Insurance Companies--}}
                         @if(auth()->user()->hasRole('doctor'))
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-patient-care-company-tab" data-toggle="pill"
                                    href="#custom-tabs-three-care-company" role="tab"
-                                   aria-controls="custom-tabs-three-care-company" aria-selected="false">Care Companies</a>
+                                   aria-controls="custom-tabs-three-care-company" aria-selected="false">Insurance Companies</a>
                             </li>
                         @endif
                     </ul>

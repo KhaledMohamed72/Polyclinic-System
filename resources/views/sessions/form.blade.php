@@ -64,7 +64,7 @@
     @if(!$care_companies->isEmpty())
         <div class="row">
             <div class="col-sm-6 form-group">
-                <label class="control-label">Health Care Company</label>
+                <label class="control-label">Insurance Companies</label>
                 @php $input = 'care_company_id'; @endphp
                 <select
                     class="form-control select2"

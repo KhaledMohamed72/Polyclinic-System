@@ -75,7 +75,7 @@
                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-check-circle"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Health Care Companies</span>
+                            <span class="info-box-text">Insurance Companies</span>
                             <span class="info-box-number">
                   10
                 </span>
