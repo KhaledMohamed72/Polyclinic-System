@@ -103,35 +103,13 @@ class PrescriptionController extends Controller
             'patient' => ['required', 'integer'],
             'date' => ['required', 'date'],
         ]);
-        // function to insert a new medicines or tests to suggest it later when go to create new prescriptions
+        // functions to insert a new medicines or tests to suggest it later when go to create new prescriptions
         $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
         $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
 
-        // get fees based on prescription type
-        $doctor = Doctor::where('user_id', auth()->user()->id)->first();
-        if ($request->type == 0) {
-            $fees = $doctor->examination_fees;
-            if ($request->has('care_company_id') && $request->care_company_id != '') {
-                $discount_rate = DB::table('care_companies')
-                    ->where('id', $request->care_company_id)
-                    ->where('clinic_id', $this->getClinic()->id)
-                    ->select('discount_rate')
-                    ->first();
-                $discount_rate = $discount_rate->discount_rate;
-                $fees = $fees - (($fees/100)*$discount_rate);
-            }
-        } else {
-            $fees = $doctor->followup_fees;
-            if ($request->has('care_company_id') && $request->care_company_id != '') {
-                $discount_rate = DB::table('care_companies')
-                    ->where('id', $request->care_company_id)
-                    ->where('clinic_id', $this->getClinic()->id)
-                    ->select('discount_rate')
-                    ->first();
-                $discount_rate = $discount_rate->discount_rate;
-                $fees = $fees - (($fees / 100) * $discount_rate);
-            }
-        }
+        // get fees based on prescription type and insurance company
+        $fees = $this->getFees($request);
+
         $prescription = DB::table('prescriptions')->insert([
             'clinic_id' => $this->getClinic()->id,
             'doctor_id' => auth()->user()->id,
@@ -389,6 +367,10 @@ class PrescriptionController extends Controller
             ->where('prescription_tests.clinic_id', $this->getClinic()->id)
             ->get();
 
+        $care_companies = DB::table('care_companies')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('doctor_id', auth()->user()->id)
+            ->get();
         return view('prescriptions.edit',
             compact(
                 'prescription',
@@ -402,7 +384,8 @@ class PrescriptionController extends Controller
                 'patients',
                 'appointment',
                 'frequencies',
-                'periods'
+                'periods',
+                'care_companies'
             ));
     }
 
@@ -418,14 +401,18 @@ class PrescriptionController extends Controller
         $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
         $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
 
-
+        // get fees based on prescription type and insurance company
+        $fees = $this->getFees($request);
         $prescription = DB::table('prescriptions')
             ->where('clinic_id', $this->getClinic()->id)
-            ->where('id', $id)->update([
+            ->where('id', $id)
+            ->update([
                 'patient_id' => $request->get('patient'),
+                'care_company_id' => $request->care_company_id,
                 'type' => $request->get('type'),
                 'date' => $request->get('date'),
-                'followup_date' => $request->get('followup_date'),
+                'followup_date' => $request->get('followup_date') ?? null,
+                'fees' => $fees,
                 'note' => $request->get('note'),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
@@ -542,6 +529,35 @@ class PrescriptionController extends Controller
                 'note' => $key['note'],
             ]);
         }
+    }
+
+    public function getFees($request){
+        // get fees based on prescription type
+        $doctor = Doctor::where('user_id', auth()->user()->id)->first();
+        if ($request->type == 0) {
+            $fees = $doctor->examination_fees;
+            if ($request->has('care_company_id') && $request->care_company_id != '') {
+                $discount_rate = DB::table('care_companies')
+                    ->where('id', $request->care_company_id)
+                    ->where('clinic_id', $this->getClinic()->id)
+                    ->select('discount_rate')
+                    ->first();
+                $discount_rate = $discount_rate->discount_rate;
+                $fees = $fees - (($fees/100)*$discount_rate);
+            }
+        } else {
+            $fees = $doctor->followup_fees;
+            if ($request->has('care_company_id') && $request->care_company_id != '') {
+                $discount_rate = DB::table('care_companies')
+                    ->where('id', $request->care_company_id)
+                    ->where('clinic_id', $this->getClinic()->id)
+                    ->select('discount_rate')
+                    ->first();
+                $discount_rate = $discount_rate->discount_rate;
+                $fees = $fees - (($fees / 100) * $discount_rate);
+            }
+        }
+        return $fees;
     }
 
     public function pdf_prescription($id)
