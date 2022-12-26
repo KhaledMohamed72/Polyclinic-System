@@ -114,7 +114,7 @@
                             <span class="info-box-icon bg-white elevation-1"><i class="fas fa-calendar-week"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Upcomming Appt.</span>
+                                <span class="info-box-text">Upcoming Appt.</span>
                                 <span class="info-box-number">{{$upcomming_appointments_count}}</span>
                             </div>
                             <!-- /.info-box-content -->
