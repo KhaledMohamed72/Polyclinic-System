@@ -20,6 +20,7 @@ class HomeController extends Controller
         $tomorrow_appointments_count = DB::table('appointments')
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->whereDate('date', '=', Carbon::tomorrow()->toDateString())
+            ->where('appointments.status', '=', 'pending')
             ->count();
         $upcomming_appointments_count = DB::table('appointments')
             ->where('clinic_id', '=', $this->getClinic()->id)

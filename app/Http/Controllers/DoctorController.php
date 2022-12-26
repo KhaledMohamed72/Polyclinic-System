@@ -302,6 +302,7 @@ class DoctorController extends Controller
         $tomorrow_appointments_count = DB::table('appointments')
             ->where('clinic_id','=',$this->getClinic()->id)
             ->whereDate('date', '=', Carbon::tomorrow()->toDateString())
+            ->where('appointments.status', '=', 'pending')
             ->where('doctor_id','=',$id)
             ->count();
         $upcomming_appointments_count = DB::table('appointments')
