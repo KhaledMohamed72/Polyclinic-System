@@ -162,13 +162,10 @@
                                                     class="fas fa-file"></i></a>
                                         @endif
                                     </td>
-
                                 </tr>
                                 @endforeach
                                 </tr>
-
                             </tbody>
-
                         </table>
                         <div id="no_list" class="text-center"></div>
                         <!-- /.card-body -->
