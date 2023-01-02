@@ -2,78 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
+use App\Repositories\AppointmentRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class AppointmentController extends Controller
 {
+    private $appointmentRepository;
+
+    public function __construct(AppointmentRepository $appointmentRepository)
+    {
+        $this->appointmentRepository = $appointmentRepository;
+    }
+
     public function index()
     {
-        // admin
-        if (auth()->user()->hasRole('admin')) {
-            $rows = DB::table('appointments')
-                ->join('users as t1','t1.id','=','appointments.doctor_id')
-                ->join('users as t2','t2.id','=','appointments.patient_id')
-                ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
-                ->orderBy('appointments.id','desc')->get();
-        }
-        // doctor
-        if (auth()->user()->hasRole('doctor')) {
-            $rows = DB::table('appointments')
-                ->join('users as t1','t1.id','=','appointments.doctor_id')
-                ->join('users as t2','t2.id','=','appointments.patient_id')
-                ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.doctor_id','=',auth()->user()->id)
-                ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
-                ->orderBy('appointments.id','desc')->get();
-        }
-        // receptionist
-        if (auth()->user()->hasRole('recep')) {
-            $rows = DB::table('appointments')
-                ->join('users as t1','t1.id','=','appointments.doctor_id')
-                ->join('users as t2','t2.id','=','appointments.patient_id')
-                ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.receptionist_id','=',auth()->user()->id)
-                ->whereDate('appointments.date', '=', Carbon::today()->toDateString())
-                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
-                ->orderBy('appointments.id','desc')->get();
-        }
-        return view('appointments.index',compact('rows'));
+        $rows = $this->appointmentRepository->todayAppointments();
+        return view('appointments.index', compact('rows'));
     }
-    //  calendar
-    public function get_all_appointments(){
-        // admin
-        if (auth()->user()->hasRole('admin')) {
-            $rows = DB::table('appointments')
-                ->where('clinic_id',$this->getClinic()->id)
-                ->select('date', DB::raw('concat(count(*), " appointments") as title'))
-                ->groupBy('date')
-                ->get();
-        }
-        // doctor
-        if (auth()->user()->hasRole('doctor')) {
-            $rows = DB::table('appointments')
-                ->where('clinic_id',$this->getClinic()->id)
-                ->where('doctor_id',auth()->user()->id)
-                ->select('date', DB::raw('concat(count(*), " appointments") as title'),)
-                ->groupBy('date')
-                ->get();
-        }
-        // receptionist
-        if (auth()->user()->hasRole('recep')) {
-            $rows = DB::table('appointments')
-                ->where('clinic_id',$this->getClinic()->id)
-                ->where('receptionist_id',auth()->user()->id)
-                ->select('date', DB::raw('concat(count(*), " appointments") as title'),)
-                ->groupBy('date')
-                ->get();
-        }
+
+    //  get appointments counts per day for calender view
+    public function get_all_appointments()
+    {
+        $rows = $this->appointmentRepository->appointmentsCountsPerDayCalender();
         if ($rows) {
             return response()->json($rows);
         } else {
@@ -82,40 +33,9 @@ class AppointmentController extends Controller
         }
     }
 
-    public function get_appointments_per_date(Request $request){
-
-        // admin
-        if (auth()->user()->hasRole('admin')) {
-            $rows = DB::table('appointments')
-                ->join('users as t1','t1.id','=','appointments.doctor_id')
-                ->join('users as t2','t2.id','=','appointments.patient_id')
-                ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->whereDate('appointments.date', '=', $request->date)
-                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
-                ->orderBy('appointments.id','desc')->get();
-        }
-        // doctor
-        if (auth()->user()->hasRole('doctor')) {
-            $rows = DB::table('appointments')
-                ->join('users as t1','t1.id','=','appointments.doctor_id')
-                ->join('users as t2','t2.id','=','appointments.patient_id')
-                ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.doctor_id','=',auth()->user()->id)
-                ->whereDate('appointments.date', '=', $request->date)
-                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
-                ->orderBy('appointments.id','desc')->get();
-        }
-        // receptionist
-        if (auth()->user()->hasRole('recep')) {
-            $rows = DB::table('appointments')
-                ->join('users as t1','t1.id','=','appointments.doctor_id')
-                ->join('users as t2','t2.id','=','appointments.patient_id')
-                ->where('appointments.clinic_id','=',$this->getClinic()->id)
-                ->where('appointments.receptionist_id','=',auth()->user()->id)
-                ->whereDate('appointments.date', '=', $request->date)
-                ->select('appointments.*','t1.name as doctor_name','t2.name as patient_name','t2.phone')
-                ->orderBy('appointments.id','desc')->get();
-        }
+    public function get_appointments_per_date(Request $request)
+    {
+        $rows = $this->appointmentRepository->appointmentsRowsPerDayDataTable($request);
         if ($rows) {
             return response()->json($rows);
         } else {
@@ -123,56 +43,11 @@ class AppointmentController extends Controller
             return redirect()->route('appointments.index');
         }
     }
+
     public function create(Request $request)
     {
-        if (!auth()->user()->hasRole(['admin', 'doctor', 'recep'])) {
-            toastr()->warning('Something went wrong!');
-            return redirect()->route('home');
-        }
-        // list of doctors if the role is admin
-        if (auth()->user()->hasRole('admin')) {
-            $doctor_rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-            $patient_rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
-
-        // list of doctors if the role is recep
-        if (auth()->user()->hasRole('recep')) {
-            $doctor_rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('doctors.receptionist_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-            $patient_rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('patients.receptionist_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
-        // list of doctors if the role is doctor
-        if (auth()->user()->hasRole('doctor')) {
-            $doctor_rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('doctors.user_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-            $patient_rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('patients.doctor_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
+        $doctor_rows = $this->appointmentRepository->doctorRowsForCreateView($request);
+        $patient_rows = $this->appointmentRepository->patientRowsForCreateView($request);
         // get nOf doctors to show doctor drop down menu if nOf doctors is more than one and hide it if equal to one
         $count_doctors = count($doctor_rows);
         if ($count_doctors == 0) {
@@ -194,37 +69,11 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'patient_id' => ['required', 'integer'],
             'date' => ['required', 'string'],
         ]);
-        //validate available_slot radio
-        if (!$request->has('available_slot')) {
-            return Redirect::back()->with('error', 'You must choose any available slot');
-        }
-        // if the form has input doctor
-        if ($request->has('doctor_id') && $request->doctor_id != '') {
-            $doctor = Doctor::where('user_id', $request->doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $request->doctor_id;
-        } else {
-            $doctor = Doctor::where('user_id', $request->has_one_doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $doctor['user_id'];
-        }
-        $appointment = DB::table('appointments')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'patient_id' => $request->patient_id,
-            'doctor_id' => $doctor_id,
-            'receptionist_id' => $receptionist_id,
-            'date' => $request->date,
-            'time' => $request->available_slot,
-            'status' => 'pending',
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-
+        $appointment = $this->appointmentRepository->storeAppointment($request);
         if ($appointment) {
             toastr()->success('Successfully Created');
             return redirect()->route('appointments.create');
@@ -254,39 +103,7 @@ class AppointmentController extends Controller
             ->where('doctor_schedules.id', '=', $request->id)
             ->select('doctor_schedules.*', 'doctors.slot_time')
             ->first();
-
-        // check if there is reserved times or not and covert it to array
-        if ($request->has('has_one_doctor_id')) {
-            $doctor_id = $request->has_one_doctor_id;
-        } else {
-            $doctor_id = $request->doctor_id;
-        }
-        if (auth()->user()->hasRole('admin')) {
-            $reserved_time = DB::table('appointments')
-                ->where('clinic_id', $this->getClinic()->id)
-                ->where('doctor_id', $doctor_id)
-                ->where('date', $request->date)
-                ->select('time')
-                ->get()->pluck('time');
-        }
-        if (auth()->user()->hasRole('recep')) {
-            $reserved_time = DB::table('appointments')
-                ->where('clinic_id', $this->getClinic()->id)
-                ->where('receptionist_id', auth()->user()->id)
-                ->where('date', $request->date)
-                ->select('time')
-                ->get()->pluck('time');
-        }
-        if (auth()->user()->hasRole('doctor')) {
-            $reserved_time = DB::table('appointments')
-                ->where('clinic_id', $this->getClinic()->id)
-                ->where('doctor_id', auth()->user()->id)
-                ->where('date', $request->date)
-                ->select('time')
-                ->get()->pluck('time');
-        }
-        $reserved_time_array = $reserved_time->all();
-
+        $reserved_time_array = $this->appointmentRepository->getReservedTime($request);
         $time_slots_array = array();
         $first_end = strtotime($time_slots->first_end_time);
         $slot_time_or = $time_slots->slot_time;
