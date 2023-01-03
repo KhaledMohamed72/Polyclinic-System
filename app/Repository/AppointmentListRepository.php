@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repository;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\AppointmentListRepositoryInterface;
+use App\Repository\Interfaces\AppointmentListRepositoryInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 

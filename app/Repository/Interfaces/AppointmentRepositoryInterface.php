@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interfaces;
+namespace App\Repository\Interfaces;
 
 use Illuminate\Http\Request;
 
@@ -12,5 +12,5 @@ interface AppointmentRepositoryInterface
     public function doctorRowsForCreateView(Request $request);
     public function patientRowsForCreateView(Request $request);
     public function storeAppointment(Request $request);
-    public function getReservedTime(Request $request);
+    public function getSlotTimes(Request $request);
 }

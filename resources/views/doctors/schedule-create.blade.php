@@ -73,27 +73,27 @@
                                                 <span><i class="fa fa-clock"></i></span>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                        {{--<li class="nav-item">
                                             <a class="nav-link" id="custom-tabs-three-s{{$i}}-tab"
                                                data-toggle="pill" href="#custom-tabs-three-s{{$i}}" role="tab"
                                                aria-controls="custom-tabs-three-s{{$i}}" aria-selected="false">
                                                 <span><i class="fa fa-clock"></i></span>
                                                 <i class="fa fa-sm fa-plus-circle"></i>
                                             </a>
-                                        </li>
+                                        </li>--}}
                                         @else
                                             <li class="nav-item">
                                                 <a class="nav-link active" id="custom-tabs-three-f{{$i}}-tab"
                                                    data-toggle="pill" href="#custom-tabs-three-f{{$i}}" role="tab"
-                                                   aria-controls="custom-tabs-three-f{{$i}}" aria-selected="true">&ensp;First
+                                                   aria-controls="custom-tabs-three-f{{$i}}" aria-selected="true">&ensp;
                                                     Period</a>
                                             </li>
-                                            <li class="nav-item">
+                                            {{--<li class="nav-item">
                                                 <a class="nav-link" id="custom-tabs-three-s{{$i}}-tab"
                                                    data-toggle="pill" href="#custom-tabs-three-s{{$i}}" role="tab"
                                                    aria-controls="custom-tabs-three-s{{$i}}" aria-selected="false">Second
                                                     Period</a>
-                                            </li>
+                                            </li>--}}
                                         @endif
                                     </ul>
                                 </div>

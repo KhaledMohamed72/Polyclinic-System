@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\AppointmentRepository;
+use App\Repository\AppointmentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class AppointmentController extends Controller
 {
@@ -73,6 +74,10 @@ class AppointmentController extends Controller
             'patient_id' => ['required', 'integer'],
             'date' => ['required', 'string'],
         ]);
+        //validate available_slot radio
+        if (!$request->has('available_slot')) {
+            return Redirect::back()->with('error', 'You must choose any available slot');
+        }
         $appointment = $this->appointmentRepository->storeAppointment($request);
         if ($appointment) {
             toastr()->success('Successfully Created');
@@ -82,7 +87,6 @@ class AppointmentController extends Controller
             return redirect()->route('appointments.index');
         }
     }
-
 
     public function get_available_time(Request $request)
     {
@@ -97,41 +101,8 @@ class AppointmentController extends Controller
 
     public function get_time_slots(Request $request)
     {
-        $time_slots = DB::table('doctor_schedules')
-            ->join('doctors', 'doctors.user_id', '=', 'doctor_schedules.user_id')
-            ->where('doctor_schedules.clinic_id', '=', $this->getClinic()->id)
-            ->where('doctor_schedules.id', '=', $request->id)
-            ->select('doctor_schedules.*', 'doctors.slot_time')
-            ->first();
-        $reserved_time_array = $this->appointmentRepository->getReservedTime($request);
-        $time_slots_array = array();
-        $first_end = strtotime($time_slots->first_end_time);
-        $slot_time_or = $time_slots->slot_time;
-        $slot_time = $time_slots->slot_time;
-        array_push($time_slots_array, $time_slots->first_start_time);
-
-        for (; ;) {
-            /*
-            Here I made some operation to get the time slots between start and end time of doctor
-            1- every round we add slot time of doctor to start time and increment with its value
-            2- then we check the difference between (added time slot to start time) and end time
-            3- if the result is more than base slot time, we push this time to array
-            3 - if the result is less than base slot time, we break the loop
-            4 - then we get the difference between the two array =>(time slots , reserved_time)
-            */
-            $time_to_push = strtotime("+" . $slot_time . "minutes", strtotime($time_slots->first_start_time));
-
-            if (($first_end - $time_to_push) / 60 >= $slot_time_or) {
-
-                array_push($time_slots_array, date('H:i', $time_to_push));
-
-                $slot_time = $slot_time + $slot_time_or;
-            } else {
-                break;
-            }
-        }
-        $free_time_array = array_diff($time_slots_array, $reserved_time_array);
-
+        $free_time_array = $this->appointmentRepository->getSlotTimes($request);
         return response()->json(array_values($free_time_array));
     }
+
 }

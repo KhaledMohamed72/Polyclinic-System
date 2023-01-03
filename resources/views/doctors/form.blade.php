@@ -142,7 +142,7 @@
                 <label>Receptionist</label>
                 <select name="{{$input}}" class="form-control select2" style="width: 100%;">
                     <option selected="" disabled="">Select Receptionist</option>
-                    @foreach($receptionists_rows as $receptionist)
+                    @foreach($rows as $receptionist)
                         <option
                             value="{{$receptionist->id}}" {{ (isset($row) && $receptionist->id == $row->receptionist_id ? 'selected' : '') }}>{{$receptionist->name}}</option>
                     @endforeach

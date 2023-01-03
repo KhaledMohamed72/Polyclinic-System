@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repository;
 
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
-use App\Repositories\Interfaces\AppointmentRepositoryInterface;
+use App\Repository\Interfaces\AppointmentRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class AppointmentRepository extends Controller implements AppointmentRepositoryInterface
 {
@@ -175,10 +174,6 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
         return $rows;
     }
     public function storeAppointment(Request $request){
-        //validate available_slot radio
-        if (!$request->has('available_slot')) {
-            return Redirect::back()->with('error', 'You must choose any available slot');
-        }
         // if the form has input doctor
         if ($request->has('doctor_id') && $request->doctor_id != '') {
             $doctor = Doctor::where('user_id', $request->doctor_id)->first();
@@ -202,7 +197,15 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
         ]);
         return $appointment;
     }
-    public function getReservedTime(Request $request){
+
+    public function getSlotTimes(Request $request)
+    {
+        $time_slots = DB::table('doctor_schedules')
+            ->join('doctors', 'doctors.user_id', '=', 'doctor_schedules.user_id')
+            ->where('doctor_schedules.clinic_id', '=', $this->getClinic()->id)
+            ->where('doctor_schedules.id', '=', $request->id)
+            ->select('doctor_schedules.*', 'doctors.slot_time')
+            ->first();
         // check if there is reserved times or not and covert it to array
         if ($request->has('has_one_doctor_id')) {
             $doctor_id = $request->has_one_doctor_id;
@@ -234,6 +237,33 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
                 ->get()->pluck('time');
         }
         $reserved_time_array = $reserved_time->all();
-        return $reserved_time_array;
+        $time_slots_array = array();
+        $first_end = strtotime($time_slots->first_end_time);
+        $slot_time_or = $time_slots->slot_time;
+        $slot_time = $time_slots->slot_time;
+        array_push($time_slots_array, $time_slots->first_start_time);
+
+        for (; ;) {
+            /*
+            Here I made some operation to get the time slots between start and end time of doctor
+            1- every round we add slot time of doctor to start time and increment with its value
+            2- then we check the difference between (added time slot to start time) and end time
+            3- if the result is more than base slot time, we push this time to array
+            3 - if the result is less than base slot time, we break the loop
+            4 - then we get the difference between the two array =>(time slots , reserved_time)
+            */
+            $time_to_push = strtotime("+" . $slot_time . "minutes", strtotime($time_slots->first_start_time));
+
+            if (($first_end - $time_to_push) / 60 >= $slot_time_or) {
+
+                array_push($time_slots_array, date('H:i', $time_to_push));
+
+                $slot_time = $slot_time + $slot_time_or;
+            } else {
+                break;
+            }
+        }
+        $free_time_array = array_diff($time_slots_array, $reserved_time_array);
+        return $free_time_array;
     }
 }

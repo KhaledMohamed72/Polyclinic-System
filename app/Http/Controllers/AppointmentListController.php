@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\AppointmentListRepository;
+use App\Repository\AppointmentListRepository;
 use Illuminate\Support\Facades\Redirect;
 
 class AppointmentListController extends Controller
