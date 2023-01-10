@@ -30,7 +30,7 @@
                     <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
                        href="#custom-content-below-appointment" role="tab"
                        aria-controls="custom-content-below-appointment" aria-selected="true">
-                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Today's Appointment&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
+                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Appointments&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="custom-content-below-prescription-tab" data-toggle="pill"

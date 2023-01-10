@@ -160,7 +160,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if($user->hasRole(['admin','doctor']))
+                        @if($user->hasRole(['admin','recep','doctor']))
                             <li class="nav-item">
                                 <a href="{{route('prescriptions.index')}}" class="nav-link {{ (request()->routeIs('prescriptions.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>

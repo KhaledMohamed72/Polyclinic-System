@@ -6,6 +6,7 @@ use App\Models\Doctor;
 use App\Models\Receptionist;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -211,14 +212,12 @@ class ReceptionistController extends Controller
             ->where('sessions_info.clinic_id',$this->getClinic()->id)
             ->count();
         $appointments = DB::table('appointments')
-            ->join('users as t2','t2.id','=','appointments.patient_id')
-            ->join('users as t1','t1.id','=','appointments.doctor_id')
-            ->join('doctors as t3', 't3.user_id', '=', 't2.id')
-            ->where('t3.receptionist_id','=',$id)
-            ->where('appointments.clinic_id','=',$this->getClinic()->id)
-            ->select('appointments.*','t2.name as patient_name','t2.phone','t1.name as doctor_name')
-            ->orderBy('appointments.date','desc')->get();
-
+            ->join('users as t1', 't1.id', '=', 'appointments.doctor_id')
+            ->join('users as t2', 't2.id', '=', 'appointments.patient_id')
+            ->where('appointments.clinic_id', '=', $this->getClinic()->id)
+            ->where('appointments.receptionist_id', '=', auth()->user()->id)
+            ->select('appointments.*', 't1.name as doctor_name', 't2.name as patient_name', 't2.phone')
+            ->orderBy('appointments.id', 'desc')->get();
         $prescriptions = DB::table('prescriptions')
             ->join('users as t1', 't1.id', '=', 'prescriptions.patient_id')
             ->join('patients as t2','t2.user_id','=','t1.id')
