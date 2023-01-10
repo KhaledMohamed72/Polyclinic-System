@@ -3,7 +3,7 @@
 <div class="card-body">
 
     {{--get nOf doctors to show doctor drop down menu if nOf doctors is more than one and hide it if equal to one--}}
-    @if($count_doctors > 1)
+    @if($count_rows > 1)
         <div class="row">
             @php $input = 'doctor_id' @endphp
             <div class="col-md-6">
@@ -11,7 +11,7 @@
                     <label>Doctor</label>
                     <select name="{{$input}}" class="form-control select2" style="width: 100%;">
                         <option selected="" disabled="">Select Doctor</option>
-                        @foreach($doctor_rows as $doctor_row)
+                        @foreach($rows as $doctor_row)
                             <option value="{{$doctor_row->id}}"
                                 {{isset($row) && $row->doctor_id == $doctor_row->id ? 'selected' : ''}}>{{$doctor_row->name}}</option>
                         @endforeach
@@ -22,7 +22,7 @@
             </div>
         </div>
     @else
-        <input type="hidden" value="{{$doctor_rows[0]->id}}" name="has_one_doctor_id">
+        <input type="hidden" value="{{$rows[0]->id}}" name="has_one_doctor_id">
     @endif
     <div class="row">
         @php $input = 'name' @endphp

@@ -10,6 +10,10 @@ use App\Repository\Interfaces\AppointmentListRepositoryInterface;
 use App\Repository\Interfaces\AppointmentRepositoryInterface;
 use App\Repository\Interfaces\DoctorRepositoryInterface;
 use App\Repository\Interfaces\HomeRepositoryInterface;
+use App\Repository\Interfaces\PatientRepositoryInterface;
+use App\Repository\Interfaces\PrescriptionRepositoryInterface;
+use App\Repository\PatientRepository;
+use App\Repository\PrescriptionRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -25,6 +29,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AppointmentRepositoryInterface::class, AppointmentRepository::class);
         $this->app->bind(DoctorRepositoryInterface::class, DoctorRepository::class);
         $this->app->bind(HomeRepositoryInterface::class, HomeRepository::class);
+        $this->app->bind(PatientRepositoryInterface::class, PatientRepository::class);
+        $this->app->bind(PrescriptionRepositoryInterface::class, PrescriptionRepository::class);
     }
 
     /**

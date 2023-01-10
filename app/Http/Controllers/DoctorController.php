@@ -8,9 +8,7 @@ use App\Models\Receptionist;
 use App\Models\User;
 use App\Repository\DoctorRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 
 class DoctorController extends Controller
 {
@@ -82,7 +80,7 @@ class DoctorController extends Controller
             toastr()->warning('Something went wrong!');
             return redirect()->route('doctors.index');
         }
-        $doctor_store = $this->doctorRepository->doctorStore($request);
+        $doctor_store = $this->doctorRepository->storeDoctor($request);
         if ($doctor_store) {
             toastr()->success('Successfully Created');
             return redirect()->route('doctors.index');
@@ -107,7 +105,7 @@ class DoctorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $doctor_update = $this->doctorRepository->doctorUpdate($request,$id);
+        $doctor_update = $this->doctorRepository->updateDoctor($request,$id);
         if ($doctor_update) {
             toastr()->success('Successfully Updated');
             return redirect()->route('doctors.index');
