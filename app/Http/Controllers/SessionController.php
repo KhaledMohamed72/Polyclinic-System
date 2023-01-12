@@ -89,11 +89,11 @@ class SessionController extends Controller
             'type' => ['required', 'integer'],
             'date' => ['required', 'string'],
             'fees' => ['required', 'numeric'],
-            'insurance_company_id' => ['nullable', 'integer'],
+            'insurance_company_id' => ['nullable'],
             'note' => ['nullable', 'string'],
         ]);
         $fees = $request->fees;
-        if ($request->has('insurance_company_id') && $request->insurance_company_id != '') {
+        if ($request->has('insurance_company_id') && is_numeric($request->insurance_company_id) != '') {
             $discount_rate = DB::table('insurance_companies')
                 ->where('id', $request->insurance_company_id)
                 ->where('clinic_id', $this->getClinic()->id)
@@ -110,7 +110,7 @@ class SessionController extends Controller
             'session_type_id' => $request->type,
             'date' => $request->date,
             'fees' => $fees,
-            'insurance_company_id' => $request->insurance_company_id ?? null,
+            'insurance_company_id' => is_numeric($request->insurance_company_id) ? $request->insurance_company_id : null,
             'note' => $request->note,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);

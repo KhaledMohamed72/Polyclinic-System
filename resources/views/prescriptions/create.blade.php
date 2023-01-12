@@ -32,6 +32,8 @@
     <!-- repeater -->
     <script src="{{asset('assets/plugins/jquery-repeater/jquery-repeater.min.js')}}"></script>
     <script src="{{asset('assets/plugins/jquery-repeater/form-repeater.int.js')}}"></script>
+    <!-- custom input file -->
+    <script src="{{asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
     <!-- get appointments of chosen patient -->
     <script>
         $('.sel_patient').on('change', function (e) {
@@ -97,7 +99,9 @@
             var date = document.getElementById("date");
             date.style.display = chkYes.checked ? "block" : "none";
         }
-
+        $(function () {
+            bsCustomFileInput.init();
+        });
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()

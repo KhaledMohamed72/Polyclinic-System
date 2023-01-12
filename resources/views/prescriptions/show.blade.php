@@ -12,10 +12,12 @@
 @section('content')
     <div class="row d-print-none">
         <div class="col-12 text-center">
-            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mb-4 ml-3" title="Print">
+            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mb-4 ml-3"
+               title="Print">
                 <i class="fa fa-print"></i>
             </a>
-            <a href="{{route('prescription-pdf',$prescription->id)}}" class="btn btn-warning waves-effect waves-light mb-4" title="Print">
+            <a href="{{route('prescription-pdf',$prescription->id)}}"
+               class="btn btn-warning waves-effect waves-light mb-4" title="Print">
                 <i class="fa fa-file-pdf"></i>
             </a>
         </div>
@@ -126,10 +128,12 @@
                     </div>
                     <div class="row d-print-none">
                         <div class="col-12 text-center">
-                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mb-4 ml-3" title="Print">
+                            <a href="javascript:window.print()"
+                               class="btn btn-success waves-effect waves-light mb-4 ml-3" title="Print">
                                 <i class="fa fa-print"></i>
                             </a>
-                            <a href="{{route('prescription-pdf',$prescription->id)}}" class="btn btn-warning waves-effect waves-light mb-4" title="Print">
+                            <a href="{{route('prescription-pdf',$prescription->id)}}"
+                               class="btn btn-warning waves-effect waves-light mb-4" title="Print">
                                 <i class="fa fa-file-pdf"></i>
                             </a>
                         </div>
@@ -151,7 +155,7 @@
     <script>
         $(function () {
             $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,order: [[0, 'desc']],
+                "responsive": true, "lengthChange": false, "autoWidth": false, order: [[0, 'desc']],
             }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
         });
         $('#example2').DataTable({

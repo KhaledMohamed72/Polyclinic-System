@@ -368,6 +368,23 @@
         </div>
     </div>
     <div class="row">
+        @php $input = 'file' @endphp
+        <div class="col-sm-6">
+            <label class="control-label">Attachment</label>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" name="{{$input}}" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">{{$prescription->file}}</label>
+                    @if(!empty($prescription->file))
+                        <a class="position-absolute ml-3 mt-2" target="_blank" href="{{url('images/prescriptions/'.$prescription->file)}}">
+                            <i class="fa fa-lg fa-eye"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         @php $input = 'note' @endphp
         <div class="col-sm-6">
             <label for="exampleInput{{$input}}">Note</label>

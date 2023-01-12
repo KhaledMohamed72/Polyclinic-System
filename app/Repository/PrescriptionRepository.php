@@ -78,11 +78,11 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('clinic_id', $this->getClinic()->id)
             ->orderBy('id', 'desc')
             ->get();
-        $care_companies = DB::table('care_companies')
+        $insurance_companies = DB::table('insurance_companies')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('doctor_id', auth()->user()->id)
             ->get();
-        return [$patients, $frequencies, $periods, $medicines, $formulas, $tests, $care_companies];
+        return [$patients, $frequencies, $periods, $medicines, $formulas, $tests, $insurance_companies];
     }
 
     public function storePrescriptions($request)
@@ -98,16 +98,17 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
 
         // get fees based on prescription type and insurance company
         $fees = $this->getFees($request);
-
+        $fileName = $this->storeImage($request, 'images/prescriptions');
         $prescription = DB::table('prescriptions')->insert([
             'clinic_id' => $this->getClinic()->id,
             'doctor_id' => auth()->user()->id,
             'patient_id' => $request->get('patient'),
-            'care_company_id' => $request->care_company_id,
+            'insurance_company_id' => $request->insurance_company_id,
             'type' => $request->get('type'),
             'date' => $request->get('date'),
             'followup_date' => $request->get('followup_date'),
             'fees' => $fees,
+            'file' => $fileName ?? null,
             'note' => $request->get('note'),
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
@@ -128,7 +129,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
         }
 
         foreach ($request->tests as $test) {
-            if ($test['test'] != null) {
+            if (isset($test['test'])) {
                 DB::table('prescription_tests')->insert([
                     'clinic_id' => $this->getClinic()->id,
                     'prescription_id' => $prescription_id,
@@ -228,7 +229,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('prescription_tests.clinic_id', $this->getClinic()->id)
             ->get();
 
-        $care_companies = DB::table('care_companies')
+        $insurance_companies = DB::table('insurance_companies')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('doctor_id', auth()->user()->id)
             ->get();
@@ -245,7 +246,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             $appointment,
             $frequencies,
             $periods,
-            $care_companies];
+            $insurance_companies];
     }
 
     public function showPrescriptions($id)
@@ -327,23 +328,33 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             'patient' => ['required', 'integer'],
             'date' => ['required', 'date'],
         ]);
-
+        $row = DB::table('prescriptions')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $id)
+            ->first();
         // function to insert a new medicines or tests to suggest it later when go to create new prescriptions
         $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
         $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
 
         // get fees based on prescription type and insurance company
         $fees = $this->getFees($request);
+        // delete old file if new one uploaded
+        if (!empty($row->file) && file_exists(public_path('images/prescriptions/' . $row->file))) {
+            if ($request->hasFile('file') && $request->file('file')) {
+                unlink(public_path('images/prescriptions/' . $row->file));
+            }
+        }
         $prescription = DB::table('prescriptions')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
             ->update([
                 'patient_id' => $request->get('patient'),
-                'care_company_id' => $request->care_company_id,
+                'insurance_company_id' => $request->insurance_company_id,
                 'type' => $request->get('type'),
                 'date' => $request->get('date'),
                 'followup_date' => $request->get('followup_date') ?? null,
                 'fees' => $fees,
+                'file' => ($request->hasFile('file') && $request->file('file') != '' ? $this->storeImage($request,'images/prescriptions') : $row->file),
                 'note' => $request->get('note'),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
@@ -470,7 +481,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('prescription_tests.clinic_id', $this->getClinic()->id)
             ->get();
         $mpdf = new \Mpdf\Mpdf();
-        return [$mpdf,$prescription, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient];
+        return [$mpdf, $prescription, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient];
     }
 
     public function checkItemsInDatabase($request, $table, $key, $value)
@@ -514,9 +525,9 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
         $doctor = Doctor::where('user_id', auth()->user()->id)->first();
         if ($request->type == 0) {
             $fees = $doctor->examination_fees;
-            if ($request->has('care_company_id') && $request->care_company_id != '') {
-                $discount_rate = DB::table('care_companies')
-                    ->where('id', $request->care_company_id)
+            if ($request->has('insurance_company_id') && $request->insurance_company_id != '') {
+                $discount_rate = DB::table('insurance_companies')
+                    ->where('id', $request->insurance_company_id)
                     ->where('clinic_id', $this->getClinic()->id)
                     ->select('discount_rate')
                     ->first();
@@ -525,9 +536,9 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             }
         } else {
             $fees = $doctor->followup_fees;
-            if ($request->has('care_company_id') && $request->care_company_id != '') {
-                $discount_rate = DB::table('care_companies')
-                    ->where('id', $request->care_company_id)
+            if ($request->has('insurance_company_id') && $request->insurance_company_id != '') {
+                $discount_rate = DB::table('insurance_companies')
+                    ->where('id', $request->insurance_company_id)
                     ->where('clinic_id', $this->getClinic()->id)
                     ->select('discount_rate')
                     ->first();
@@ -536,5 +547,17 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             }
         }
         return $fees;
+    }
+
+    protected function storeImage($request, $path)
+    {
+        if (!file_exists(public_path($path))) {
+            mkdir($path, 666, true);
+        }
+        if ($request->file('file')) {
+            $fileName = uniqid() . $request->file('file')->getClientOriginalName();
+            $request->file('file')->move(public_path($path) , $fileName);
+            return $fileName;
+        }
     }
 }

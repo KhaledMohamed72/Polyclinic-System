@@ -27,7 +27,8 @@
                 name="{{$input}}" id="patient">
                 <option disabled selected>Select Patient</option>
                 @foreach($patients as $patient)
-                    <option value="{{$patient->user_id}}" {{ isset(request()->patient_id) && request()->patient_id == $patient->user_id  ? 'selected' : ''}}>
+                    <option
+                        value="{{$patient->user_id}}" {{ isset(request()->patient_id) && request()->patient_id == $patient->user_id  ? 'selected' : ''}}>
                         {{$patient->user_name}}</option>
                 @endforeach
             </select>
@@ -154,8 +155,8 @@
                         </div>
                         <div class="col-sm-4 mt-1">
                             @php $input = 'note'; @endphp
-                                                    <textarea type="text" name="{{$input}}" class="form-control"
-                                                              placeholder="Notes..."></textarea>
+                            <textarea type="text" name="{{$input}}" class="form-control"
+                                      placeholder="Notes..."></textarea>
                         </div>
                         <div class="col-sm-1">
                             <input data-repeater-delete type="button"
@@ -185,9 +186,10 @@
                                 @endforeach
                             </datalist>
                         </div>
+                        @php $input = 'note'; @endphp
                         <div class="col-sm-5 mt-1">
-                                                    <textarea type="text" name="note" class="form-control"
-                                                              placeholder="Notes..."></textarea>
+                            <textarea type="text" name="{{$input}}" class="form-control"
+                                      placeholder="Notes..."></textarea>
                         </div>
                         <div class="col-sm-1">
                             <input data-repeater-delete type="button"
@@ -202,23 +204,23 @@
         </div>
     </div>
     @if(!$insurance_companies->isEmpty())
-    <div class="row">
-        <div class="col-sm-6 form-group">
-            <label class="control-label">Insurance Companies</label>
-            @php $input = 'insurance_company_id'; @endphp
-            <select
-                class="form-control select2"
-                name="{{$input}}">
-                <option disabled selected>Select Company</option>
-                @foreach($insurance_companies as $company)
-                    <option value="{{$company->id}}">
-                        {{$company->name}}</option>
-                @endforeach
-            </select>
-            @error($input)<span style="color: red;font-size: smaller"
-                                role="alert"><strong>{{ $message }}</strong></span>@enderror
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label class="control-label">Insurance Companies</label>
+                @php $input = 'insurance_company_id'; @endphp
+                <select
+                    class="form-control select2"
+                    name="{{$input}}">
+                    <option disabled selected>Select Company</option>
+                    @foreach($insurance_companies as $company)
+                        <option value="{{$company->id}}">
+                            {{$company->name}}</option>
+                    @endforeach
+                </select>
+                @error($input)<span style="color: red;font-size: smaller"
+                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
+            </div>
         </div>
-    </div>
     @endif
     <div class="row" id="date">
         @php $input = 'followup_date' @endphp
@@ -232,7 +234,19 @@
         </div>
     </div>
     <div class="row">
-        @php $input = 'prescription_note' @endphp
+        @php $input = 'file' @endphp
+        <div class="col-sm-6">
+            <label class="control-label">Attachment</label>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" name="{{$input}}" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @php $input = 'note' @endphp
         <div class="col-sm-6">
             <label for="exampleInput{{$input}}">Note</label>
             <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note"

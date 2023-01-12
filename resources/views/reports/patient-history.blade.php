@@ -41,7 +41,14 @@
                                     : </strong><span>{{date('Y-m-d',strtotime($prescription->created_at))}}</span>
                             </td>
                             <td><strong> النوع : </strong><span>{{$prescription->type == 0 ? 'كشف' : 'اعادة'}}</span>
-                            </td>
+                            @if(!empty($prescription->file))
+                                <td><strong> المرفق : </strong><span><a class="ml-3" style="color: blue"  target="_blank"
+                                                                        href="{{url('images/prescriptions/'.$prescription->file)}}">
+                                        عرض
+                                    </a></span>
+                                    @endif
+
+                                </td>
                         </tr>
 
                         </tbody>
