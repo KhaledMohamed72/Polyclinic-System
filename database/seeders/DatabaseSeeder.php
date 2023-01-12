@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Clinic::factory(3)->has(User::factory(10))->create();
-
         $this->call(ClinicSeeder::class);
         /*        $this->call(EntrustSeeder::class);
                 $this->call(ReceptionistSeeder::class);

@@ -19,29 +19,27 @@
                 <div class="card-header p-0 pt-1 border-bottom-0">
                     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                         {{-- patient history --}}
-                        @if(auth()->user()->hasRole('doctor'))
+                        @if(auth()->user()->hasRole(['admin','recep','doctor']))
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-tabs-three-patient-history-tab" data-toggle="pill"
                                    href="#custom-tabs-three-patient-history" role="tab"
                                    aria-controls="custom-tabs-three-patient-history" aria-selected="false">Patient
                                     History</a>
                             </li>
-                        @endif
-                        {{-- Doctor history --}}
-                        @if(auth()->user()->hasRole(['admin','doctor']))
+                            {{-- Doctor history --}}
                             <li class="nav-item">
-                                <a class="nav-link {{auth()->user()->hasRole('admin') ? 'active' : ''}}" id="custom-tabs-three-doctor-history-tab" data-toggle="pill"
+                                <a class="nav-link"
+                                   id="custom-tabs-three-doctor-history-tab" data-toggle="pill"
                                    href="#custom-tabs-three-doctor-history" role="tab"
                                    aria-controls="custom-tabs-three-doctor-history" aria-selected="true">Doctor
                                     History</a>
                             </li>
-                        @endif
-                        {{--Insurance Companies--}}
-                        @if(auth()->user()->hasRole('doctor'))
+                            {{--Insurance Companies--}}
                             <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-three-patient-care-company-tab" data-toggle="pill"
-                                   href="#custom-tabs-three-care-company" role="tab"
-                                   aria-controls="custom-tabs-three-care-company" aria-selected="false">Insurance Companies</a>
+                                <a class="nav-link" id="custom-tabs-three-patient-insurance_company-tab" data-toggle="pill"
+                                   href="#custom-tabs-three-insurance_company" role="tab"
+                                   aria-controls="custom-tabs-three-insurance_company" aria-selected="false">Insurance
+                                    Companies</a>
                             </li>
                         @endif
                     </ul>
@@ -49,7 +47,7 @@
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
                         {{-- patient-history--}}
-                        @if(auth()->user()->hasRole('doctor'))
+                        @if(auth()->user()->hasRole(['admin','recep','doctor']))
                             <div class="tab-pane fade active show" id="custom-tabs-three-patient-history"
                                  role="tabpanel" aria-labelledby="custom-tabs-three-patient-history-tab">
                                 <form method="get" action="{{route('patient-history')}}">
@@ -61,10 +59,9 @@
                                     </div>
                                 </form>
                             </div>
-                        @endif
                         {{-- Doctor history --}}
-                        @if(auth()->user()->hasRole(['admin','doctor']))
-                            <div class="tab-pane fade {{auth()->user()->hasRole('admin') ? 'active show' : ''}}" id="custom-tabs-three-doctor-history" role="tabpanel"
+                            <div class="tab-pane fade"
+                                 id="custom-tabs-three-doctor-history" role="tabpanel"
                                  aria-labelledby="custom-tabs-three-doctor-history-tab">
                                 <form method="get" action="{{route('doctor-history')}}">
                                     @include('reports.forms.doctor-history-form')
@@ -76,15 +73,13 @@
                                     </div>
                                 </form>
                             </div>
-                        @endif
-                        @if(auth()->user()->hasRole('doctor'))
-                            <div class="tab-pane fade" id="custom-tabs-three-care-company" role="tabpanel"
-                                 aria-labelledby="custom-tabs-three-care-company-tab">
-                                <form method="get" action="{{route('care-company')}}">
-                                    @include('reports.forms.care-company-form')
+                            <div class="tab-pane fade" id="custom-tabs-three-insurance_company" role="tabpanel"
+                                 aria-labelledby="custom-tabs-three-insurance_company-tab">
+                                <form method="get" action="{{route('insurance_company')}}">
+                                    @include('reports.forms.insurance-company-form')
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
-                                                name="get-care-company">
+                                                name="get-insurance_company">
                                             Submit
                                         </button>
                                     </div>

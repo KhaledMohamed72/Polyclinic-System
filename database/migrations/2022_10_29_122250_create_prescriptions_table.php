@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
             $table->foreignId('doctor_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('patient_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('care_company_id')->nullable()->constrained('care_companies')->restrictOnDelete();
+            $table->foreignId('insurance_company_id')->nullable()->constrained('insurance_companies')->restrictOnDelete();
             $table->boolean('type');
             $table->string('date');
             $table->string('followup_date')->nullable();

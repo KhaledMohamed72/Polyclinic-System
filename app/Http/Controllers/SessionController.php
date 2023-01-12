@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SessionController extends Controller
 {
+    use GeneralTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -59,18 +62,15 @@ class SessionController extends Controller
                 ->join('patients', 'patients.user_id', '=', 'users.id')
                 ->where('patients.doctor_id', '=', auth()->user()->id)
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->select('users.*','patients.user_id as patient_id')
+                ->select('users.*', 'patients.user_id as patient_id')
                 ->get();
             $session_rows = DB::table('session_types')
                 ->where('doctor_id', '=', auth()->user()->id)
                 ->where('clinic_id', '=', $this->getClinic()->id)
                 ->get();
-            $care_companies = DB::table('care_companies')
-                ->where('clinic_id', $this->getClinic()->id)
-                ->where('doctor_id', auth()->user()->id)
-                ->get();
-            return view('sessions.create', compact('patient_rows', 'session_rows','care_companies'));
-        }else {
+            $insurance_companies_rows = $this->getInsuranceCompaniessBasedOnRole($this->getClinic()->id, auth()->user()->id);
+            return view('sessions.create', compact('patient_rows', 'session_rows', 'insurance_companies_rows'));
+        } else {
             toastr()->success('Something went wrong!');
             return redirect()->route('sessions.index');
         }
@@ -89,18 +89,18 @@ class SessionController extends Controller
             'type' => ['required', 'integer'],
             'date' => ['required', 'string'],
             'fees' => ['required', 'numeric'],
-            'care_company_id' => ['nullable', 'integer'],
+            'insurance_company_id' => ['nullable', 'integer'],
             'note' => ['nullable', 'string'],
         ]);
         $fees = $request->fees;
-        if ($request->has('care_company_id') && $request->care_company_id != '') {
-            $discount_rate = DB::table('care_companies')
-                ->where('id', $request->care_company_id)
+        if ($request->has('insurance_company_id') && $request->insurance_company_id != '') {
+            $discount_rate = DB::table('insurance_companies')
+                ->where('id', $request->insurance_company_id)
                 ->where('clinic_id', $this->getClinic()->id)
                 ->select('discount_rate')
                 ->first();
             $discount_rate = $discount_rate->discount_rate;
-            $fees = $fees - (($fees/100)*$discount_rate);
+            $fees = $fees - (($fees / 100) * $discount_rate);
         }
 
         $row = DB::table('sessions_info')->insert([
@@ -110,7 +110,7 @@ class SessionController extends Controller
             'session_type_id' => $request->type,
             'date' => $request->date,
             'fees' => $fees,
-            'care_company_id' => $request->care_company_id ?? null,
+            'insurance_company_id' => $request->insurance_company_id ?? null,
             'note' => $request->note,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
@@ -145,18 +145,15 @@ class SessionController extends Controller
                 ->where('doctor_id', '=', auth()->user()->id)
                 ->where('clinic_id', '=', $this->getClinic()->id)
                 ->get();
-            $care_companies = DB::table('care_companies')
-                ->where('clinic_id', $this->getClinic()->id)
-                ->where('doctor_id', auth()->user()->id)
-                ->get();
+            $insurance_companies_rows = $this->getInsuranceCompaniessBasedOnRole($this->getClinic()->id, auth()->user()->id);
             $row = DB::table('sessions_info')
                 ->where('clinic_id', $this->getClinic()->id)
                 ->where('id', $id)
                 ->where('doctor_id', auth()->user()->id)
                 ->first();
 
-            return view('sessions.edit', compact('patient_rows', 'session_rows', 'row','care_companies'));
-        }else {
+            return view('sessions.edit', compact('patient_rows', 'session_rows', 'row', 'insurance_companies_rows'));
+        } else {
             toastr()->success('Something went wrong!');
             return redirect()->route('sessions.index');
         }
@@ -176,17 +173,36 @@ class SessionController extends Controller
             'type' => ['required', 'integer'],
             'date' => ['required', 'string'],
             'fees' => ['required', 'numeric'],
-            'care_company_id' => ['nullable', 'integer'],
+            'insurance_company_id' => ['nullable'],
             'note' => ['nullable', 'string'],
         ]);
+        $old_company_id = DB::table('sessions_info')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $id)
+            ->pluck('insurance_company_id')[0] ?? 0;
+
+        $old_company_discount_rate = DB::table('insurance_companies')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $old_company_id)
+            ->pluck('discount_rate')[0] ?? 0;
+        $request_discount_rate = DB::table('insurance_companies')
+            ->where('id', $request->insurance_company_id)
+            ->where('clinic_id', $this->getClinic()->id)
+            ->pluck('discount_rate')[0] ?? 0;
+
+        $fees = $request->fees;
+        if ($old_company_id != $request->insurance_company_id || !is_numeric($request->insurance_company_id)) {
+            $original_fees = $fees + (($old_company_discount_rate / (100-$old_company_discount_rate)) * $fees);
+            $fees = $original_fees - (($original_fees / 100) * $request_discount_rate);
+        }
         $row = DB::table('sessions_info')
             ->where('id', $id)
             ->where('clinic_id', $this->getClinic()->id)->update([
                 'patient_id' => $request->patient,
                 'session_type_id' => $request->type,
                 'date' => $request->date,
-                'fees' => $request->fees,
-                'care_company_id' => $request->care_company_id ?? null,
+                'fees' => $fees,
+                'insurance_company_id' => is_numeric($request->insurance_company_id) ? $request->insurance_company_id : null,
                 'note' => $request->note,
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
@@ -217,7 +233,7 @@ class SessionController extends Controller
                 toastr()->success('Deleted Successfully');
                 return redirect()->route('sessions.index');
             }
-        }else {
+        } else {
             toastr()->success('Something went wrong!');
             return redirect()->route('sessions.index');
         }

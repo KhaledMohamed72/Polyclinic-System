@@ -337,18 +337,18 @@
             </div>
         </div>
     </div>
-    @if(!$care_companies->isEmpty())
+    @if(!$insurance_companies->isEmpty())
         <div class="row">
             <div class="col-sm-6 form-group">
                 <label class="control-label">Insurance Companies</label>
-                @php $input = 'care_company_id'; @endphp
+                @php $input = 'insurance_company_id'; @endphp
                 <select
                     class="form-control select2"
                     name="{{$input}}">
                     <option disabled selected>Select Company</option>
-                    @foreach($care_companies as $company)
+                    @foreach($insurance_companies as $company)
                         <option value="{{$company->id}}"
-                            {{$prescription->care_company_id == $company->id ? 'selected' : ''}}>{{$company->name}}</option>
+                            {{$prescription->insurance_company_id == $company->id ? 'selected' : ''}}>{{$company->name}}</option>
                     @endforeach
                 </select>
                 @error($input)<span style="color: red;font-size: smaller"

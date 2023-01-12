@@ -26,7 +26,7 @@ class PrescriptionController extends Controller
 
     public function create()
     {
-        list($patients, $frequencies, $periods, $medicines, $formulas, $tests, $care_companies) = $this->prescriptionRepository->createPrescriptions();
+        list($patients, $frequencies, $periods, $medicines, $formulas, $tests, $insurance_companies) = $this->prescriptionRepository->createPrescriptions();
         return view('prescriptions.create', compact(
             'patients',
             'frequencies',
@@ -34,7 +34,7 @@ class PrescriptionController extends Controller
             'medicines',
             'formulas',
             'tests',
-            'care_companies'
+            'insurance_companies'
         ));
     }
 
@@ -77,7 +77,7 @@ class PrescriptionController extends Controller
             $appointment,
             $frequencies,
             $periods,
-            $care_companies) = $this->prescriptionRepository->editPrescriptions($id);
+            $insurance_companies) = $this->prescriptionRepository->editPrescriptions($id);
         return view('prescriptions.edit',
             compact(
                 'prescription',
@@ -92,7 +92,7 @@ class PrescriptionController extends Controller
                 'appointment',
                 'frequencies',
                 'periods',
-                'care_companies'
+                'insurance_companies'
             ));
     }
 

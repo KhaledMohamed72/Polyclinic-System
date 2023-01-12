@@ -1,21 +1,23 @@
 <div class="card-body">
     <div class="row">
-        @if(auth()->user()->hasRole('admin'))
         @php $input = 'doctor' @endphp
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label>Doctor</label>
-                <select name="{{$input}}" class="form-control select2 sel-doctor" style="width: 100%;">
-                    <option selected="" disabled="">Select Doctor</option>
-                    @foreach($doctor_rows as $doctor_row)
-                        <option value="{{$doctor_row->id}}"
-                            {{old($input) == $doctor_row->id? 'selected' : ''}}>{{$doctor_row->name}}</option>
-                    @endforeach
-                </select>
-                @error($input)<span class="badge badge-danger"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
+        @if(auth()->user()->hasRole(['admin','recep']) && $clinicType == 1)
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>Doctor</label>
+                    <select name="{{$input}}" class="form-control select2 sel-doctor" style="width: 100%;">
+                        <option selected="" disabled="">Select Doctor</option>
+                        @foreach($doctor_rows as $doctor_row)
+                            <option value="{{$doctor_row->user_id}}"
+                                {{old($input) == $doctor_row->user_id? 'selected' : ''}}>{{$doctor_row->doctor_name}}</option>
+                        @endforeach
+                    </select>
+                    @error($input)<span class="badge badge-danger"
+                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
+                </div>
             </div>
-        </div>
+        @else
+            <input type="hidden" name="{{$input}}" value="{{$doctor_rows[0]->id}}">
         @endif
         @php $input = 'from' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
@@ -47,7 +49,7 @@
                     <input type="checkbox" name="sessions" value="1"
                            id="sessions-history">
                     <label for="sessions-history">
-                         Sessions
+                        Sessions
                     </label>
                 </div>
             </div>
@@ -58,7 +60,7 @@
                     <input type="checkbox" name="incomes" value="1"
                            id="incomes-history">
                     <label for="incomes-history">
-                         Incomes
+                        Incomes
                     </label>
                 </div>
             </div>

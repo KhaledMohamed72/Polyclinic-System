@@ -194,7 +194,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('/incomes', \App\Http\Controllers\IncomeController::class);
     Route::resource('/expenses', \App\Http\Controllers\ExpenseController::class);
     Route::resource('/sessions', \App\Http\Controllers\SessionController::class);
-    Route::resource('/care-companies', \App\Http\Controllers\CareCompanyController::class);
+    Route::resource('/insurance-companies', \App\Http\Controllers\InsuranceCompanyController::class);
     // settings
     Route::group(['prefix'=>'settings'],function (){
         Route::resource('/expense-types', \App\Http\Controllers\ExpenseTypeController::class);
@@ -233,6 +233,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('/patients-history', [\App\Http\Controllers\ReportController::class, 'patient_history'])->name('patient-history');
     Route::get('/doctors-history', [\App\Http\Controllers\ReportController::class, 'doctor_history'])->name('doctor-history');
-    Route::get('/care-company', [\App\Http\Controllers\ReportController::class, 'care_company'])->name('care-company');
+    Route::get('/insurance_company', [\App\Http\Controllers\ReportController::class, 'care_company'])->name('insurance_company');
 
 });

@@ -6,7 +6,7 @@ use App\Traits\BelongsToClinic;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CareCompany extends Model
+class InsuranceCompany extends Model
 {
     use HasFactory;
     use BelongsToClinic;

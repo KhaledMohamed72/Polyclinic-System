@@ -17,9 +17,9 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form method="post" action="{{route('care-companies.update',$row->id)}}">
+        <form method="post" action="{{route('insurance-companies.update',$row->id)}}">
             {{ method_field('put') }}
-            @include('care-companies.form')
+            @include('insurance-companies.form')
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary" name="update">Submit</button>
             </div>

@@ -7,8 +7,8 @@
                 <select name="{{$input}}" class="form-control select2 sel-doctor" style="width: 100%;">
                     <option selected="" disabled="">Select Patient</option>
                     @foreach($patient_rows as $patient_row)
-                        <option value="{{$patient_row->id}}"
-                            {{old($input) == $patient_row->id? 'selected' : ''}}>{{$patient_row->name}}</option>
+                        <option value="{{$patient_row->user_id}}"
+                            {{old($input) == $patient_row->user_id ? 'selected' : ''}}>{{$patient_row->patient_name}}</option>
                     @endforeach
                 </select>
                 @error($input)<span class="badge badge-danger"

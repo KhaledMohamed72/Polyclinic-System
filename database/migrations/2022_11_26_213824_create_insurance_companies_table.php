@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('care_companies', function (Blueprint $table) {
+        Schema::create('insurance_companies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete();
             $table->foreignId('doctor_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('receptionist_id')->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->decimal('discount_rate');
             $table->string('from');
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('care_companies');
+        Schema::dropIfExists('insurance_companies');
     }
 };

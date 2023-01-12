@@ -223,28 +223,6 @@
                         </a>
                     </li>
                 @endif
-                @if($user->hasRole('doctor'))
-                    <li class="nav-item">
-                        <a href="{{route('care-companies.index')}}"
-                           class="nav-link {{ (request()->routeIs('care-companies.*')) ? 'active' : '' }}">
-                            <i class="nav-icon material-icons">corporate_fare</i>
-                            <p>
-                                Insurance Companies
-                            </p>
-                        </a>
-                    </li>
-                @endif
-                @if($user->hasRole(['admin','doctor']))
-                    <li class="nav-item">
-                        <a href="{{route('reports.index')}}"
-                           class="nav-link {{ (request()->routeIs('reports.*')) ? 'active' : '' }}">
-                            <i class="nav-icon material-icons">summarize</i>
-                            <p>
-                                Reports
-                            </p>
-                        </a>
-                    </li>
-                @endif
                 <li class="nav-item {{ Request::segment(1) === 'settings' ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Request::segment(1) === 'settings' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>
@@ -265,6 +243,14 @@
                                 <a href="{{route('income-types.index')}}" class="nav-link {{ (request()->routeIs('income-types.index')) ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Income Types</p>
+                                </a>
+                            </li>
+                        @endif
+                        @if($user->hasRole(['doctor','recep','admin']))
+                            <li class="nav-item">
+                                <a href="{{route('insurance-companies.index')}}" class="nav-link {{ (request()->routeIs('insurance-companies.*')) ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Insurance Companies</p>
                                 </a>
                             </li>
                         @endif
@@ -302,6 +288,17 @@
                         </li>
                     </ul>
                 </li>
+                @if($user->hasRole(['admin','doctor','recep']))
+                    <li class="nav-item">
+                        <a href="{{route('reports.index')}}"
+                           class="nav-link {{ (request()->routeIs('reports.*')) ? 'active' : '' }}">
+                            <i class="nav-icon material-icons">summarize</i>
+                            <p>
+                                Reports
+                            </p>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

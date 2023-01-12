@@ -25,36 +25,45 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Patient Name</th>
+                            <th>Patient</th>
+                            @if(auth()->user()->hasRole(['admin','recep']))
+                                <th>Doctor</th>
+                            @endif
                             <th>Contact No</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($rows as $row)
-                        <tr>
-                            <td>{{$row->id}}</td>
-                            <td>{{$row->name}}</td>
-                            <td>{{$row->phone ?? 'No Contact'}}</td>
-                            <td class="project-actions text-left">
-                                <a class="btn btn-primary btn-sm" href="{{route('patients.show',$row->id)}}" title="View">
-                                <i class="fas fa-eye">
-                                </i>
-                                </a>
-                                <a class="btn btn-info btn-sm" href="{{route('patients.edit',$row->id)}}" title="Edit">
-                                <i class="fas fa-pencil-alt">
-                                </i>
-                                </a>
-                                <form action="{{route('patients.destroy',$row->id)}}" method="POST" style="display: contents;">
-                                    {{ csrf_field() }}
-                                    {{ method_field('delete') }}
-                                <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                </button>
-                                </form>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{$row->user_id}}</td>
+                                <td>{{$row->patient_name}}</td>
+                                @if(auth()->user()->hasRole(['admin','recep']))
+                                    <td>{{$row->doctor_name}}</td>
+                                @endif
+                                <td>{{$row->phone ?? 'No Contact'}}</td>
+                                <td class="project-actions text-left">
+                                    <a class="btn btn-primary btn-sm" href="{{route('patients.show',$row->user_id)}}"
+                                       title="View">
+                                        <i class="fas fa-eye">
+                                        </i>
+                                    </a>
+                                    <a class="btn btn-info btn-sm" href="{{route('patients.edit',$row->user_id)}}"
+                                       title="Edit">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                    </a>
+                                    <form action="{{route('patients.destroy',$row->user_id)}}" method="POST"
+                                          style="display: contents;">
+                                        {{ csrf_field() }}
+                                        {{ method_field('delete') }}
+                                        <button type="submit" class="btn btn-danger btn-sm" href="#" title="Delete">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
@@ -83,7 +92,7 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["csv", "excel", "pdf", "print", "colvis"],order: [[0, 'desc']]
+                "buttons": ["csv", "excel", "pdf", "print", "colvis"], order: [[0, 'desc']]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,

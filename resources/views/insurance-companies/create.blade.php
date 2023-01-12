@@ -17,8 +17,8 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <form method="post" action="{{route('care-companies.store')}}">
-            @include('care-companies.form')
+        <form method="post" action="{{route('insurance-companies.store')}}">
+            @include('insurance-companies.form')
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary" name="create">Submit</button>
             </div>

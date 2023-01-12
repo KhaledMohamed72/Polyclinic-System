@@ -5,75 +5,30 @@ namespace App\Repository;
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Repository\Interfaces\PatientRepositoryInterface;
+use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class PatientRepository extends Controller implements PatientRepositoryInterface
 {
+    use GeneralTrait;
+
     public function getPatientRows()
     {
-        // filter doctors according to role of current auth user
-        if (auth()->user()->hasRole('admin')) {
-            $rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->select('users.*')
-                ->orderBy('users.id', 'desc')
-                ->paginate(10);
-        } elseif (auth()->user()->hasRole('recep')) {
-            $rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('patients.receptionist_id', '=', auth()->user()->id)
-                ->select('users.*')
-                ->orderBy('users.id', 'desc')
-                ->paginate(10);
-        } else {
-            $rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('patients.doctor_id', '=', auth()->user()->id)
-                ->select('users.*')
-                ->orderBy('users.id', 'desc')
-                ->paginate(10);
-        }
+        $rows = $this->getPatientsBasedOnRole($this->getClinic()->id, auth()->user()->id);
         return $rows;
     }
 
     public function getDoctorRows()
     {
-        // list of doctors if the role is admin
-        if (auth()->user()->hasRole('admin')) {
-            $rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
-
-        // list of doctors if the role is recep
-        if (auth()->user()->hasRole('recep')) {
-            $rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('doctors.receptionist_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
-        if (auth()->user()->hasRole('doctor')) {
-            $rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('doctors.user_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
+        $rows = $this->getDoctorsBasedOnRole($this->getClinic()->id, auth()->user()->id);
         return $rows;
     }
 
     public function storePatient($request)
     {
         $this->validate($request, [
+            'doctor_id' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:191'],
             'email' => ['nullable', 'string', 'email', 'max:191', 'unique:users'],
             'phone' => ['required', 'numeric', 'digits:11'],
@@ -87,8 +42,9 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             'pulse' => ['nullable', 'numeric'],
             'allergy' => ['nullable', 'string', 'max:191'],
         ]);
+        // get recep
+        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
         // patient email not required so i have to escape this because DB doesn't accept this
-
         if (empty($request->email)) {
             $request->email = 'patient' . time() . '' . random_int(100, 100000) . '@gmail.com';
         }
@@ -97,29 +53,16 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             'clinic_id' => $this->getClinic()->id,
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make(123123123),
+            'password' => Hash::make('patient12=2'),
             'phone' => $request->phone,
         ]);
         $user_id = DB::getPdo()->lastInsertId();
-
         // insert the rest of info into Patients table
-        // get recep and doctor ids
-        // if the form has input doctor
-        if ($request->has('doctor_id') && $request->doctor_id != '') {
-            $doctor = Doctor::where('user_id', $request->doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $request->doctor_id;
-        } else {
-            $doctor = Doctor::where('user_id', $request->has_one_doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $doctor['user_id'];
-        }
-
         $patient = DB::table('patients')->insert([
             'clinic_id' => $this->getClinic()->id,
             'user_id' => $user_id,
-            'doctor_id' => $doctor_id,
-            'receptionist_id' => $receptionist_id,
+            'doctor_id' => $request->doctor_id,
+            'receptionist_id' => $receptionist_id[0],
             'gender' => $request->gender,
             'age' => $request->age,
             'address' => $request->address,
@@ -132,7 +75,6 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
-
         // Give a role
         $role_id = DB::table('roles')->where('name', '=', 'patient')->first();
         $role_user = DB::table('role_user')->insert([
@@ -151,35 +93,8 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             ->where('users.id', '=', $id)
             ->select('users.*', 'users.id as userId', 'patients.*')
             ->first();
-
-        // list of doctors if the role is admin
-        if (auth()->user()->hasRole('admin')) {
-            $doctor_rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
-
-        // list of doctors if the role is recep
-        if (auth()->user()->hasRole('recep')) {
-            $doctor_rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('doctors.receptionist_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
-        // list of doctors if the role is doctor
-        if (auth()->user()->hasRole('doctor')) {
-            $doctor_rows = DB::table('users')
-                ->join('doctors', 'doctors.user_id', '=', 'users.id')
-                ->where('users.clinic_id', '=', $this->getClinic()->id)
-                ->where('doctors.user_id', '=', auth()->user()->id)
-                ->select('users.id', 'users.name')
-                ->get();
-        }
-        return [$row, $doctor_rows];
+        $rows = $this->getDoctorsBasedOnRole($this->getClinic()->id, auth()->user()->id);
+        return [$row, $rows];
     }
 
     public function updatePatient($id, $request)
@@ -192,6 +107,7 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             ->first();
 
         $this->validate($request, [
+            'doctor_id' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:191'],
             'email' => ['nullable', 'string', 'email', 'max:191', 'unique:users,email,' . $row->userId],
             'phone' => ['required', 'numeric', 'digits:11'],
@@ -215,25 +131,15 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
                 'phone' => $request->phone,
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
+        // get recep id
+        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
         // insert the rest of info into Patients table
-        // get recep and doctor ids
-        // if the form has input doctor
-        if ($request->has('doctor_id') && $request->doctor_id != '') {
-            $doctor = Doctor::where('user_id', $request->doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $request->doctor_id;
-        } else {
-            $doctor = Doctor::where('user_id', $request->has_one_doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $doctor['user_id'];
-        }
-
         $patient = DB::table('patients')
             ->where('user_id', '=', $id)
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->update(array(
-                    'doctor_id' => $doctor_id,
-                    'receptionist_id' => $receptionist_id,
+                    'doctor_id' => $request->doctor_id,
+                    'receptionist_id' => $receptionist_id[0],
                     'gender' => $request->gender,
                     'age' => $request->age,
                     'address' => $request->address,

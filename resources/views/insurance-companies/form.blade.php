@@ -1,6 +1,28 @@
 @csrf
 
 <div class="card-body">
+    {{--get nOf doctors to show doctor drop down menu if nOf doctors is more than one and hide it if equal to one--}}
+    @php $input = 'doctor_id' @endphp
+    @if($count_rows > 1 && auth()->user()->hasRole(['admin', 'recep']))
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Doctor</label>
+                    <select name="{{$input}}" class="form-control select2" style="width: 100%;">
+                        <option selected="" disabled="">Select Doctor</option>
+                        @foreach($rows as $doctor_row)
+                            <option value="{{$doctor_row->id}}"
+                                {{isset($row) && $row->doctor_id == $doctor_row->id ? 'selected' : ''}}>{{$doctor_row->name}}</option>
+                        @endforeach
+                    </select>
+                    @error($input)<span class="invalid-feedback"
+                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
+                </div>
+            </div>
+        </div>
+    @else
+        <input type="hidden" value="{{$rows[0]->id}}" name="{{$input}}">
+    @endif
     <div class="row">
         @php $input = 'name' @endphp
         <div class="col-md-6">

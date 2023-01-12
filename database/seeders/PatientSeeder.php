@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Patient;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class PatientSeeder extends Seeder
@@ -15,13 +16,24 @@ class PatientSeeder extends Seeder
      */
     public function run()
     {
-        Patient::create([
-            'clinic_id' => 1,
-            'user_id' => 4,
-            'doctor_id' => 3,
-            'receptionist_id' => 2,
-            'gender' => 'male',
-            'age' => 22
-        ]);
+        $faker = Faker::create();
+        for ($i = 1; $i <= 1000; $i++) {
+            User::create([
+                'id' => $i,
+                'clinic_id' => 1,
+                'name' => $faker->userName,
+                'email' => $faker->email,
+                'password' => $faker->password(8),
+
+            ]);
+            Patient::create([
+                'clinic_id' => 1,
+                'user_id' => $i,
+                'doctor_id' => 3,
+                'receptionist_id' => 2,
+                'gender' => 'male',
+                'age' => $faker->randomNumber(20,100)
+            ]);
+        }
     }
 }

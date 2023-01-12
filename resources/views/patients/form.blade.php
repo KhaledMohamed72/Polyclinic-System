@@ -3,9 +3,9 @@
 <div class="card-body">
 
     {{--get nOf doctors to show doctor drop down menu if nOf doctors is more than one and hide it if equal to one--}}
-    @if($count_rows > 1)
+    @php $input = 'doctor_id' @endphp
+    @if($count_rows > 1 && auth()->user()->hasRole(['admin', 'recep']))
         <div class="row">
-            @php $input = 'doctor_id' @endphp
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Doctor</label>
@@ -22,7 +22,7 @@
             </div>
         </div>
     @else
-        <input type="hidden" value="{{$rows[0]->id}}" name="has_one_doctor_id">
+        <input type="hidden" value="{{$rows[0]->id}}" name="{{$input}}">
     @endif
     <div class="row">
         @php $input = 'name' @endphp

@@ -16,8 +16,8 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        @if(auth()->user()->hasRole('doctor'))
-                            <a href="{{route('care-companies.create')}}" class="btn btn-block bg-gradient-success">Add
+                        @if(auth()->user()->hasRole(['doctor','admin','recep']))
+                            <a href="{{route('insurance-companies.create')}}" class="btn btn-block bg-gradient-success">Add
                                 New
                                 Company
                             </a>
@@ -30,7 +30,10 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>Company</th>
+                            @if(auth()->user()->hasRole(['admin','recep']))
+                            <th>Doctor</th>
+                            @endif
                             <th>Date From</th>
                             <th>Date To</th>
                             <th>Discount Rate</th>
@@ -41,18 +44,21 @@
                         @foreach($rows as $row)
                             <tr>
                                 <td>{{$row->id}}</td>
-                                <td>{{$row->name}}</td>
+                                <td>{{$row->company_name}}</td>
+                                @if(auth()->user()->hasRole(['admin','recep']))
+                                    <td>{{$row->doctor_name}}</td>
+                                @endif
                                 <td>{{$row->from}}</td>
                                 <td>{{$row->to}}</td>
                                 <td>{{$row->discount_rate}}</td>
-                                @if(auth()->user()->hasRole('doctor'))
+                                @if(auth()->user()->hasRole(['doctor','admin','recep']))
                                     <td class="project-actions text-left">
-                                        <a class="btn btn-info btn-sm" href="{{route('care-companies.edit',$row->id)}}"
+                                        <a class="btn btn-info btn-sm" href="{{route('insurance-companies.edit',$row->id)}}"
                                            title="Edit">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
-                                        <form action="{{route('care-companies.destroy',$row->id)}}" method="POST"
+                                        <form action="{{route('insurance-companies.destroy',$row->id)}}" method="POST"
                                               style="display: contents;">
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}

@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Http\Controllers\Controller;
 use App\Repository\Interfaces\DoctorRepositoryInterface;
-use App\Traits\GeneralTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -13,30 +12,32 @@ use Intervention\Image\Facades\Image;
 
 class DoctorRepository extends Controller implements DoctorRepositoryInterface
 {
-    use GeneralTrait;
-
-    public function getDoctorRows(){
+    public function getDoctorRows()
+    {
         // filter doctors according to role of current auth user
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->select('users.*', 'doctors.title')
-                ->orderBy('users.id','desc')
+                ->orderBy('users.id', 'desc')
                 ->paginate(10);
-        } else {
+        }
+        if (auth()->user()->hasRole('recep')) {
             $rows = DB::table('users')
                 ->join('doctors', 'doctors.user_id', '=', 'users.id')
                 ->where('users.clinic_id', '=', $this->getClinic()->id)
                 ->where('doctors.receptionist_id', '=', auth()->user()->id)
                 ->select('users.*', 'doctors.title')
-                ->orderBy('users.id','desc')
+                ->orderBy('users.id', 'desc')
                 ->paginate(10);
         }
         return $rows;
     }
 
-    public function getReceptionistRows(){
+    public
+    function getReceptionistRows()
+    {
         // filter doctors according to role of current auth user
         $rows = DB::table('users')
             ->join('receptionists', 'receptionists.user_id', '=', 'users.id')
@@ -48,7 +49,9 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         return $rows;
     }
 
-    public function storeDoctor($request){
+    public
+    function storeDoctor($request)
+    {
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
             'email' => ['required', 'string'],
@@ -104,7 +107,9 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         return $user && $doctor && $role_user && $doctorSchedule;
     }
 
-    public function getDoctorRow($id){
+    public
+    function getDoctorRow($id)
+    {
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
@@ -114,7 +119,8 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         return $row;
     }
 
-    public function updateDoctor($request,$id)
+    public
+    function updateDoctor($request, $id)
     {
         $row = $this->getDoctorRow($id);
         $this->validate($request, [
@@ -167,7 +173,9 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         return $user || $doctor;
     }
 
-    public function showDoctor($id){
+    public
+    function showDoctor($id)
+    {
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
@@ -320,7 +328,9 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         ];
     }
 
-    public function updateSchedule($request,$id){
+    public
+    function updateSchedule($request, $id)
+    {
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
             ->join('doctor_schedules', 'doctor_schedules.user_id', '=', 'doctors.user_id')
@@ -364,8 +374,9 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
                 ]);
         }
 
-        return  $updateSchedule;
+        return $updateSchedule;
     }
+
     protected function storeImage($request)
     {
         $save_path = 'images/users';
@@ -374,10 +385,28 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         }
         if ($request->file('image')) {
             $file = $request->file('image');
-            $image = Image::make($file)->resize(300,200);
-            $filename = time().str_random(10).'.'.$file->getClientOriginalExtension();
-            $image->save(public_path('images/users/'.$filename));
+            $image = Image::make($file)->resize(300, 200);
+            $filename = time() . str_random(10) . '.' . $file->getClientOriginalExtension();
+            $image->save(public_path('images/users/' . $filename));
             return $filename;
+        }
+    }
+
+    function insertWeeksDays($clinic_id, $doctor_id)
+    {
+        $weekDaysArray = array('Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri');
+        for ($i = 0; $i < 7; $i++) {
+            $doctorSchedule = DB::table('doctor_schedules')->insert([
+                'clinic_id' => $clinic_id,
+                'user_id' => $doctor_id,
+                'day_of_week' => $weekDaysArray[$i],
+                'day_attendance' => 0,
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+        }
+        if ($doctorSchedule) {
+            return true;
         }
     }
 }

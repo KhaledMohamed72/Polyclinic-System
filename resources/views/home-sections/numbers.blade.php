@@ -4,7 +4,7 @@
             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-check-circle"></i></span>
 
             <div class="info-box-content">
-                <span class="info-box-text">Appointments</span>
+                <span class="info-box-text">Total Appts</span>
                 <span class="info-box-number">
                   {{$appointments_count}}
                 </span>
