@@ -139,7 +139,7 @@
                                         <h3 class="font-size-15 font-weight-bold"><u>Attachment</u></h3>
                                     </div>
                                     <p><a class="ml-3" style="color: blue"  target="_blank"
-                                          href="{{asset('assets/images/prescriptions/'.$prescription->file)}}">
+                                          href="{{url('images/prescriptions/'.$prescription->file)}}">
                                             show attachment
                                         </a></p>
                                 </div>
