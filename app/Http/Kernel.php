@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'role' => \Mindscms\Entrust\Middleware\EntrustRole::class,
         'permission' => \Mindscms\Entrust\Middleware\EntrustPermission::class,
         'ability' => \Mindscms\Entrust\Middleware\EntrustAbility::class,
+        //'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
     ];
 }

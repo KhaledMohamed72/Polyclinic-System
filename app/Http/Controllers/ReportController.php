@@ -51,7 +51,6 @@ class ReportController extends Controller
         $prescriptions = DB::table('prescriptions')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('patient_id', $request->patient)
-            ->where('doctor_id', auth()->user()->id)
             ->whereBetween('created_at', [$date1, $date2])
             ->select('prescriptions.*')
             ->orderBy('id', 'desc')
