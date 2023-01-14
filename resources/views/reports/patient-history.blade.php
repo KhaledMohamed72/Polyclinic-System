@@ -41,22 +41,15 @@
                                     : </strong><span>{{date('Y-m-d',strtotime($prescription->created_at))}}</span>
                             </td>
                             <td><strong> النوع : </strong><span>{{$prescription->type == 0 ? 'كشف' : 'اعادة'}}</span>
-                            @if(!empty($prescription->file))
-                                <td><strong> المرفق : </strong><span><a class="ml-3" style="color: blue"  target="_blank"
-                                                                        href="{{url('images/prescriptions/'.$prescription->file)}}">
-                                        عرض
-                                    </a></span>
-                                    @endif
-
-                                </td>
+                            </td>
                         </tr>
 
                         </tbody>
                     </table>
                     @php
                         $medicines = \Illuminate\Support\Facades\DB::table('prescription_medicines')
-                            ->join('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
-                            ->join('period_types', 'period_types.id', '=', 'prescription_medicines.period_type_id')
+                            ->leftjoin('frequency_types', 'frequency_types.id', '=', 'prescription_medicines.frequency_type_id')
+                            ->leftjoin('period_types', 'period_types.id', '=', 'prescription_medicines.period_type_id')
                             ->where('prescription_medicines.prescription_id', $prescription->id)
                             ->select('prescription_medicines.name as medicine_name'
                                 , 'frequency_types.ar_name as frequency_name',
@@ -67,8 +60,8 @@
                             ->where('prescription_tests.prescription_id', $prescription->id)
                             ->get();
                         $formulas = \Illuminate\Support\Facades\DB::table('prescription_formulas')
-                            ->join('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
-                            ->join('frequency_types', 'frequency_types.id', '=', 'prescription_formulas.frequency_type_id')
+                            ->leftjoin('formulas', 'formulas.id', '=', 'prescription_formulas.formula_id')
+                            ->leftjoin('frequency_types', 'frequency_types.id', '=', 'prescription_formulas.frequency_type_id')
                             ->where('prescription_formulas.prescription_id', $prescription->id)
                             ->select('formulas.name as formula_name'
                                 , 'frequency_types.ar_name as frequency_name',
@@ -139,6 +132,19 @@
                             </div>
                         </div>
                     @endif
+                    @if($prescription->file != '')
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="py-2 mt-3">
+                                        <h3 class="font-size-15 font-weight-bold"><u>Attachment</u></h3>
+                                    </div>
+                                    <p><a class="ml-3" style="color: blue"  target="_blank"
+                                          href="{{url('images/prescriptions/'.$prescription->file)}}">
+                                            show attachment
+                                        </a></p>
+                                </div>
+                            </div>
+                            @endif
                     @if($prescription->note != '')
                         <div class="row">
                             <div class="col-md-12">
@@ -155,7 +161,6 @@
     </div>
 @endforeach
 <hr>
-<h2>Sessions</h2>
 @foreach($sessions as $session)
     <div class="row">
         <div class="col-lg-12">
