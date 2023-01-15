@@ -118,7 +118,7 @@
                 <div class="card-body">
                     <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
                         @if(\Jenssegers\Agent\Facades\Agent::isMobile())
-                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                     &ensp;&ensp;
                         <li class="nav-item">
                             <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
                                href="#custom-content-below-appointment" role="tab"
@@ -134,13 +134,13 @@
                                 &ensp;&ensp;<span><i class="fa fa-file"></i></span>&ensp;&ensp;
                             </a>
                         </li>
-                        {{--                            <li class="nav-item">
-                                                        <a class="nav-link" id="custom-content-below-invoices-tab" data-toggle="pill"
-                                                           href="#custom-content-below-invoices" role="tab"
-                                                           aria-controls="custom-content-below-invoices" aria-selected="false">
-                                                            &ensp;&ensp;<span><i class="fa fa-pen-square"></i></span>&ensp;
-                                                        </a>
-                                                    </li>--}}
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-below-sessions-tab" data-toggle="pill"
+                               href="#custom-content-below-sessions" role="tab"
+                               aria-controls="custom-content-below-sessions" aria-selected="false">
+                                &ensp;&ensp;<span class="nav-icon material-icons">settings_accessibility</span>&ensp;
+                            </a>
+                        </li>
                         @else
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
@@ -155,13 +155,13 @@
                                     &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Prescription List&ensp;&ensp;&ensp;&ensp;&ensp;
                                 </a>
                             </li>
-                            {{--                            <li class="nav-item">
-                                                            <a class="nav-link" id="custom-content-below-invoices-tab" data-toggle="pill"
-                                                               href="#custom-content-below-invoices" role="tab"
-                                                               aria-controls="custom-content-below-invoices" aria-selected="false">
-                                                                &ensp;&ensp;&ensp;&ensp;Invoices&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-                                                            </a>
-                                                        </li>--}}
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-content-below-sessions-tab" data-toggle="pill"
+                                   href="#custom-content-below-sessions" role="tab"
+                                   aria-controls="custom-content-below-sessions" aria-selected="false">
+                                    &ensp;&ensp;&ensp;&ensp;Sessions&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                                </a>
+                            </li>
                         @endif
                     </ul>
                     <div class="tab-content" id="custom-content-below-tabContent">
@@ -298,147 +298,74 @@
                             </div>
                             {{-- End Appointment List table --}}
                         </div>
-                        {{--                        <div class="tab-pane fade" id="custom-content-below-invoices" role="tabpanel"
-                                                     aria-labelledby="custom-content-below-invoices-tab">
-                                                    --}}{{-- invoices List table --}}{{--
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="card">
-                                                                <!-- /.card-header -->
-                                                                <div class="card-body">
-                                                                    <table id="example2" class="table table-bordered table-striped">
-                                                                        <thead>
-                                                                        <tr>
-                                                                            <th>ID</th>
-                                                                            <th>Patient Name</th>
-                                                                            <th>Phone</th>
-                                                                            <th>Email</th>
-                                                                            <th>Date</th>
-                                                                            <th>time</th>
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>test</td>
-                                                                            <td>01128206779</td>
-                                                                            <td>test@test.com</td>
-                                                                            <td>12-5-2022</td>
-                                                                            <td>09:00</td>
-                                                                            <td>
-                                                                                <a class="btn btn-primary btn-sm" href="#" title="View">
-                                                                                    <i class="fas fa-eye">
-                                                                                    </i>
-                                                                                </a>
-                                                                            </td>
-                                                                        </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                                <!-- /.card-body -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    --}}{{-- End Appointment List table --}}{{--
-                                                </div>--}}
+                        <div class="tab-pane fade" id="custom-content-below-sessions" role="tabpanel"
+                             aria-labelledby="custom-content-below-prescription-tab">
+                            {{-- prescription List table --}}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table id="" class="display table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    @if(auth()->user()->hasRole(['admin', 'recep']))
+                                                    <th>Doctor</th>
+                                                    @endif
+                                                    <th>Session type</th>
+                                                    <th>Date</th>
+                                                    <th>Fees</th>
+                                                    @if(auth()->user()->hasRole('doctor'))
+                                                    <th>action</th>
+                                                    @endif
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($sessions as $row)
+                                                    <tr>
+                                                        <td>{{$row->id}}</td>
+                                                        @if(auth()->user()->hasRole(['admin', 'recep']))
+                                                            <td>{{$row->doctor_name}}</td>
+                                                        @endif
+                                                        <td>{{$row->session_name}}</td>
+                                                        <td>{{date('Y-m-d',strtotime($row->created_at))}}</td>
+                                                        <td>{{$row->fees}}</td>
+                                                            @if(auth()->user()->hasRole('doctor'))
+                                                            <td class="project-actions text-left">
+                                                                <a class="btn btn-info btn-sm"
+                                                                   href="{{route('sessions.edit',$row->id)}}"
+                                                                   title="Edit">
+                                                                    <i class="fas fa-pencil-alt">
+                                                                    </i>
+                                                                </a>
+                                                                <form
+                                                                    action="{{route('sessions.destroy',$row->id)}}"
+                                                                    method="POST"
+                                                                    style="display: contents;">
+                                                                    {{ csrf_field() }}
+                                                                    {{ method_field('delete') }}
+                                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                                            href="#"
+                                                                            title="Delete">
+                                                                        <i class="fas fa-trash">
+                                                                        </i>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- End Appointment List table --}}
+                        </div>
+
                     </div>
                 </div>
             </div>

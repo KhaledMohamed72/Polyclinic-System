@@ -80,7 +80,7 @@ class PatientController extends Controller
 
     public function show($id)
     {
-        list($row, $doctor, $appointments, $appointments_count, $sessions_count, $prescriptions_count, $prescriptions) = $this->patientRepository->showPatient($id);
+        list($row, $doctor, $appointments, $appointments_count, $sessions_count, $prescriptions_count, $prescriptions, $sessions) = $this->patientRepository->showPatient($id);
         if ($row) {
             if (auth()->user()->hasRole(['admin', 'recep', 'doctor'])) {
                 return view('patients.show', compact(
@@ -90,7 +90,8 @@ class PatientController extends Controller
                     'appointments_count',
                     'sessions_count',
                     'prescriptions_count',
-                    'prescriptions'
+                    'prescriptions',
+                    'sessions'
                 ));
             } else {
                 toastr()->warning('You are not allowed for this route !');

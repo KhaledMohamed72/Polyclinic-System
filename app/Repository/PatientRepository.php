@@ -42,8 +42,8 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             'pulse' => ['nullable', 'numeric'],
             'allergy' => ['nullable', 'string', 'max:191'],
         ]);
-        // get recep
-        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
+
+
         // patient email not required so i have to escape this because DB doesn't accept this
         if (empty($request->email)) {
             $request->email = 'patient' . time() . '' . random_int(100, 100000) . '@gmail.com';
@@ -193,6 +193,13 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             ->select('prescriptions.*', 't2.name as patient_name')
             ->orderBy('prescriptions.date', 'desc')
             ->get();
-        return [$row, $doctor, $appointments, $appointments_count, $sessions_count, $prescriptions_count, $prescriptions];
+        $sessions = DB::table('sessions_info')
+            ->join('users', 'users.id', '=', 'sessions_info.doctor_id')
+            ->join('session_types', 'session_types.id', '=', 'sessions_info.session_type_id')
+            ->where('sessions_info.clinic_id', '=', $this->getClinic()->id)
+            ->where('sessions_info.patient_id', '=', $id)
+            ->select('sessions_info.fees as fees','sessions_info.id as id','sessions_info.created_at as created_at', 'users.name as doctor_name', 'users.name as patient_name', 'session_types.name as session_name')
+            ->get();
+        return [$row, $doctor, $appointments, $appointments_count, $sessions_count, $prescriptions_count, $prescriptions,$sessions];
     }
 }
