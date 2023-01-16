@@ -58,7 +58,7 @@
                         if (response[i].status == 'pending') {
                             {{-- go to prescriptiom create if type is 0 or 1 and go to session create if the type is 2--}}
                                 type = response[i].type;
-                            type = [0,1].includes(':type');
+                            type = [0,1].includes(type);
                             prescription_url = "{{route( (':type' ? 'prescriptions': 'sessions').'.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id + "&type=" + response[i].type;
                             type_replace = prescription_url.replace(':type', type);
                             prescription_link = "<a href=" + prescription_url + " class='btn btn-info btn-sm'><i class='fas fa-file'></i></a>";
