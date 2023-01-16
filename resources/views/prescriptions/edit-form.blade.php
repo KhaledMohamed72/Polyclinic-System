@@ -376,7 +376,7 @@
                     <input type="file" name="{{$input}}" class="custom-file-input" id="customFile">
                     <label class="custom-file-label" for="customFile">{{$prescription->file}}</label>
                     @if(!empty($prescription->file))
-                        <a class="position-absolute ml-3 mt-2" target="_blank" href="{{url('images/prescriptions/'.$prescription->file)}}">
+                        <a class="position-absolute ml-3 mt-2" target="_blank" href="{{asset('images/prescriptions/'.$prescription->file)}}">
                             <i class="fa fa-lg fa-eye"></i>
                         </a>
                     @endif

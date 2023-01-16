@@ -3,6 +3,15 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <style>
+        @media print
+        {
+            .no-print, .no-print *
+            {
+                display: none !important;
+            }
+        }
+    </style>
 @endsection
 @section('title')   PRESCRIPTION DETAILS    @endsection
 @section('header-title')    PRESCRIPTION DETAILS    @endsection
@@ -119,6 +128,18 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if(!empty($prescription->file))
+                        <div class="row no-print">
+                            <div class="col-md-12">
+                                <div class="py-2 mt-3">
+                                    <h3 class="font-size-15 font-weight-bold">Attachment</h3>
+                                </div>
+                                <a class="btn btn-default mt-2 mr-3" href="{{asset('images/prescriptions/'.$prescription->file)}}">
+                                    <i class="fa fa-file"></i>{{'  '.str_limit($prescription->file,30)}}
+                                </a>
                             </div>
                         </div>
                     @endif
