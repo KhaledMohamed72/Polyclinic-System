@@ -137,7 +137,7 @@
                                 <div class="py-2 mt-3">
                                     <h3 class="font-size-15 font-weight-bold">Attachment</h3>
                                 </div>
-                                <a class="btn btn-default mt-2 mr-3" href="{{asset('images/prescriptions/'.$prescription->file)}}">
+                                <a class="btn btn-default mt-2 mr-3" target="_blank" href="{{asset('images/prescriptions/'.$prescription->file)}}">
                                     <i class="fa fa-file"></i>{{'  '.str_limit($prescription->file,30)}}
                                 </a>
                             </div>

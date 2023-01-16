@@ -1,4 +1,29 @@
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            scrollTime: '00:00', // undo default 6am scrollTime
+            editable: false, // enable draggable events
+            selectable: true,
+            height: 650,
+            aspectRatio: 1.8,
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'timeGridWeek,dayGridMonth,dayGridDay'
+            },
+            events: '{{route('get-all-appointments')}}',
+            eventClick: function (info) {
+                click(info,info.event.start)
+            },
+            dateClick: function (info) {
+                click(info,info.date)
+            }
+        });
+        calendar.changeView('dayGridMonth');
+        calendar.render();
+    });
     function click(info,dayDate){
         function tConvert(time) {
             // Check correct time format and split into components
@@ -73,29 +98,4 @@
             }
         });
     }
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            scrollTime: '00:00', // undo default 6am scrollTime
-            editable: false, // enable draggable events
-            selectable: true,
-            height: 650,
-            aspectRatio: 1.8,
-            headerToolbar: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'timeGridWeek,dayGridMonth,dayGridDay'
-            },
-            events: '{{route('get-all-appointments')}}',
-            eventClick: function (info) {
-                click(info,info.event.start)
-            },
-            dateClick: function (info) {
-                click(info,info.date)
-            }
-        });
-        calendar.changeView('dayGridMonth');
-        calendar.render();
-    });
 </script>
