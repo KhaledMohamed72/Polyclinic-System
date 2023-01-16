@@ -174,21 +174,14 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
         return $rows;
     }
     public function storeAppointment(Request $request){
-        // if the form has input doctor
-        if ($request->has('doctor_id') && $request->doctor_id != '') {
-            $doctor = Doctor::where('user_id', $request->doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $request->doctor_id;
-        } else {
-            $doctor = Doctor::where('user_id', $request->has_one_doctor_id)->first();
-            $receptionist_id = $doctor['receptionist_id'];
-            $doctor_id = $doctor['user_id'];
-        }
+        // if recep id
+        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
         $appointment = DB::table('appointments')->insert([
             'clinic_id' => $this->getClinic()->id,
             'patient_id' => $request->patient_id,
-            'doctor_id' => $doctor_id,
-            'receptionist_id' => $receptionist_id,
+            'doctor_id' => $request->doctor_id,
+            'receptionist_id' => $receptionist_id[0],
+            'type' => $request->type,
             'date' => $request->date,
             'time' => $request->available_slot,
             'status' => 'pending',

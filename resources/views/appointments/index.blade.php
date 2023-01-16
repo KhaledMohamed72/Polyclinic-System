@@ -62,13 +62,9 @@
                                     @if($hasRoleAdminNRecep)
                                         <th>doctor</th>
                                     @endif
+                                    <th>type</th>
                                     <th>Time</th>
-                                    @if($hasRoleAdminNRecep)
-                                        <th>doctor</th>
-                                    @endif
-                                    @if($hasRoleDoctor)
-                                        <th>action</th>
-                                    @endif
+                                    <th>action</th>
                                 </tr>
                                 </thead>
                                 <tbody id="new_list">
@@ -79,15 +75,25 @@
                                         @if($hasRoleAdminNRecep)
                                             <td>{{$row->doctor_name}}</td>
                                         @endif
+                                        <td>
+                                            @if($row->type == 0)
+                                                <span class="badge badge-info">Examination</span>
+                                            @elseif($row->type == 1)
+                                                <span class="badge badge-warning">Followup</span>
+                                            @elseif($row->type == 2)
+                                                <span class="badge badge-secondary">Session</span>
+                                            @else
+                                                Unknown
+                                            @endif
+                                        </td>
                                         <td>{{date("g:i a", strtotime($row->time))}}</td>
                                         <td>
-                                            @if($hasRoleDoctor)
-                                                <a href="{{route('patients.show',$row->patient_id) . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
-                                                   class="btn btn-primary btn-sm" title="Patient Profile"><i
-                                                        class="fas fa-eye"></i></a>
-                                            @endif
+                                            <a href="{{route('patients.show',$row->patient_id) . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                               class="btn btn-primary btn-sm" title="Patient Profile"><i
+                                                    class="fas fa-eye"></i></a>
                                             @if($hasRoleDoctor && $row->status == 'pending')
-                                                <a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                                {{-- go to prescriptiom create if type is 0 or 1 and go to session create if the type is 2--}}
+                                                <a href="{{route((in_array($row->type,array(0,1)) ? 'prescriptions': 'sessions').'.create'). '?date='. $row->date . '&patient_id=' . $row->patient_id. '&type=' .$row->type}}"
                                                    class="btn btn-info btn-sm" title="create prescription"><i
                                                         class="fas fa-file"></i></a>
                                             @endif
@@ -132,12 +138,11 @@
                                 <th>ID</th>
                                 <th>Patient</th>
                                 @if($hasRoleAdminNRecep)
-                                    <th>doctor</th>
+                                    <th>Doctor</th>
                                 @endif
+                                <th>Type</th>
                                 <th>Time</th>
-                                @if($hasRoleDoctor)
-                                    <th>action</th>
-                                @endif
+                                <th>action</th>
                             </tr>
                             </thead>
                             <tbody id="new_list">
@@ -145,19 +150,29 @@
                             @foreach($rows as $row)
                                 <tr>
                                     <td>{{$row->id}}</td>
-                                    <td> {{$row->patient_name}} </td>
+                                    <td> {{$row->patient_name}}</td>
                                     @if($hasRoleAdminNRecep)
                                         <td>{{$row->doctor_name}}</td>
                                     @endif
+                                    <td>
+                                        @if($row->type == 0)
+                                            <span class="badge badge-info">Examination</span>
+                                        @elseif($row->type == 1)
+                                            <span class="badge badge-warning">Followup</span>
+                                        @elseif($row->type == 2)
+                                            <span class="badge badge-secondary">Session</span>
+                                        @else
+                                            Unknown
+                                        @endif
+                                    </td>
                                     <td>{{date("g:i a", strtotime($row->time))}}</td>
                                     <td>
-                                        @if($hasRoleDoctor)
-                                            <a href="{{route('patients.show',$row->patient_id) . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
-                                               class="btn btn-primary btn-sm" title="Patient Profile"><i
-                                                    class="fas fa-eye"></i></a>
-                                        @endif
+                                        <a href="{{route('patients.show',$row->patient_id) . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                           class="btn btn-primary btn-sm" title="Patient Profile"><i
+                                                class="fas fa-eye"></i></a>
                                         @if($hasRoleDoctor && $row->status == 'pending')
-                                            <a href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
+                                            {{-- go to prescriptiom create if type is 0 or 1 and go to session create if the type is 2--}}
+                                            <a href="{{route((in_array($row->type,array(0,1)) ? 'prescriptions': 'sessions').'.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id. '&type=' .$row->type}}"
                                                class="btn btn-info btn-sm" title="create prescription"><i
                                                     class="fas fa-file"></i></a>
                                         @endif

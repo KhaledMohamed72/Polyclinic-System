@@ -2,6 +2,29 @@
 
 <div class="card-body">
     <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="mb-3">Type</label>
+                <br>
+                <div class="col-sm-2 form-check form-check-inline" style="margin-left: 1%">
+                    <input class="form-check-input" type="radio" name="type" checked id="chkExamination"
+                           {{isset($prescription) && $prescription->type == 0 ? 'checked' : ''}} value="0">
+                    <label class="form-check-label" for="chkExamination">Examination</label>
+                </div>
+                <div class="col-sm-2 form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type" id="chkFollowup"
+                           {{isset($prescription) && $prescription->type == 1 ? 'checked' : ''}} value="1">
+                    <label class="form-check-label" for="chkFollowup">Followup</label>
+                </div>
+                <div class="col-sm-2 form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type" id="chkSession"
+                           {{isset($prescription) && $prescription->type == 2 ? 'checked' : ''}} value="2">
+                    <label class="form-check-label" for="chkSession">Session</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
         @php $input = 'patient_id' @endphp
         <div class="col-md-12">
             <div class="form-group">
@@ -19,9 +42,9 @@
         </div>
     </div>
     {{--get nOf doctors to show doctor drop down menu if nOf doctors is more than one and hide it if equal to one--}}
+    @php $input = 'doctor_id' @endphp
     @if($count_doctors > 1)
         <div class="row">
-            @php $input = 'doctor_id' @endphp
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Doctor</label>
@@ -38,7 +61,7 @@
             </div>
         </div>
     @else
-        <input type="hidden" value="{{$doctor_rows[0]->id}}" name="has_one_doctor_id" id="has_one_doctor_id">
+        <input type="hidden" value="{{$doctor_rows[0]->id}}" name="{{$input}}" id="has_one_doctor_id">
     @endif
     <div class="row">
         <div class="col-md-6 form-group datepickerdiv">

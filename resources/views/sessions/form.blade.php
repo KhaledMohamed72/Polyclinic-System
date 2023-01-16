@@ -10,7 +10,8 @@
                     <option selected="" disabled="">Select Patient</option>
                     @foreach($patient_rows as $patient_row)
                         <option value="{{$patient_row->patient_id}}"
-                            {{isset($row) && $row->patient_id == $patient_row->patient_id ? 'selected' : ''}}>{{$patient_row->name}}</option>
+                            {{isset($row) && $row->patient_id == $patient_row->patient_id ? 'selected' :
+                                (isset($_GET['patient_id']) && $_GET['patient_id']== $patient_row->patient_id ? 'selected' : '')}}>{{$patient_row->name}}</option>
                     @endforeach
                 </select>
                 @error($input)<span class="badge badge-danger"
@@ -40,7 +41,8 @@
         <div class="col-md-6 form-group datepickerdiv">
             <label class="control-label">Date</label>
             <div class="form-group">
-                <input type="date" value="{{isset($row) ? $row->$input : old($input)}}" class="form-control session-date"
+                <input type="date" value="{{isset($row) ? $row->$input :
+                                            (isset($_GET['date']) ? $_GET['date'] : old($input))}}" class="form-control session-date"
                        name="{{$input}}" id="date" data-provide="datepicker"
                        data-date-autoclose="true" autocomplete="on" min="{{date("Y-m-d")}}">
                 @error($input)<span class="badge badge-danger"

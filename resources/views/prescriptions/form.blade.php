@@ -6,13 +6,16 @@
                     class="text-danger">*</span></label>
             @php $input = 'examination'; @endphp
             <div class="col-sm-3 form-check form-check-inline" style="margin-left: 10%">
-                <input class="form-check-input" type="radio" name="type" id="chkYes" onclick="ShowHideDiv()" checked
+                <input class="form-check-input" type="radio" name="type" id="chkYes" onclick="ShowHideDiv()"
+                       {{!isset($_GET['type']) ? 'checked' : (isset($_GET['type']) && $_GET['type'] == 0 ? 'checked' : '')}}
                        value="0">
                 <label class="form-check-label" for="chkYes">Examination</label>
             </div>
             @php $input = 'followup'; @endphp
             <div class="col-sm-3 form-check form-check-inline ml-4">
-                <input class="form-check-input" type="radio" name="type" id="chkNo" onclick="ShowHideDiv()" value="1">
+                <input class="form-check-input" type="radio" name="type" id="chkNo" onclick="ShowHideDiv()"
+                       {{(isset($_GET['type']) && $_GET['type'] == 1 ? 'checked' : '')}}
+                       value="1">
                 <label class="form-check-label" for="chkNo">Followup</label>
             </div>
         </div>

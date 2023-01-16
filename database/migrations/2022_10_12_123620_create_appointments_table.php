@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('patient_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('doctor_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('receptionist_id')->constrained('users')->cascadeOnDelete();
+            $table->tinyInteger('type')->default(0);
             $table->string('date');
             $table->string('time');
             $table->string('status');
