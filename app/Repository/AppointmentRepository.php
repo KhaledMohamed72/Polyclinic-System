@@ -210,6 +210,7 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
                 ->where('clinic_id', $this->getClinic()->id)
                 ->where('doctor_id', $doctor_id)
                 ->where('date', $request->date)
+                ->where('status','pending')
                 ->select('time')
                 ->get()->pluck('time');
         }
@@ -218,6 +219,7 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
                 ->where('clinic_id', $this->getClinic()->id)
                 ->where('receptionist_id', auth()->user()->id)
                 ->where('date', $request->date)
+                ->where('status','pending')
                 ->select('time')
                 ->get()->pluck('time');
         }
@@ -226,6 +228,7 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
                 ->where('clinic_id', $this->getClinic()->id)
                 ->where('doctor_id', auth()->user()->id)
                 ->where('date', $request->date)
+                ->where('status','pending')
                 ->select('time')
                 ->get()->pluck('time');
         }

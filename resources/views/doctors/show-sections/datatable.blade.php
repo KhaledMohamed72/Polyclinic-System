@@ -91,7 +91,7 @@
                                             <td>
                                                 <a class="btn btn-info btn-sm"
                                                    href="{{route('patients.show',$row->patient_id)}}"
-                                                   title="Cancel">
+                                                   title="View">
                                                     <span><i class="fa fa-eye"></i></span>
                                                 </a>
                                                 @if($row->status == 'pending')
