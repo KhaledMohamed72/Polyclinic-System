@@ -15,16 +15,17 @@
             },
             events: '{{route('get-all-appointments')}}',
             eventClick: function (info) {
-                click(info,info.event.start)
+                click(info, info.event.start)
             },
             dateClick: function (info) {
-                click(info,info.date)
+                click(info, info.date)
             }
         });
         calendar.changeView('dayGridMonth');
         calendar.render();
     });
-    function click(info,dayDate){
+
+    function click(info, dayDate) {
         function tConvert(time) {
             // Check correct time format and split into components
             time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -58,21 +59,23 @@
                         if (response[i].status == 'pending') {
                             {{-- go to prescriptiom create if type is 0 or 1 and go to session create if the type is 2--}}
                                 type = response[i].type;
-                            type = [0,1].includes(type);
-                            prescription_url = "{{route( (':type' ? 'prescriptions': 'sessions').'.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id + "&type=" + response[i].type;
-                            type_replace = prescription_url.replace(':type', type);
+                            if ([0, 1].includes(type)) {
+                                prescription_url = "{{route('prescriptions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id + "&type=" + response[i].type;
+                            } else {
+                                prescription_url = "{{route('sessions.create')}}" + "?date=" + response[i].date + "&patient_id=" + response[i].patient_id + "&type=" + response[i].type;
+                            }
                             prescription_link = "<a href=" + prescription_url + " class='btn btn-info btn-sm'><i class='fas fa-file'></i></a>";
-                        }else{
+                        } else {
                             prescription_url = '';
                             prescription_link = '';
                         }
-                        if(response[i].type == 0){
+                        if (response[i].type == 0) {
                             type = '<span class="badge badge-info">Examination</span>';
-                        }else if(response[i].type == 1){
+                        } else if (response[i].type == 1) {
                             type = '<span class="badge badge-warning">Followup</span>';
-                        }else if(response[i].type == 2){
+                        } else if (response[i].type == 2) {
                             type = '<span class="badge badge-secondary">Session</span>';
-                        }else{
+                        } else {
                             type = 'Unknown';
                         }
                         patient_id = response[i].patient_id;
