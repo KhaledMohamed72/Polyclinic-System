@@ -114,8 +114,15 @@ class SessionController extends Controller
             'note' => $request->note,
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
-
-        if ($row) {
+        $updateAppointmentStatus = DB::table('appointments')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('patient_id', $request->patient)
+            ->where('doctor_id', auth()->user()->id)
+            ->where('date', $request->date)
+            ->update([
+                'status' => 'complete'
+            ]);
+        if ($row && $updateAppointmentStatus) {
             toastr()->success('Successfully Created');
             return redirect()->route('sessions.index');
         } else {
