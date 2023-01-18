@@ -143,6 +143,16 @@
                             </div>
                         </div>
                     @endif
+                    @if(!empty($prescription->note))
+                        <div class="row no-print">
+                            <div class="col-md-12">
+                                <div class="py-2 mt-3">
+                                    <h3 class="font-size-15 font-weight-bold">Note</h3>
+                                </div>
+                                <p>{{$prescription->note}}</p>
+                            </div>
+                        </div>
+                    @endif
                     <hr>
                     <div class="row">
                         {!! $prescription_design->footer ?? '' !!}
