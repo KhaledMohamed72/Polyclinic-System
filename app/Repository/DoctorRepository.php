@@ -291,21 +291,21 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
             ->whereMonth('created_at', '=', Carbon::now()->format('m'))
             ->sum('fees');
         $current_monthly_earrings = $current_month_prescriptions_sum + $current_month_incomes_sum + $current_month_sessions_sum;
-
+        $last_month = (Carbon::now()->format('m') - 1) == 0 ? 12 : (Carbon::now()->format('m') - 1);
         $last_month_prescriptions_sum = DB::table('prescriptions')
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->where('doctor_id', '=', auth()->user()->id)
-            ->whereMonth('created_at', '=', Carbon::now()->format('m') - 1)
+            ->whereMonth('created_at', '=', $last_month)
             ->sum('fees');
         $last_month_incomes_sum = DB::table('incomes')
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->where('doctor_id', '=', auth()->user()->id)
-            ->whereMonth('created_at', '=', Carbon::now()->format('m') - 1)
+            ->whereMonth('created_at', '=', $last_month)
             ->sum('amount');
         $last_month_sessions_sum = DB::table('sessions_info')
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->where('doctor_id', '=', auth()->user()->id)
-            ->whereMonth('created_at', '=', Carbon::now()->format('m') - 1)
+            ->whereMonth('created_at', '=', $last_month)
             ->sum('fees');
         $last_monthly_earrings = $last_month_prescriptions_sum + $last_month_incomes_sum + $last_month_sessions_sum;
         $earring_percentage = $last_monthly_earrings != 0 ? (($current_monthly_earrings - $last_monthly_earrings) / $last_monthly_earrings) * 100 : 100;
