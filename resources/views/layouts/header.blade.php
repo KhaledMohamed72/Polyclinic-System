@@ -29,8 +29,9 @@
         </div>
     </form>--}}
 
-    <!-- Right navbar links -->
-    <ul class="navbar-nav" style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:12rem; @else margin-left:auto; @endif">
+<!-- Right navbar links -->
+    <ul class="navbar-nav"
+        style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:12rem; @else margin-left:auto; @endif">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -97,11 +98,11 @@
         </form>
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
+            {{--<a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">0</span>
             </a>
-            {{--<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item dropdown-header">15 Notifications</span>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">

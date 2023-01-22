@@ -119,6 +119,7 @@ class SessionController extends Controller
             ->where('patient_id', $request->patient)
             ->where('doctor_id', auth()->user()->id)
             ->where('date', $request->date)
+            ->where('type','=', 2)
             ->update([
                 'status' => 'complete'
             ]);

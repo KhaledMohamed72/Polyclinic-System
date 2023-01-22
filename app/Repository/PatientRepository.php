@@ -194,7 +194,7 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             ->orderBy('prescriptions.date', 'desc')
             ->get();
         $sessions = DB::table('sessions_info')
-            ->join('users', 'users.id', '=', 'sessions_info.doctor_id')
+            ->join('users', 'users.id', '=', 'sessions_info.patient_id')
             ->join('session_types', 'session_types.id', '=', 'sessions_info.session_type_id')
             ->where('sessions_info.clinic_id', '=', $this->getClinic()->id)
             ->where('sessions_info.patient_id', '=', $id)

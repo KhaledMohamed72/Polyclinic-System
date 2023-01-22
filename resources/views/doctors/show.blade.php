@@ -4,10 +4,16 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 @endsection
+@if(auth()->user()->hasRole(['admin','recep']))
 @section('title')   Doctor Profile    @endsection
 @section('header-title')    Doctor Profile    @endsection
 @section('header-title-one')    Doctors    @endsection
 @section('header-title-two')    Profile   @endsection
+@else
+@section('title')   Home    @endsection
+@section('header-title')    Home    @endsection
+@section('header-title-one')    home    @endsection
+@endif
 
 @section('content')
     <div class="row">

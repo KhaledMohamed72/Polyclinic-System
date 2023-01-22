@@ -368,19 +368,32 @@
         </div>
     </div>
     <div class="row">
-        @php $input = 'file' @endphp
+        @php $input = 'file[]' @endphp
         <div class="col-sm-6">
             <label class="control-label">Attachment</label>
             <div class="form-group">
-                <div class="custom-file">
-                    <input type="file" name="{{$input}}" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label" for="customFile">{{$prescription->file}}</label>
-                    @if(!empty($prescription->file))
-                        <a class="position-absolute ml-3 mt-2" target="_blank" href="{{asset('images/prescriptions/'.$prescription->file)}}">
-                            <i class="fa fa-lg fa-eye"></i>
-                        </a>
-                    @endif
+                <div class="custom-file mb-2">
+                    <input type="file" name="{{$input}}" class="custom-file-input" id="customFile" multiple>
+                    <label class="custom-file-label" for="customFile">Choose Files</label>
                 </div>
+                @if(!$attachments->isEmpty())
+                    @foreach($attachments as $row)
+                        <div class="mb-2">
+                            <span class="badge badge-info">{{\Dotenv\Util\Str::substr($row->attachment,13,25)}}</span>
+                            <a class="btn btn-primary btn-xs mr-2" target="_blank"
+                               href="{{asset('images/prescriptions/'.$row->attachment)}}"
+                               title="View">
+                                <i class="fas fa-eye">
+                                </i>
+                            </a>
+                            <a class="btn btn-danger btn-xs" href="{{route('attachments.destroy',$row->id)}}"
+                               title="Delete">
+                                <i class="fas fa-sm fa-trash">
+                                </i>
+                            </a>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

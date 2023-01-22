@@ -212,7 +212,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/appointment/get-appointments-of-patient', [\App\Http\Controllers\PrescriptionController::class, 'get_appointments_of_patient']);
     //  get medicines of doctors
     Route::get('/prescription/get_doctor_medicines', [\App\Http\Controllers\PrescriptionController::class, 'get_doctor_medicines']);
-
     // book appointment
     Route::get('/appointment/get_available_time', [\App\Http\Controllers\AppointmentController::class, 'get_available_time']);
     Route::get('/appointment/get_time_slots', [\App\Http\Controllers\AppointmentController::class, 'get_time_slots']);
@@ -234,5 +233,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/patients-history', [\App\Http\Controllers\ReportController::class, 'patient_history'])->name('patient-history');
     Route::get('/doctors-history', [\App\Http\Controllers\ReportController::class, 'doctor_history'])->name('doctor-history');
     Route::get('/insurance_company', [\App\Http\Controllers\ReportController::class, 'care_company'])->name('insurance_company');
-
+    // delete attachment in prescriptions
+    Route::get('/delete-attachment/{id}', [\App\Http\Controllers\PrescriptionController::class, 'destroy_attachment'])->name('attachments.destroy');
 });

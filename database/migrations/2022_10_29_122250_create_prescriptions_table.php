@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('date');
             $table->string('followup_date')->nullable();
             $table->float('fees');
-            $table->string('file')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
         });

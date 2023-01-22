@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset('assets/plugins/summernote/summernote-bs4.min.css')}}">
+
 @endsection
 @section('content')
     <div class="card card-primary">
@@ -41,6 +42,8 @@
     <!-- repeater -->
     <script src="{{asset('assets/plugins/jquery-repeater/jquery-repeater.min.js')}}"></script>
     <script src="{{asset('assets/plugins/jquery-repeater/form-repeater.int.js')}}"></script>
+    <!-- custom input file -->
+    <script src="{{asset('assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
     <!-- get appointments of chosen patient -->
     <script>
         $('.sel_patient').on('change', function (e) {

@@ -65,7 +65,9 @@ class PrescriptionController extends Controller
 
     public function edit($id)
     {
-        list($prescription,
+        list(
+            $prescription,
+            $attachments,
             $suggested_medicines,
             $suggested_tests,
             $medicines,
@@ -81,6 +83,7 @@ class PrescriptionController extends Controller
         return view('prescriptions.edit',
             compact(
                 'prescription',
+                'attachments',
                 'suggested_medicines',
                 'suggested_tests',
                 'medicines',
@@ -116,6 +119,26 @@ class PrescriptionController extends Controller
         } else {
             toastr()->error('Something went wrong!');
             return redirect()->route('prescriptions.index');
+        }
+    }
+
+    public function destroy_attachment($id)
+    {
+        $attachment = DB::table('prescription_attachments')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $id)
+            ->pluck('attachment')
+            ->first();
+        $row = DB::table('prescription_attachments')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->where('id', $id)
+            ->delete();
+        if ($row) {
+            unlink(public_path('images/prescriptions/' . $attachment));
+            return redirect()->back()->with('success', 'Attachment Deleted Successfully');
+        } else {
+            toastr()->error('Something went wrong!');
+            return redirect()->back();
         }
     }
 

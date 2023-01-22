@@ -237,13 +237,13 @@
         </div>
     </div>
     <div class="row">
-        @php $input = 'file' @endphp
+        @php $input = 'file[]' @endphp
         <div class="col-sm-6">
             <label class="control-label">Attachment</label>
             <div class="form-group">
                 <div class="custom-file">
-                    <input type="file" name="{{$input}}" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <input type="file" name="{{$input}}" class="custom-file-input" id="customFile" multiple>
+                    <label class="custom-file-label" for="customFile">Choose Files</label>
                 </div>
             </div>
         </div>
