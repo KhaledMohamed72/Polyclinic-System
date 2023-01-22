@@ -443,6 +443,10 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
             ->first();
+        $attachments = DB::table('prescription_attachments')
+            ->where('prescription_id', $id)
+            ->where('clinic_id', $this->getClinic()->id)
+            ->get();
         $prescription_design = DB::table('prescription_designs')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('doctor_id', $prescription->doctor_id)
@@ -507,7 +511,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('prescription_tests.clinic_id', $this->getClinic()->id)
             ->get();
         $mpdf = new \Mpdf\Mpdf();
-        return [$mpdf, $prescription, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient];
+        return [$mpdf, $prescription,$attachments, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient];
     }
 
     public function checkItemsInDatabase($request, $table, $key, $value)

@@ -59,7 +59,7 @@ class ReportController extends Controller
             ->join('patients', 'patients.user_id', '=', 'users.id')
             ->where('users.clinic_id', $this->getClinic()->id)
             ->where('users.id', $request->patient)
-            ->select('users.name as name', 'patients.address as address')
+            ->select('users.name as name','users.phone as phone', 'patients.address as address')
             ->first();
         $sessions = [];
         if ($request->sessions != null) {

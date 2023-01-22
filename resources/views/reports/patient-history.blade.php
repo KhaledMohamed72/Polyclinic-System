@@ -25,6 +25,9 @@
             <div>
                 <strong> العنوان : </strong><span>{{$patient->address}}</span>
             </div>
+            <div>
+                <strong> التليفون : </strong><span>{{$patient->phone}}</span>
+            </div>
         </address>
     </div>
 </div>

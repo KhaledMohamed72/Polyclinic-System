@@ -94,6 +94,22 @@
                         </div>
                     </div>
                 @endif
+                @if(!$attachments->isEmpty())
+                    <div class="row no-print">
+                        <div class="col-md-12">
+                            <div class="py-2 mt-3">
+                                <h3 class="font-size-15 font-weight-bold">Attachments</h3>
+                            </div>
+                            @foreach($attachments as $row)
+                                <a class="btn btn-default mt-2 mr-3" target="_blank"
+                                   href="{{asset('images/prescriptions/'.$row->attachment)}}">
+                                    <i class="fa fa-file"></i>{{' '.\Dotenv\Util\Str::substr($row->attachment,13,25)}}
+                                </a>
+                                <br>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
                 @if($prescription->note != '')
                     <div class="row">
                         <div class="col-md-12">

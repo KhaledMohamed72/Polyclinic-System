@@ -157,10 +157,10 @@ class PrescriptionController extends Controller
 
     public function pdf_prescription($id)
     {
-        list($mpdf, $prescription, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient)
+        list($mpdf,$prescription,$attachments, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient)
             = $this->prescriptionRepository->printPDF($id);
         $html = view('prescriptions.pdf-show', compact(
-            'prescription', 'medicines', 'tests',
+            'prescription','attachments', 'medicines', 'tests',
             'formulas', 'doctor', 'prescription_design', 'appointment', 'patient'
         ))->render();
 
