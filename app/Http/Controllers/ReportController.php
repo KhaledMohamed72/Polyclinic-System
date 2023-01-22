@@ -55,7 +55,6 @@ class ReportController extends Controller
             ->select('prescriptions.*')
             ->orderBy('id', 'desc')
             ->get();
-
         $patient = DB::table('users')
             ->join('patients', 'patients.user_id', '=', 'users.id')
             ->where('users.clinic_id', $this->getClinic()->id)

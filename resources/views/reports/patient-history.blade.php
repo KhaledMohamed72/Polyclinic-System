@@ -66,6 +66,9 @@
                             ->select('formulas.name as formula_name'
                                 , 'frequency_types.ar_name as frequency_name',
                             )->get();
+                        $attachments =  \Illuminate\Support\Facades\DB::table('prescription_attachments')
+                            ->where('prescription_id', $prescription->id)
+                            ->get();
                     @endphp
                     @if(!$medicines->isEmpty())
                         <div class="row">
@@ -132,71 +135,75 @@
                             </div>
                         </div>
                     @endif
-                    @if($prescription->file != '')
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="py-2 mt-3">
-                                        <h3 class="font-size-15 font-weight-bold"><u>Attachment</u></h3>
-                                    </div>
-                                    <p><a class="ml-3" style="color: blue"  target="_blank"
-                                          href="{{asset('images/prescriptions/'.$prescription->file)}}">
-                                            show attachment
-                                        </a></p>
-                                </div>
-                            </div>
-                            @endif
-                    @if($prescription->note != '')
+                    @if(!$attachments->isEmpty())
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="py-2 mt-3">
-                                    <h3 class="font-size-15 font-weight-bold"><u>Notes</u></h3>
+                                    <h3 class="font-size-15 font-weight-bold"><u>Attachments</u></h3>
                                 </div>
-                                <p>{{$prescription->note}}</p>
+                                @foreach($attachments as $row)
+                                    <a style="color: blue" target="_blank"
+                                       href="{{asset('images/prescriptions/'.$row->attachment)}}">
+                                        <i class="fa fa-file"></i>{{' '.\Dotenv\Util\Str::substr($row->attachment,13,25)}}
+                                    </a>
+                                    <br>
+                                    <br>
+                                @endforeach
                             </div>
+                            @endif
+                            @if($prescription->note != '')
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="py-2 mt-3">
+                                            <h3 class="font-size-15 font-weight-bold"><u>Notes</u></h3>
+                                        </div>
+                                        <p>{{$prescription->note}}</p>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
-                    @endif
                 </div>
             </div>
         </div>
-    </div>
-@endforeach
-<hr>
-@foreach($sessions as $session)
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-title">
-                </div>
-                <div class="card-body">
-                    <div class="card-header">
-                        <table class="table">
-                            <tbody>
-                            <tr style="background-color: #b8daff;">
-                                <td><strong class="font-size-16">Session #{{$session->id}}</strong></strong></td>
-                                <td><strong> التاريخ
-                                        : </strong><span>{{date('Y-m-d',strtotime($session->created_at))}}</span></span>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
+        @endforeach
+        <hr>
+        @foreach($sessions as $session)
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-title">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header">
                                 <table class="table">
                                     <tbody>
-                                    <tr>
-                                        <td>{{$session->session_name}}</td>
-                                        <td>{{$session->note ?? ''}}</td>
+                                    <tr style="background-color: #b8daff;">
+                                        <td><strong class="font-size-16">Session #{{$session->id}}</strong></strong>
+                                        </td>
+                                        <td><strong> التاريخ
+                                                : </strong><span>{{date('Y-m-d',strtotime($session->created_at))}}</span></span>
+                                        </td>
                                     </tr>
+
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <td>{{$session->session_name}}</td>
+                                                <td>{{$session->note ?? ''}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 @endforeach

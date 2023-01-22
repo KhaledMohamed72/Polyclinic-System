@@ -48,11 +48,12 @@ class PrescriptionController extends Controller
 
     public function show($id)
     {
-        list($prescription, $medicines, $tests, $formulas, $doctor, $prescription_design, $patient, $appointment)
+        list($prescription, $attachments, $medicines, $tests, $formulas, $doctor, $prescription_design, $patient, $appointment)
             = $this->prescriptionRepository->showPrescriptions($id);
         return view('prescriptions.show',
             compact(
                 'prescription',
+                'attachments',
                 'medicines',
                 'tests',
                 'formulas',

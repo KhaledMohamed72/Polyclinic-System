@@ -269,6 +269,10 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
             ->first();
+        $attachments = DB::table('prescription_attachments')
+            ->where('prescription_id', $id)
+            ->where('clinic_id', $this->getClinic()->id)
+            ->get();
         $prescription_design = DB::table('prescription_designs')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('doctor_id', $prescription->doctor_id)
@@ -332,7 +336,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('prescription_tests.prescription_id', $id)
             ->where('prescription_tests.clinic_id', $this->getClinic()->id)
             ->get();
-        return [$prescription, $medicines, $tests, $formulas, $doctor, $prescription_design, $patient, $appointment];
+        return [$prescription, $attachments, $medicines, $tests, $formulas, $doctor, $prescription_design, $patient, $appointment];
     }
 
     public function updatePrescriptions($request, $id)
