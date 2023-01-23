@@ -112,14 +112,16 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
         $prescription_id = DB::getPdo()->lastInsertId();
 
         // upload attachments
-        foreach ($request->file('file') as $attachmentFile) {
-            // upload and get the attachment name
-            $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
-            DB::table('prescription_attachments')->insert([
-                'clinic_id' => $this->getClinic()->id,
-                'prescription_id' => $prescription_id,
-                'attachment' => $fileName
-            ]);
+        if (!empty($request->file('file'))) {
+            foreach ($request->file('file') as $attachmentFile) {
+                // upload and get the attachment name
+                $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
+                DB::table('prescription_attachments')->insert([
+                    'clinic_id' => $this->getClinic()->id,
+                    'prescription_id' => $prescription_id,
+                    'attachment' => $fileName
+                ]);
+            }
         }
         $prescription = Prescription::find($prescription_id);
         foreach ($request->medicines as $medicine) {
@@ -375,15 +377,17 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
                 'note' => $request->get('note'),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
-        // upload attachments
-        foreach ($request->file('file') as $attachmentFile) {
-            // upload and get the attachment name
-            $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
-            DB::table('prescription_attachments')->insert([
-                'clinic_id' => $this->getClinic()->id,
-                'prescription_id' => $id,
-                'attachment' => $fileName
-            ]);
+        if (!empty($request->file('file'))) {
+            // upload attachments
+            foreach ($request->file('file') as $attachmentFile) {
+                // upload and get the attachment name
+                $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
+                DB::table('prescription_attachments')->insert([
+                    'clinic_id' => $this->getClinic()->id,
+                    'prescription_id' => $id,
+                    'attachment' => $fileName
+                ]);
+            }
         }
         DB::table('prescription_medicines')
             ->where('clinic_id', $this->getClinic()->id)
@@ -511,7 +515,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('prescription_tests.clinic_id', $this->getClinic()->id)
             ->get();
         $mpdf = new \Mpdf\Mpdf();
-        return [$mpdf, $prescription,$attachments, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient];
+        return [$mpdf, $prescription, $attachments, $medicines, $tests, $formulas, $doctor, $prescription_design, $appointment, $patient];
     }
 
     public function checkItemsInDatabase($request, $table, $key, $value)
@@ -586,7 +590,7 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
         }
         if ($attachmentFile) {
             $fileName = uniqid() . $attachmentFile->getClientOriginalName();
-            $attachmentFile->move(public_path('images/prescriptions') , $fileName);
+            $attachmentFile->move(public_path('images/prescriptions'), $fileName);
             return $fileName;
         }
     }
