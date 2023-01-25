@@ -67,12 +67,12 @@ class InsuranceCompanyController extends Controller
         ]);
 
         // get recep id
-        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
+        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id')->first();
 
         $row = DB::table('insurance_companies')->insert([
                 'clinic_id' => $this->getClinic()->id,
                 'doctor_id' => $request->doctor_id,
-                'receptionist_id' => $receptionist_id[0],
+                'receptionist_id' => $receptionist_id,
                 'name' => $request->name,
                 'from' => $request->from,
                 'to' => $request->to,
@@ -124,13 +124,13 @@ class InsuranceCompanyController extends Controller
             'note' => ['nullable']
         ]);
         // get recep id
-        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
+        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id')->first();
         $row = DB::table('insurance_companies')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
             ->update([
                 'doctor_id' => $request->doctor_id,
-                'receptionist_id' => $receptionist_id[0],
+                'receptionist_id' => $receptionist_id,
                 'name' => $request->name,
                 'from' => $request->from,
                 'to' => $request->to,

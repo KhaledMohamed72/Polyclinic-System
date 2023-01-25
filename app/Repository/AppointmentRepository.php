@@ -175,12 +175,12 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
     }
     public function storeAppointment(Request $request){
         // if recep id
-        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
+        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id')->first();
         $appointment = DB::table('appointments')->insert([
             'clinic_id' => $this->getClinic()->id,
             'patient_id' => $request->patient_id,
             'doctor_id' => $request->doctor_id,
-            'receptionist_id' => $receptionist_id[0],
+            'receptionist_id' => $receptionist_id,
             'type' => $request->type,
             'date' => $request->date,
             'time' => $request->available_slot,
@@ -190,7 +190,6 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
         ]);
         return $appointment;
     }
-
     public function getSlotTimes(Request $request)
     {
         $time_slots = DB::table('doctor_schedules')

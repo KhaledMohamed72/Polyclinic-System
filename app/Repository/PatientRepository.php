@@ -132,14 +132,14 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
         // get recep id
-        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id');
+        $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id')->first();
         // insert the rest of info into Patients table
         $patient = DB::table('patients')
             ->where('user_id', '=', $id)
             ->where('clinic_id', '=', $this->getClinic()->id)
             ->update(array(
                     'doctor_id' => $request->doctor_id,
-                    'receptionist_id' => $receptionist_id[0],
+                    'receptionist_id' => $receptionist_id,
                     'gender' => $request->gender,
                     'age' => $request->age,
                     'address' => $request->address,
