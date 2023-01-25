@@ -7,6 +7,7 @@
 @section('title')   Appointments    @endsection
 @section('header-title')    Appointments   @endsection
 @section('header-title-one')    Appointments    @endsection
+@section('header-title-one-link')    {{route('appointments.index')}}    @endsection
 @section('header-title-two')    Create   @endsection
 
 @section('content')

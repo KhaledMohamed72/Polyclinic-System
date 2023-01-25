@@ -6,7 +6,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">@yield('header-title-one')</a></li>
+                    <li class="breadcrumb-item"><a href="@yield('header-title-one-link')">@yield('header-title-one')</a></li>
                     <li class="breadcrumb-item active">@yield('header-title-two')</li>
                 </ol>
             </div><!-- /.col -->

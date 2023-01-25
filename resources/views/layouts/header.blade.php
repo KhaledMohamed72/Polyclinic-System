@@ -31,7 +31,7 @@
 
 <!-- Right navbar links -->
     <ul class="navbar-nav"
-        style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:12rem; @else margin-left:auto; @endif">
+        style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:70%; @else margin-left:auto; @endif">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">

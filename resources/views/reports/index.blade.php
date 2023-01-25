@@ -20,6 +20,7 @@
                     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                         {{-- patient history --}}
                         @if(auth()->user()->hasRole(['admin','recep','doctor']))
+                            {{-- Patient history --}}
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-tabs-three-patient-history-tab" data-toggle="pill"
                                    href="#custom-tabs-three-patient-history" role="tab"
@@ -36,10 +37,25 @@
                             </li>
                             {{--Insurance Companies--}}
                             <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-three-patient-insurance_company-tab" data-toggle="pill"
+                                <a class="nav-link" id="custom-tabs-three-patient-insurance_company-tab"
+                                   data-toggle="pill"
                                    href="#custom-tabs-three-insurance_company" role="tab"
                                    aria-controls="custom-tabs-three-insurance_company" aria-selected="false">Insurance
                                     Companies</a>
+                            </li>
+                            {{--Income--}}
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-income-tab" data-toggle="pill"
+                                   href="#custom-tabs-three-income" role="tab"
+                                   aria-controls="custom-tabs-three-income" aria-selected="false">Period
+                                    Income</a>
+                            </li>
+                            {{--Expenses--}}
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-expenses-tab" data-toggle="pill"
+                                   href="#custom-tabs-three-expenses" role="tab"
+                                   aria-controls="custom-tabs-three-expenses" aria-selected="false">Period
+                                    Expenses</a>
                             </li>
                         @endif
                     </ul>
@@ -59,9 +75,8 @@
                                     </div>
                                 </form>
                             </div>
-                        {{-- Doctor history --}}
-                            <div class="tab-pane fade"
-                                 id="custom-tabs-three-doctor-history" role="tabpanel"
+                            {{-- Doctor history --}}
+                            <div class="tab-pane fade" id="custom-tabs-three-doctor-history" role="tabpanel"
                                  aria-labelledby="custom-tabs-three-doctor-history-tab">
                                 <form method="get" action="{{route('doctor-history')}}">
                                     @include('reports.forms.doctor-history-form')
@@ -73,8 +88,34 @@
                                     </div>
                                 </form>
                             </div>
+                            {{-- Insurance company --}}
                             <div class="tab-pane fade" id="custom-tabs-three-insurance_company" role="tabpanel"
                                  aria-labelledby="custom-tabs-three-insurance_company-tab">
+                                <form method="get" action="{{route('insurance_company')}}">
+                                    @include('reports.forms.insurance-company-form')
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary float-right"
+                                                name="get-insurance_company">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            {{-- Income --}}
+                            <div class="tab-pane fade" id="custom-tabs-three-income" role="tabpanel"
+                                 aria-labelledby="custom-tabs-three-income-tab">
+                                <form method="get" action="{{route('insurance_company')}}">
+                                    @include('reports.forms.insurance-company-form')
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary float-right" name="get-insurance_company">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            {{-- Expenses --}}
+                            <div class="tab-pane fade" id="custom-tabs-three-expenses" role="tabpanel"
+                                 aria-labelledby="custom-tabs-three-expenses-tab">
                                 <form method="get" action="{{route('insurance_company')}}">
                                     @include('reports.forms.insurance-company-form')
                                     <div class="card-footer">
@@ -88,7 +129,6 @@
                         @endif
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

@@ -9,6 +9,7 @@
 @section('title')   Prescriptions    @endsection
 @section('header-title')    Prescriptions    @endsection
 @section('header-title-one')    Prescriptions    @endsection
+@section('header-title-one-link')    {{route('prescriptions.index')}}    @endsection
 @section('header-title-two')    Edit   @endsection
 @section('styles')
     <!-- Select2 -->
