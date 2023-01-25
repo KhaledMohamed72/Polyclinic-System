@@ -92,84 +92,88 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             'patient' => ['required', 'integer'],
             'date' => ['required', 'date'],
         ]);
-        // functions to insert a new medicines or tests to suggest it later when going to create new prescription
-        $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
-        $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
-        // get fees based on prescription type and insurance company
-        $fees = $this->getFees($request);
-        $prescription = DB::table('prescriptions')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'doctor_id' => auth()->user()->id,
-            'patient_id' => $request->get('patient'),
-            'insurance_company_id' => $request->insurance_company_id,
-            'type' => $request->get('type'),
-            'date' => $request->get('date'),
-            'followup_date' => $request->get('followup_date'),
-            'fees' => $fees,
-            'note' => $request->get('note'),
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-        $prescription_id = DB::getPdo()->lastInsertId();
-
-        // upload attachments
-        if (!empty($request->file('file'))) {
-            foreach ($request->file('file') as $attachmentFile) {
-                // upload and get the attachment name
-                $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
-                DB::table('prescription_attachments')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $prescription_id,
-                    'attachment' => $fileName
-                ]);
-            }
-        }
-        $prescription = Prescription::find($prescription_id);
-        foreach ($request->medicines as $medicine) {
-            if ($medicine['medicine'] != null) {
-                DB::table('prescription_medicines')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $prescription_id,
-                    'name' => $medicine['medicine'],
-                    'frequency_type_id' => $medicine['frequency'] ?? null,
-                    'period_type_id' => $medicine['period'] ?? null,
-                    'note' => $medicine['note'],
-                ]);
-            }
-        }
-
-        foreach ($request->tests as $test) {
-            if (isset($test['test'])) {
-                DB::table('prescription_tests')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $prescription_id,
-                    'name' => $test['test'],
-                    'note' => $test['note'],
-                ]);
-            }
-        }
-
-        foreach ($request->formulas as $formula) {
-            if (isset($formula['formula'])) {
-                DB::table('prescription_formulas')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $prescription_id,
-                    'formula_id' => $formula['formula'],
-                    'frequency_type_id' => $formula['frequency'] ?? null,
-                    'period_type_id' => $formula['period'] ?? null,
-                    'note' => $formula['note'],
-                ]);
-            }
-        }
-
-        $updateAppointmentStatus = DB::table('appointments')
-            ->where('clinic_id', $this->getClinic()->id)
-            ->where('patient_id', $prescription->patient_id)
-            ->where('doctor_id', $prescription->doctor_id)
-            ->where('date', $prescription->date)
-            ->whereIn('type', array('0', '1'))
-            ->update([
-                'status' => 'complete'
+        try {
+            DB::beginTransaction();
+            // functions to insert a new medicines or tests to suggest it later when going to create new prescription
+            $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
+            $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
+            // get fees based on prescription type and insurance company
+            $fees = $this->getFees($request);
+            $prescription = DB::table('prescriptions')->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'doctor_id' => auth()->user()->id,
+                'patient_id' => $request->get('patient'),
+                'insurance_company_id' => $request->insurance_company_id,
+                'type' => $request->get('type'),
+                'date' => $request->get('date'),
+                'followup_date' => $request->get('followup_date'),
+                'fees' => $fees,
+                'note' => $request->get('note'),
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
+            $prescription_id = DB::getPdo()->lastInsertId();
+            // upload attachments
+            if (!empty($request->file('file'))) {
+                foreach ($request->file('file') as $attachmentFile) {
+                    // upload and get the attachment name
+                    $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
+                    DB::table('prescription_attachments')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $prescription_id,
+                        'attachment' => $fileName
+                    ]);
+                }
+            }
+            $prescription = Prescription::find($prescription_id);
+            foreach ($request->medicines as $medicine) {
+                if ($medicine['medicine'] != null) {
+                    DB::table('prescription_medicines')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $prescription_id,
+                        'name' => $medicine['medicine'],
+                        'frequency_type_id' => $medicine['frequency'] ?? null,
+                        'period_type_id' => $medicine['period'] ?? null,
+                        'note' => $medicine['note'],
+                    ]);
+                }
+            }
+            foreach ($request->tests as $test) {
+                if (isset($test['test'])) {
+                    DB::table('prescription_tests')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $prescription_id,
+                        'name' => $test['test'],
+                        'note' => $test['note'],
+                    ]);
+                }
+            }
+            foreach ($request->formulas as $formula) {
+                if (isset($formula['formula'])) {
+                    DB::table('prescription_formulas')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $prescription_id,
+                        'formula_id' => $formula['formula'],
+                        'frequency_type_id' => $formula['frequency'] ?? null,
+                        'period_type_id' => $formula['period'] ?? null,
+                        'note' => $formula['note'],
+                    ]);
+                }
+            }
+            $updateAppointmentStatus = DB::table('appointments')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('patient_id', $prescription->patient_id)
+                ->where('doctor_id', $prescription->doctor_id)
+                ->where('date', $prescription->date)
+                ->whereIn('type', array('0', '1'))
+                ->update([
+                    'status' => 'complete'
+                ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
         return [$prescription, $updateAppointmentStatus, $prescription_id];
     }
 
@@ -352,92 +356,100 @@ class PrescriptionRepository extends Controller implements PrescriptionRepositor
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $id)
             ->first();
-        // function to insert a new medicines or tests to suggest it later when go to create new prescriptions
-        $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
-        $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
+        try {
+            DB::beginTransaction();
+            // function to insert a new medicines or tests to suggest it later when go to create new prescriptions
+            $this->checkItemsInDatabase($request, 'medicines', '$medicine', 'medicine');
+            $this->checkItemsInDatabase($request, 'tests', '$test', 'test');
 
-        // get fees based on prescription type and insurance company
-        $fees = $this->getFees($request);
-        // delete old file if new one uploaded
-        if (!empty($row->file) && file_exists(public_path('images/prescriptions/' . $row->file))) {
-            if ($request->hasFile('file') && $request->file('file')) {
-                unlink(public_path('images/prescriptions/' . $row->file));
+            // get fees based on prescription type and insurance company
+            $fees = $this->getFees($request);
+            // delete old file if new one uploaded
+            if (!empty($row->file) && file_exists(public_path('images/prescriptions/' . $row->file))) {
+                if ($request->hasFile('file') && $request->file('file')) {
+                    unlink(public_path('images/prescriptions/' . $row->file));
+                }
             }
-        }
-        $prescription = DB::table('prescriptions')
-            ->where('clinic_id', $this->getClinic()->id)
-            ->where('id', $id)
-            ->update([
-                'patient_id' => $request->get('patient'),
-                'insurance_company_id' => $request->insurance_company_id,
-                'type' => $request->get('type'),
-                'date' => $request->get('date'),
-                'followup_date' => $request->get('followup_date') ?? null,
-                'fees' => $fees,
-                'note' => $request->get('note'),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
-        if (!empty($request->file('file'))) {
-            // upload attachments
-            foreach ($request->file('file') as $attachmentFile) {
-                // upload and get the attachment name
-                $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
-                DB::table('prescription_attachments')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $id,
-                    'attachment' => $fileName
-                ]);
-            }
-        }
-        DB::table('prescription_medicines')
-            ->where('clinic_id', $this->getClinic()->id)
-            ->where('prescription_id', $id)
-            ->delete();
-        foreach ($request->medicines as $medicine) {
-            if ($medicine['medicine'] != null) {
-                DB::table('prescription_medicines')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $id,
-                    'name' => $medicine['medicine'],
-                    'frequency_type_id' => $medicine['frequency'] ?? null,
-                    'period_type_id' => $medicine['period'] ?? null,
-                    'note' => $medicine['note'],
-                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            $prescription = DB::table('prescriptions')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('id', $id)
+                ->update([
+                    'patient_id' => $request->get('patient'),
+                    'insurance_company_id' => $request->insurance_company_id,
+                    'type' => $request->get('type'),
+                    'date' => $request->get('date'),
+                    'followup_date' => $request->get('followup_date') ?? null,
+                    'fees' => $fees,
+                    'note' => $request->get('note'),
                     'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
                 ]);
+            if (!empty($request->file('file'))) {
+                // upload attachments
+                foreach ($request->file('file') as $attachmentFile) {
+                    // upload and get the attachment name
+                    $fileName = $this->storeImage($attachmentFile, 'images/prescriptions');
+                    DB::table('prescription_attachments')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $id,
+                        'attachment' => $fileName
+                    ]);
+                }
             }
+            DB::table('prescription_medicines')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('prescription_id', $id)
+                ->delete();
+            foreach ($request->medicines as $medicine) {
+                if ($medicine['medicine'] != null) {
+                    DB::table('prescription_medicines')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $id,
+                        'name' => $medicine['medicine'],
+                        'frequency_type_id' => $medicine['frequency'] ?? null,
+                        'period_type_id' => $medicine['period'] ?? null,
+                        'note' => $medicine['note'],
+                        'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                        'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    ]);
+                }
+            }
+
+            DB::table('prescription_tests')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('prescription_id', $id)
+                ->delete();
+            foreach ($request->tests as $test) {
+                if ($test['test'] != null) {
+                    DB::table('prescription_tests')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $id,
+                        'name' => $test['test'],
+                        'note' => $test['note'],
+                    ]);
+                }
+            }
+            DB::table('prescription_formulas')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('prescription_id', $id)
+                ->delete();
+            foreach ($request->formulas as $formula) {
+                if (isset($formula['formula'])) {
+                    DB::table('prescription_formulas')->insert([
+                        'clinic_id' => $this->getClinic()->id,
+                        'prescription_id' => $id,
+                        'formula_id' => $formula['formula'],
+                        'frequency_type_id' => $formula['frequency'] ?? null,
+                        'period_type_id' => $formula['period'] ?? null,
+                        'note' => $formula['note'],
+                    ]);
+                }
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
         }
 
-        DB::table('prescription_tests')
-            ->where('clinic_id', $this->getClinic()->id)
-            ->where('prescription_id', $id)
-            ->delete();
-        foreach ($request->tests as $test) {
-            if ($test['test'] != null) {
-                DB::table('prescription_tests')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $id,
-                    'name' => $test['test'],
-                    'note' => $test['note'],
-                ]);
-            }
-        }
-        DB::table('prescription_formulas')
-            ->where('clinic_id', $this->getClinic()->id)
-            ->where('prescription_id', $id)
-            ->delete();
-        foreach ($request->formulas as $formula) {
-            if (isset($formula['formula'])) {
-                DB::table('prescription_formulas')->insert([
-                    'clinic_id' => $this->getClinic()->id,
-                    'prescription_id' => $id,
-                    'formula_id' => $formula['formula'],
-                    'frequency_type_id' => $formula['frequency'] ?? null,
-                    'period_type_id' => $formula['period'] ?? null,
-                    'note' => $formula['note'],
-                ]);
-            }
-        }
         return $prescription;
     }
 

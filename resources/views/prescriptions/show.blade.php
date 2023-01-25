@@ -18,15 +18,22 @@
 
 @section('content')
     <div class="row d-print-none">
-        <div class="col-12 text-center">
-            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mb-4 ml-3"
-               title="Print">
-                <i class="fa fa-print"></i>
-            </a>
-            <a href="{{route('prescription-pdf',$prescription->id)}}"
-               class="btn btn-warning waves-effect waves-light mb-4" title="Print">
-                <i class="fa fa-file-pdf"></i>
-            </a>
+        <div class="col-12">
+            <div class="float-left">
+                <a href="{{route('prescriptions.index')}}" class="btn btn-primary waves-effect waves-light mb-4">
+                    <i class="fa fa-arrow-left mr-2"></i>Back to Prescription List
+                </a>
+            </div>
+            <div class="text-center">
+                <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mb-4 ml-3"
+                   title="Print">
+                    <i class="fa fa-print"></i>
+                </a>
+                <a href="{{route('prescription-pdf',$prescription->id)}}"
+                   class="btn btn-warning waves-effect waves-light mb-4" title="Print">
+                    <i class="fa fa-file-pdf"></i>
+                </a>
+            </div>
         </div>
     </div>
     <div class="row">

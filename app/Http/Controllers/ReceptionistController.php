@@ -73,34 +73,40 @@ class ReceptionistController extends Controller
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
             'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
-            'password' => ['min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
-            'password_confirmation' => ['min:8'],
             'phone' => ['required', 'numeric', 'digits:11'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
-        // insert general info into users table
-        $user = DB::table('users')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'profile_photo_path' => $this->storeImage($request),
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-        $user_id = DB::getPdo()->lastInsertId();
-        // insert the rest of info into Doctors table
-        $receptionist = DB::table('receptionists')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'user_id' => $user_id,
-        ]);
-        // Give a role
-        $role_id = DB::table('roles')->where('name', '=', 'recep')->first();
-        $role_user = DB::table('role_user')->insert([
-            'user_id' => $user_id,
-            'role_id' => $role_id->id
-        ]);
+
+        try {
+            DB::beginTransaction();
+            // insert general info into users table
+            $user = DB::table('users')->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make('password'),
+                'phone' => $request->phone,
+                'profile_photo_path' => $this->storeImage($request),
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+            $user_id = DB::getPdo()->lastInsertId();
+            // insert the rest of info into Doctors table
+            $receptionist = DB::table('receptionists')->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'user_id' => $user_id,
+            ]);
+            // Give a role
+            $role_id = DB::table('roles')->where('name', '=', 'recep')->first();
+            $role_user = DB::table('role_user')->insert([
+                'user_id' => $user_id,
+                'role_id' => $role_id->id
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
         if ($user && $receptionist && $role_user) {
             toastr()->success('Successfully Created');
             return redirect()->route('receptionists.index');
@@ -130,15 +136,12 @@ class ReceptionistController extends Controller
     public function update(Request $request, $id)
     {
         $row = DB::table('users')
-/*            ->join('receptionists','receptionists.user_id'.'=','users.id')*/
             ->where('users.id', '=', $id)
             ->select('users.*', 'users.id as userId')
             ->first();
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
             'email' => ['required', 'string', 'email', 'max:191', 'unique:users,email,'.$row->userId],
-            'password' => ['nullable', 'min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
-            'password_confirmation' => ['nullable', 'min:8'],
             'phone' => ['required', 'numeric', 'digits:11'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
@@ -154,7 +157,6 @@ class ReceptionistController extends Controller
             ->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' =>  ($request->password != '' ? Hash::make($request->password) : $row->password),
                 'phone' => $request->phone,
                 'profile_photo_path' =>  ($request->hasFile('image') && $request->file('image') != '' ? $this->storeImage($request) : $row->profile_photo_path),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),

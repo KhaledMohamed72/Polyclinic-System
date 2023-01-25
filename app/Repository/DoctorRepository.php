@@ -35,8 +35,7 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         return $rows;
     }
 
-    public
-    function getReceptionistRows()
+    public function getReceptionistRows()
     {
         // filter doctors according to role of current auth user
         $rows = DB::table('users')
@@ -49,14 +48,11 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         return $rows;
     }
 
-    public
-    function storeDoctor($request)
+    public function storeDoctor($request)
     {
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
             'email' => ['required', 'string'],
-            'password' => ['min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
-            'password_confirmation' => ['min:8'],
             'phone' => ['required', 'numeric', 'digits:11'],
             'title' => ['required', 'string', 'max:191'],
             'degree' => ['required', 'string', 'max:191'],
@@ -68,47 +64,52 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
             'receptionist' => ['required', 'integer'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
-        // insert general info into users table
-        $user = DB::table('users')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone' => $request->phone,
-            'profile_photo_path' => $this->storeImage($request),
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-        $user_id = DB::getPdo()->lastInsertId();
-        // insert the rest of info into Doctors table
-        $doctor = DB::table('doctors')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'user_id' => $user_id,
-            'receptionist_id' => $request->receptionist,
-            'title' => $request->title,
-            'degree' => $request->degree,
-            'specialist' => $request->specialist,
-            'slot_time' => $request->slot_time,
-            'examination_fees' => $request->examination_fees,
-            'followup_fees' => $request->followup_fees,
-            'bio' => $request->bio,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-
-        // Give a role
-        $role_id = DB::table('roles')->where('name', '=', 'doctor')->first();
-        $role_user = DB::table('role_user')->insert([
-            'user_id' => $user_id,
-            'role_id' => $role_id->id
-        ]);
-        // insert doctor schedule
-        $doctorSchedule = $this->insertWeeksDays($this->getClinic()->id, $user_id);
+        try {
+            DB::beginTransaction();
+            // insert general info into users table
+            $user = DB::table('users')->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make('password'),
+                'phone' => $request->phone,
+                'profile_photo_path' => $this->storeImage($request),
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+            $user_id = DB::getPdo()->lastInsertId();
+            // insert the rest of info into Doctors table
+            $doctor = DB::table('doctors')->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'user_id' => $user_id,
+                'receptionist_id' => $request->receptionist,
+                'title' => $request->title,
+                'degree' => $request->degree,
+                'specialist' => $request->specialist,
+                'slot_time' => $request->slot_time,
+                'examination_fees' => $request->examination_fees,
+                'followup_fees' => $request->followup_fees,
+                'bio' => $request->bio,
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+            // Give a role
+            $role_id = DB::table('roles')->where('name', '=', 'doctor')->first();
+            $role_user = DB::table('role_user')->insert([
+                'user_id' => $user_id,
+                'role_id' => $role_id->id
+            ]);
+            // insert doctor schedule
+            $doctorSchedule = $this->insertWeeksDays($this->getClinic()->id, $user_id);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
         return $user && $doctor && $role_user && $doctorSchedule;
     }
 
-    public
-    function getDoctorRow($id)
+    public function getDoctorRow($id)
     {
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
@@ -119,15 +120,12 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         return $row;
     }
 
-    public
-    function updateDoctor($request, $id)
+    public function updateDoctor($request, $id)
     {
         $row = $this->getDoctorRow($id);
         $this->validate($request, [
             'name' => ['required', 'string', 'max:191'],
             'email' => ['required', 'string', 'email', 'max:191', 'unique:users,email,' . $row->userId],
-            'password' => ['nullable', 'min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
-            'password_confirmation' => ['nullable', 'min:8'],
             'phone' => ['required', 'numeric', 'digits:11'],
             'title' => ['required', 'string', 'max:191'],
             'degree' => ['required', 'string', 'max:191'],
@@ -145,36 +143,56 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
                 unlink(public_path('images/users/' . $row->profile_photo_path));
             }
         }
-        $user = DB::table('users')
-            ->where('id', '=', $id)
-            ->where('users.clinic_id', '=', $this->getClinic()->id)
-            ->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => ($request->password != '' ? Hash::make($request->password) : $row->password),
-                'phone' => $request->phone,
-                'profile_photo_path' => ($request->hasFile('image') && $request->file('image') != '' ? $this->storeImage($request) : $row->profile_photo_path),
-                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            ]);
-
-        $doctor = DB::table('doctors')
-            ->where('user_id', '=', $id)
-            ->where('doctors.clinic_id', '=', $this->getClinic()->id)
-            ->update([
-                'receptionist_id' => $request->receptionist,
-                'title' => $request->title,
-                'degree' => $request->degree,
-                'specialist' => $request->specialist,
-                'slot_time' => $request->slot_time,
-                'examination_fees' => $request->examination_fees,
-                'followup_fees' => $request->followup_fees,
-                'bio' => $request->bio,
-            ]);
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:191'],
+            'email' => ['required', 'string'],
+            'password' => ['min:8', 'required_with:password_confirmation', 'same:password_confirmation'],
+            'password_confirmation' => ['min:8'],
+            'phone' => ['required', 'numeric', 'digits:11'],
+            'title' => ['required', 'string', 'max:191'],
+            'degree' => ['required', 'string', 'max:191'],
+            'specialist' => ['required', 'string', 'max:191'],
+            'slot_time' => ['required', 'numeric'],
+            'examination_fees' => ['required', 'numeric'],
+            'followup_fees' => ['required', 'numeric'],
+            'bio' => ['nullable', 'string'],
+            'receptionist' => ['required', 'integer'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+        ]);
+        try {
+            DB::beginTransaction();
+            $user = DB::table('users')
+                ->where('id', '=', $id)
+                ->where('users.clinic_id', '=', $this->getClinic()->id)
+                ->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'profile_photo_path' => ($request->hasFile('image') && $request->file('image') != '' ? $this->storeImage($request) : $row->profile_photo_path),
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
+            $doctor = DB::table('doctors')
+                ->where('user_id', '=', $id)
+                ->where('doctors.clinic_id', '=', $this->getClinic()->id)
+                ->update([
+                    'receptionist_id' => $request->receptionist,
+                    'title' => $request->title,
+                    'degree' => $request->degree,
+                    'specialist' => $request->specialist,
+                    'slot_time' => $request->slot_time,
+                    'examination_fees' => $request->examination_fees,
+                    'followup_fees' => $request->followup_fees,
+                    'bio' => $request->bio,
+                ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
         return $user || $doctor;
     }
 
-    public
-    function showDoctor($id)
+    public function showDoctor($id)
     {
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')
@@ -328,8 +346,7 @@ class DoctorRepository extends Controller implements DoctorRepositoryInterface
         ];
     }
 
-    public
-    function updateSchedule($request, $id)
+    public function updateSchedule($request, $id)
     {
         $row = DB::table('users')
             ->join('doctors', 'doctors.user_id', '=', 'users.id')

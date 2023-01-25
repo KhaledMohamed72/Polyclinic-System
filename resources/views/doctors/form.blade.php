@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    {{--<div class="row">
         @php $input = 'password' @endphp
         <div class="col-md-6">
             <div class="form-group">
@@ -48,7 +48,7 @@
                                                      role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
         </div>
-    </div>
+    </div>--}}
     <div class="row">
         @php $input = 'phone' @endphp
         <div class="col-md-6">
