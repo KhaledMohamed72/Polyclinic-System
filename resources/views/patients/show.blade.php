@@ -41,12 +41,6 @@
                         {{$row->phone}}
                     </p>
 
-                    <hr>
-
-                    <strong><i class="fas fa-graduation-cap mr-1"></i> Email</strong>
-
-                    <p class="text-muted">{{$row->email}}</p>
-
                 </div>
                 <!-- /.card-body -->
             </div>
