@@ -17,7 +17,7 @@
                 </div>
             </div>
         @else
-            <input type="hidden" name="{{$input}}" value="{{$doctor_rows[0]->id}}">
+            <input type="hidden" name="{{$input}}" value="{{$doctor_rows[0]->user_id}}">
         @endif
         @php $input = 'from' @endphp
         <div class="col-sm-4 form-group datepickerdiv">

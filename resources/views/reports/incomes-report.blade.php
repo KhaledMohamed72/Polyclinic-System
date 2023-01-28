@@ -6,7 +6,7 @@
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
 <div class="row">
-    <h1 class="text-center mb-3" style="font-size: 25px;text-underline: transparent"><u>Doctor History Report</u></h1>
+    <h1 class="text-center mb-3" style="font-size: 25px;text-underline: transparent"><u>Income Report</u></h1>
     <div class="card">
         @if(request()->get('from') != null)
             <div class="card-title text-center mt-2">
@@ -21,7 +21,8 @@
     <div class="text-center" style="direction: rtl">
         <address>
             <div>
-                <strong> الطبيب : </strong><span>{{$doctor->name}}</span>
+                <strong> نوع الدخل : </strong><span>{{$income_name}}</span>
+                <br>
             </div>
         </address>
     </div>
@@ -30,38 +31,39 @@
 <div class="row" style="margin-top: 3rem">
     <div class="col-lg-12">
         <div class="card">
+
             <div class="card-body">
                 <table class="table table-head-fixed text-nowrap">
                     <thead>
                     <tr style="background-color: #b8daff;">
                         <th>#</th>
-                        <th>العدد</th>
-                        <th>الاجمالي</th>
+                        <th>التاريخ</th>
+                        <th>الدكتور</th>
+                        <th>الوصف</th>
+                        <th>القيمة</th>
                     </tr>
                     </thead>
+
                     <tbody>
+                    @foreach($incomes as $key => $row)
                     <tr>
-                        <td>Prescriptions</td>
-                        <td>{{$prescriptions_count}}</td>
-                        <td>{{$prescriptions_fees_sum}}</td>
+                        <td>{{++ $key}}</td>
+                        <td>{{date('Y-m-d',strtotime($row->date))}}</td>
+                        <td>{{$row->doctor_name  ?? 'عام'}}</td>
+                        <td>{{$row->note ?? '' }}</td>
+                        <td>{{$row->amount}}</td>
                     </tr>
-                    @if(isset($sessions_count))
-                        <tr>
-                            <td>Sessions</td>
-                            <td>{{$sessions_count}}</td>
-                            <td>{{$sessions_fees_sum}}</td>
-                        </tr>
-                    @endif
-                    @if(isset($incomes_count))
-                    <tr>
-                        <td>Incomes</td>
-                        <td>{{$incomes_count}}</td>
-                        <td>{{$incomes_fees_sum}}</td>
-                    </tr>
-                    @endif
+                    @endforeach
+                    <hr>
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div dir="rtl">
+            <strong> اجمالي القيمة  : </strong><span>{{$incomes_sum}}</span>
         </div>
     </div>
 </div>

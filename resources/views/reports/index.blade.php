@@ -47,15 +47,23 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-income-tab" data-toggle="pill"
                                    href="#custom-tabs-three-income" role="tab"
-                                   aria-controls="custom-tabs-three-income" aria-selected="false">Period
-                                    Income</a>
+                                   aria-controls="custom-tabs-three-income" aria-selected="false">
+                                    Income Report</a>
                             </li>
                             {{--Expenses--}}
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-expenses-tab" data-toggle="pill"
                                    href="#custom-tabs-three-expenses" role="tab"
-                                   aria-controls="custom-tabs-three-expenses" aria-selected="false">Period
-                                    Expenses</a>
+                                   aria-controls="custom-tabs-three-expenses" aria-selected="false">
+                                    Expenses Report</a>
+                            </li>
+                        @endif
+                        @if(auth()->user()->hasRole(['admin','doctor']))
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-three-profit-tab" data-toggle="pill"
+                                   href="#custom-tabs-three-profit" role="tab"
+                                   aria-controls="custom-tabs-three-profit" aria-selected="false">
+                                    Profit Report</a>
                             </li>
                         @endif
                     </ul>
@@ -104,8 +112,8 @@
                             {{-- Income --}}
                             <div class="tab-pane fade" id="custom-tabs-three-income" role="tabpanel"
                                  aria-labelledby="custom-tabs-three-income-tab">
-                                <form method="get" action="{{route('insurance_company')}}">
-                                    @include('reports.forms.insurance-company-form')
+                                <form method="get" action="{{route('incomes_report')}}">
+                                    @include('reports.forms.income-form')
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right" name="get-insurance_company">
                                             Submit
@@ -116,11 +124,26 @@
                             {{-- Expenses --}}
                             <div class="tab-pane fade" id="custom-tabs-three-expenses" role="tabpanel"
                                  aria-labelledby="custom-tabs-three-expenses-tab">
-                                <form method="get" action="{{route('insurance_company')}}">
-                                    @include('reports.forms.insurance-company-form')
+                                <form method="get" action="{{route('expenses_report')}}">
+                                    @include('reports.forms.expense-form')
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
                                                 name="get-insurance_company">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endif
+                        @if(auth()->user()->hasRole(['admin','doctor']))
+                            {{-- Expenses --}}
+                            <div class="tab-pane fade" id="custom-tabs-three-profit" role="tabpanel"
+                                 aria-labelledby="custom-tabs-three-profit-tab">
+                                <form method="get" action="{{route('profit_report')}}">
+                                    @include('reports.forms.profit-form')
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary float-right"
+                                                name="get-profit">
                                             Submit
                                         </button>
                                     </div>

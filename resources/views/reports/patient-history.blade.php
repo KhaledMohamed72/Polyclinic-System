@@ -6,6 +6,7 @@
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
 <div class="row">
+    <h1 class="text-center mb-3" style="font-size: 25px;text-underline: transparent"><u>Patient History Report</u></h1>
     <div class="card">
         @if(request()->get('from') != null)
             <div class="card-title text-center mt-2">

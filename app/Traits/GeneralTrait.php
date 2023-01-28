@@ -39,32 +39,31 @@ trait GeneralTrait
     function getPatientsBasedOnRole($clinic_id, $user_id){
         // list of patients according to role of current auth user
         if (auth()->user()->hasRole('admin')) {
-            $rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->join('users AS doctors', 'doctors.id', '=', 'patients.doctor_id')
-                ->where('users.clinic_id', '=', $clinic_id)
-                ->select('users.id as user_id', 'users.name as patient_name', 'doctors.name as doctor_name', 'users.phone as phone')
-                ->orderBy('users.id', 'desc')
+            $rows = DB::table('patients')
+                ->join('users AS t1', 't1.id', '=', 'patients.user_id')
+                ->join('users AS t2', 't2.id', '=', 'patients.doctor_id')
+                ->where('t1.clinic_id', '=', $clinic_id)
+                ->select('t1.id as user_id', 't1.name as patient_name', 't2.name as doctor_name', 't1.phone as phone')
+                ->orderBy('t1.id', 'desc')
                 ->paginate(10);
         }
         if (auth()->user()->hasRole('recep')) {
-            $rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->join('users AS doctors', 'doctors.id', '=', 'patients.doctor_id')
-                ->where('users.clinic_id', '=', $clinic_id)
-                ->where('patients.receptionist_id', '=', $user_id)
-                ->select('users.id as user_id', 'users.name as patient_name', 'doctors.name as doctor_name', 'users.phone as phone')
-                ->orderBy('users.id', 'desc')
+            $rows = DB::table('patients')
+                ->join('users AS t1', 't1.id', '=', 'patients.user_id')
+                ->join('users AS t2', 't2.id', '=', 'patients.doctor_id')
+                ->where('patients.receptionist_id','=',$user_id)
+                ->where('t1.clinic_id', '=', $clinic_id)
+                ->select('t1.id as user_id', 't1.name as patient_name', 't2.name as doctor_name', 't1.phone as phone')
+                ->orderBy('t1.id', 'desc')
                 ->paginate(10);
         }
         if (auth()->user()->hasRole('doctor')){
-            $rows = DB::table('users')
-                ->join('patients', 'patients.user_id', '=', 'users.id')
-                ->join('users AS doctors', 'doctors.id', '=', 'patients.doctor_id')
-                ->where('users.clinic_id', '=', $clinic_id)
-                ->where('patients.doctor_id', '=', $user_id)
-                ->select('users.id as user_id', 'users.name as patient_name', 'users.phone as phone')
-                ->orderBy('users.id', 'desc')
+            $rows = DB::table('patients')
+                ->join('users AS t1', 't1.id', '=', 'patients.user_id')
+                ->where('patients.doctor_id','=',$user_id)
+                ->where('t1.clinic_id', '=', $clinic_id)
+                ->select('t1.id as user_id', 't1.name as patient_name', 't1.phone as phone')
+                ->orderBy('t1.id', 'desc')
                 ->paginate(10);
         }
         return $rows;

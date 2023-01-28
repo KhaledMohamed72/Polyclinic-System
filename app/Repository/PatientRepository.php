@@ -43,44 +43,51 @@ class PatientRepository extends Controller implements PatientRepositoryInterface
             'allergy' => ['nullable', 'string', 'max:191'],
         ]);
 
-
-        // patient email not required so i have to escape this because DB doesn't accept this
+        // patient email not required so I have to escape this because DB doesn't accept this
         if (empty($request->email)) {
             $request->email = 'patient' . time() . '' . random_int(100, 100000) . '@gmail.com';
         }
-        // insert general info into users table
-        $user = DB::table('users')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make('patient12=2'),
-            'phone' => $request->phone,
-        ]);
-        $user_id = DB::getPdo()->lastInsertId();
-        // insert the rest of info into Patients table
-        $patient = DB::table('patients')->insert([
-            'clinic_id' => $this->getClinic()->id,
-            'user_id' => $user_id,
-            'doctor_id' => $request->doctor_id,
-            'receptionist_id' => $receptionist_id[0],
-            'gender' => $request->gender,
-            'age' => $request->age,
-            'address' => $request->address,
-            'height' => $request->height,
-            'weight' => $request->weight,
-            'blood_group' => $request->blood_group,
-            'blood_pressure' => $request->blood_pressure,
-            'pulse' => $request->pulse,
-            'allergy' => $request->allergy,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ]);
-        // Give a role
-        $role_id = DB::table('roles')->where('name', '=', 'patient')->first();
-        $role_user = DB::table('role_user')->insert([
-            'user_id' => $user_id,
-            'role_id' => $role_id->id
-        ]);
+        try {
+            DB::beginTransaction();
+            // insert general info into users table
+            $user = DB::table('users')->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make('patient12=2'),
+                'phone' => $request->phone,
+            ]);
+            $user_id = DB::getPdo()->lastInsertId();
+            $receptionist_id = Doctor::where('user_id', $request->doctor_id)->pluck('receptionist_id')->first();
+            // insert the rest of info into Patients table
+            $patient = DB::table('patients')->insert([
+                'clinic_id' => $this->getClinic()->id,
+                'user_id' => $user_id,
+                'doctor_id' => $request->doctor_id,
+                'receptionist_id' => $receptionist_id,
+                'gender' => $request->gender,
+                'age' => $request->age,
+                'address' => $request->address,
+                'height' => $request->height,
+                'weight' => $request->weight,
+                'blood_group' => $request->blood_group,
+                'blood_pressure' => $request->blood_pressure,
+                'pulse' => $request->pulse,
+                'allergy' => $request->allergy,
+                'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+            // Give a role
+            $role_id = DB::table('roles')->where('name', '=', 'patient')->first();
+            $role_user = DB::table('role_user')->insert([
+                'user_id' => $user_id,
+                'role_id' => $role_id->id
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
         return $user && $patient && $role_user;
     }

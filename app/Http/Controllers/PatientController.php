@@ -17,8 +17,9 @@ class PatientController extends Controller
 
     public function index()
     {
+        $clinicType = $this->getClinic()->type;
         $rows = $this->patientRepository->getPatientRows();
-        return view('patients.index', compact('rows'));
+        return view('patients.index', compact('rows','clinicType'));
     }
 
     public function create()

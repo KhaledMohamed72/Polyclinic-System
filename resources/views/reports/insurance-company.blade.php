@@ -17,20 +17,14 @@
     </div>
 </div>
 <div class="row">
+    <h1 class="text-center mb-3" style="font-size: 25px;text-underline: transparent"><u>Insurance Company Report</u></h1>
+
     <div class="text-center" style="direction: rtl">
         <address>
             <div>
                 <strong> الشركة : </strong><span>{{$company->name}}</span>
                 <br>
                 <strong> نسبة الخصم  : </strong><span>{{'%'.$company->discount_rate}}</span>
-                <br>
-                <strong> سعر الكشف قبل الخصم  : </strong><span>{{$doctor->examination_fees}}</span>
-                <br>
-                <strong> سعر الكشف بعد الخصم  : </strong><span>{{$doctor->examination_fees - ($doctor->examination_fees/100)*$company->discount_rate}}</span>
-                <br>
-                <strong> سعر الاعادة قبل الخصم  : </strong><span>{{$doctor->followup_fees}}</span>
-                <br>
-                <strong> سعر الاعادة بعد الخصم  : </strong><span>{{$doctor->followup_fees - ($doctor->followup_fees/100)*$company->discount_rate}}</span>
                 <br>
             </div>
         </address>

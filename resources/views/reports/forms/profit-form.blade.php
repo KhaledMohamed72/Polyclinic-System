@@ -1,20 +1,24 @@
 <div class="card-body">
     <div class="row">
-        @php $input = 'type' @endphp
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label>Income Type</label>
-                <select name="{{$input}}" class="form-control select2 sel-company" style="width: 100%;">
-                    <option selected="" disabled="">Select Type</option>
-                    @foreach($income_types as $row)
-                        <option value="{{$row->id}}"
-                            {{old($input) == $row->id ? 'selected' : ''}}>{{$row->name}}</option>
-                    @endforeach
-                </select>
-                @error($input)<span class="badge badge-danger"
-                                    role="alert"><strong>{{ $message }}</strong></span>@enderror
+        @php $input = 'doctor' @endphp
+        @if(auth()->user()->hasRole('admin') && $clinicType == 1)
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label>Doctor<small>( <b style="color: red">Hint: </b>If no doctor chosen, The Report will be general)</small></label>
+                    <select name="{{$input}}" class="form-control select2 sel-doctor" style="width: 100%;">
+                        <option selected="" disabled="">Select Doctor</option>
+                        @foreach($doctor_rows as $doctor_row)
+                            <option value="{{$doctor_row->user_id}}"
+                                {{old($input) == $doctor_row->user_id? 'selected' : ''}}>{{$doctor_row->doctor_name}}</option>
+                        @endforeach
+                    </select>
+                    @error($input)<span class="badge badge-danger"
+                                        role="alert"><strong>{{ $message }}</strong></span>@enderror
+                </div>
             </div>
-        </div>
+        @else
+            <input type="hidden" name="{{$input}}" value="{{$doctor_rows[0]->user_id}}">
+        @endif
         @php $input = 'from' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
             <label class="control-label">From</label>

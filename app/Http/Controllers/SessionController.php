@@ -123,7 +123,7 @@ class SessionController extends Controller
             ->update([
                 'status' => 'complete'
             ]);
-        if ($row && $updateAppointmentStatus) {
+        if ($row || $updateAppointmentStatus) {
             toastr()->success('Successfully Created');
             return redirect()->route('sessions.index');
         } else {

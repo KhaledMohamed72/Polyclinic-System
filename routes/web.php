@@ -232,7 +232,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('/patients-history', [\App\Http\Controllers\ReportController::class, 'patient_history'])->name('patient-history');
     Route::get('/doctors-history', [\App\Http\Controllers\ReportController::class, 'doctor_history'])->name('doctor-history');
-    Route::get('/insurance_company', [\App\Http\Controllers\ReportController::class, 'care_company'])->name('insurance_company');
+    Route::get('/insurance-company', [\App\Http\Controllers\ReportController::class, 'insurance_company'])->name('insurance_company');
+    Route::get('/incomes-report', [\App\Http\Controllers\ReportController::class, 'incomes_report'])->name('incomes_report');
+    Route::get('/expenses-report', [\App\Http\Controllers\ReportController::class, 'expenses_report'])->name('expenses_report');
+    Route::get('/profit-report', [\App\Http\Controllers\ReportController::class, 'profit_report'])->name('profit_report');
     // delete attachment in prescriptions
     Route::get('/delete-attachment/{id}', [\App\Http\Controllers\PrescriptionController::class, 'destroy_attachment'])->name('attachments.destroy');
 });

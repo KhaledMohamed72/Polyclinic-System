@@ -26,7 +26,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Patient</th>
-                            @if(auth()->user()->hasRole(['admin','recep']))
+                            @if(auth()->user()->hasRole(['admin','recep']) && $clinicType == 1)
                                 <th>Doctor</th>
                             @endif
                             <th>Contact No</th>
@@ -38,7 +38,7 @@
                             <tr>
                                 <td>{{$row->user_id}}</td>
                                 <td>{{$row->patient_name}}</td>
-                                @if(auth()->user()->hasRole(['admin','recep']))
+                                @if(auth()->user()->hasRole(['admin','recep']) && $clinicType == 1)
                                     <td>{{$row->doctor_name}}</td>
                                 @endif
                                 <td>{{$row->phone ?? 'No Contact'}}</td>

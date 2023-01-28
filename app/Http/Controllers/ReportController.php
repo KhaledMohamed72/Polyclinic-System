@@ -18,11 +18,18 @@ class ReportController extends Controller
             return redirect()->route('home');
         }
 
-        $patient_rows = $this->getPatientRows($this->getClinic()->id,auth()->user()->id);
+        $patient_rows = $this->getPatientRows($this->getClinic()->id, auth()->user()->id);
+        $doctor_rows = $this->getDoctorRows($this->getClinic()->id, auth()->user()->id);
+        $company_rows = $this->getInsuranceCompaniessBasedOnRole($this->getClinic()->id, auth()->user()->id);
 
-        $doctor_rows = $this->getDoctorRows($this->getClinic()->id,auth()->user()->id);
-
-        $company_rows = $this->getInsuranceCompaniessBasedOnRole($this->getClinic()->id,auth()->user()->id);
+        $income_types = DB::table('income_types')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->select('id', 'name')
+            ->get();
+        $expense_types = DB::table('expense_types')
+            ->where('clinic_id', $this->getClinic()->id)
+            ->select('id', 'name')
+            ->get();
         $clinicType = $this->getClinic()->type;
         if (auth()->user()->hasRole('doctor')) {
             $count_patients = count($patient_rows);
@@ -35,7 +42,9 @@ class ReportController extends Controller
             'patient_rows',
             'doctor_rows',
             'company_rows',
-            'clinicType'
+            'clinicType',
+            'income_types',
+            'expense_types'
         ));
     }
 
@@ -59,14 +68,14 @@ class ReportController extends Controller
             ->join('patients', 'patients.user_id', '=', 'users.id')
             ->where('users.clinic_id', $this->getClinic()->id)
             ->where('users.id', $request->patient)
-            ->select('users.name as name','users.phone as phone', 'patients.address as address')
+            ->select('users.name as name', 'users.phone as phone', 'patients.address as address')
             ->first();
         $sessions = [];
         if ($request->sessions != null) {
             $sessions = DB::table('sessions_info')
                 ->join('session_types', 'session_types.id', '=', 'sessions_info.session_type_id')
-                ->where('sessions_info.doctor_id', '=', auth()->user()->id)
                 ->where('sessions_info.clinic_id', '=', $this->getClinic()->id)
+                ->where('sessions_info.patient_id', $request->patient)
                 ->whereBetween('sessions_info.created_at', [$date1, $date2])
                 ->select('sessions_info.*', 'session_types.name as session_name')
                 ->get();
@@ -83,7 +92,7 @@ class ReportController extends Controller
 
     public function doctor_history(Request $request)
     {
-        if (auth()->user()->hasRole(['admin','recep'])) {
+        if (auth()->user()->hasRole(['admin', 'recep'])) {
             $this->validate($request, [
                 'doctor' => ['required', 'integer'],
                 'from' => ['nullable', 'date'],
@@ -110,6 +119,7 @@ class ReportController extends Controller
             ->where('clinic_id', $this->getClinic()->id)
             ->where('doctor_id', $doctor_id)
             ->whereBetween('created_at', [$date1, $date2])
+            ->select('fees')
             ->get();
         $prescriptions_count = $prescriptions->count();
         $prescriptions_fees_sum = $prescriptions->sum('fees');
@@ -125,6 +135,7 @@ class ReportController extends Controller
                 ->where('doctor_id', '=', $doctor_id)
                 ->where('clinic_id', '=', $this->getClinic()->id)
                 ->whereBetween('sessions_info.created_at', [$date1, $date2])
+                ->select('fees')
                 ->get();
             $sessions_count = $sessions->count();
             $sessions_fees_sum = $sessions->sum('fees');
@@ -136,6 +147,7 @@ class ReportController extends Controller
                 ->where('doctor_id', '=', $doctor_id)
                 ->where('clinic_id', '=', $this->getClinic()->id)
                 ->whereBetween('created_at', [$date1, $date2])
+                ->select('amount')
                 ->get();
             $incomes_count = $incomes->count();
             $incomes_fees_sum = $incomes->sum('amount');
@@ -150,7 +162,7 @@ class ReportController extends Controller
         $mpdf->Output();
     }
 
-    public function care_company(Request $request)
+    public function insurance_company(Request $request)
     {
 
         $this->validate($request, [
@@ -159,47 +171,38 @@ class ReportController extends Controller
             'to' => ['nullable', 'date', 'after_or_equal:from']
         ]);
 
-        $doctor_id = auth()->user()->id;
-        $doctor = DB::table('doctors')
-            ->where('clinic_id','=',$this->getClinic()->id)
-            ->where('user_id','=',$doctor_id)
-            ->first();
         $company = DB::table('insurance_companies')
             ->where('clinic_id', $this->getClinic()->id)
             ->where('id', $request->company)
-            ->where('doctor_id', $doctor_id)
             ->first();
-
         $date1 = date('Y-m-d 00:00:00', strtotime($request->from)) == '1970-01-01 00:00:00' ? '1970-01-01 00:00:00' : date('Y-m-d 00:00:00', strtotime($request->from));
         $date2 = date('Y-m-d 23:59:59', strtotime($request->to)) == '1970-01-01 23:59:59' ? Carbon::today()->toDateString() . ' 23:59:59' : date('Y-m-d 23:59:59', strtotime($request->to));
 
         $prescriptions = DB::table('prescriptions')
-            ->join('users','users.id','=','prescriptions.patient_id')
+            ->join('users', 'users.id', '=', 'prescriptions.patient_id')
             ->where('prescriptions.clinic_id', $this->getClinic()->id)
             ->where('prescriptions.insurance_company_id', $request->company)
-            ->where('prescriptions.doctor_id', $doctor_id)
             ->whereBetween('prescriptions.created_at', [$date1, $date2])
-            ->select('users.name as name','prescriptions.*')
+            ->select('users.name as name', 'prescriptions.*')
             ->get();
-        $prescriptions_examination_count = $prescriptions->where('type','=', 0)->count();
-        $prescriptions_followup_count = $prescriptions->where('type','=', 1)->count();
+        $prescriptions_examination_count = $prescriptions->where('type', '=', 0)->count();
+        $prescriptions_followup_count = $prescriptions->where('type', '=', 1)->count();
 
         $sessions_count = 0;
         $sessions = [];
         if ($request->sessions != null) {
             $sessions = DB::table('sessions_info')
-                ->join('users','users.id','=','sessions_info.patient_id')
-                ->join('session_types','session_types.id','=','sessions_info.session_type_id')
-                ->where('sessions_info.doctor_id', '=', $doctor_id)
+                ->join('users', 'users.id', '=', 'sessions_info.patient_id')
+                ->join('session_types', 'session_types.id', '=', 'sessions_info.session_type_id')
                 ->where('sessions_info.insurance_company_id', $request->company)
                 ->where('sessions_info.clinic_id', '=', $this->getClinic()->id)
                 ->whereBetween('sessions_info.created_at', [$date1, $date2])
-                ->select('sessions_info.*','session_types.name as session_type','users.name as patient_name')
+                ->select('sessions_info.*', 'session_types.name as session_type', 'users.name as patient_name')
                 ->get();
             $sessions_count = $sessions->count();
         }
-        $html = view('reports.care-company',
-            compact('company','doctor', 'prescriptions_examination_count','prescriptions_followup_count', 'sessions_count','prescriptions','sessions'))->render();
+        $html = view('reports.insurance-company',
+            compact('company', 'prescriptions_examination_count', 'prescriptions_followup_count', 'sessions_count', 'prescriptions', 'sessions'))->render();
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->autoScriptToLang = true;
         $mpdf->autoLangToFont = true;
@@ -208,7 +211,191 @@ class ReportController extends Controller
         $mpdf->Output();
     }
 
-    protected function getPatientRows($clinic_id, $user_id){
+    public function incomes_report(Request $request)
+    {
+
+        $this->validate($request, [
+            'type' => ['required', 'integer'],
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from']
+        ]);
+
+        $income_name = DB::table('income_types')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('id', '=', $request->type)
+            ->pluck('name')->first();
+        $date1 = date('Y-m-d 00:00:00', strtotime($request->from)) == '1970-01-01 00:00:00' ? '1970-01-01 00:00:00' : date('Y-m-d 00:00:00', strtotime($request->from));
+        $date2 = date('Y-m-d 23:59:59', strtotime($request->to)) == '1970-01-01 23:59:59' ? Carbon::today()->toDateString() . ' 23:59:59' : date('Y-m-d 23:59:59', strtotime($request->to));
+
+        $incomes = DB::table('incomes')
+            ->leftjoin('users', 'users.id', '=', 'incomes.doctor_id')
+            ->where('incomes.clinic_id', $this->getClinic()->id)
+            ->where('incomes.income_type_id', $request->type)
+            ->whereBetween('incomes.created_at', [$date1, $date2])
+            ->select('incomes.created_at as date', 'incomes.note as note', 'incomes.amount as amount', 'users.name as doctor_name')
+            ->get();
+        $incomes_sum = $incomes->sum('amount');
+
+        $html = view('reports.incomes-report',
+            compact('incomes', 'income_name', 'incomes_sum'))->render();
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+    }
+
+    public function expenses_report(Request $request)
+    {
+
+        $this->validate($request, [
+            'type' => ['required', 'integer'],
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from']
+        ]);
+
+        $expense_name = DB::table('expense_types')
+            ->where('clinic_id', '=', $this->getClinic()->id)
+            ->where('id', '=', $request->type)
+            ->pluck('name')->first();
+        $date1 = date('Y-m-d 00:00:00', strtotime($request->from)) == '1970-01-01 00:00:00' ? '1970-01-01 00:00:00' : date('Y-m-d 00:00:00', strtotime($request->from));
+        $date2 = date('Y-m-d 23:59:59', strtotime($request->to)) == '1970-01-01 23:59:59' ? Carbon::today()->toDateString() . ' 23:59:59' : date('Y-m-d 23:59:59', strtotime($request->to));
+
+        $expenses = DB::table('expenses')
+            ->leftjoin('users', 'users.id', '=', 'expenses.doctor_id')
+            ->where('expenses.clinic_id', $this->getClinic()->id)
+            ->where('expenses.expense_type_id', $request->type)
+            ->whereBetween('expenses.created_at', [$date1, $date2])
+            ->select('expenses.created_at as date', 'expenses.note as note', 'expenses.amount as amount', 'users.name as doctor_name')
+            ->get();
+        $expenses_sum = $expenses->sum('amount');
+
+        $html = view('reports.expenses-report',
+            compact('expenses', 'expense_name', 'expenses_sum'))->render();
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output();
+    }
+
+    public function profit_report(Request $request)
+    {
+
+        $this->validate($request, [
+            'doctor' => ['nullable', 'integer'],
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from']
+        ]);
+
+        $date1 = date('Y-m-d 00:00:00', strtotime($request->from)) == '1970-01-01 00:00:00' ? '1970-01-01 00:00:00' : date('Y-m-d 00:00:00', strtotime($request->from));
+        $date2 = date('Y-m-d 23:59:59', strtotime($request->to)) == '1970-01-01 23:59:59' ? Carbon::today()->toDateString() . ' 23:59:59' : date('Y-m-d 23:59:59', strtotime($request->to));
+
+        $clinicType = $this->getClinic()->type;
+        if (!empty($request->doctor)) {
+            $doctor = DB::table('users')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('id', '=', $request->doctor)
+                ->pluck('name')
+                ->first();
+            $incomes = DB::table('incomes')
+                ->leftjoin('income_types', 'income_types.id', '=', 'incomes.income_type_id')
+                ->where('incomes.clinic_id', $this->getClinic()->id)
+                ->where('incomes.doctor_id', $request->doctor)
+                ->whereBetween('incomes.created_at', [$date1, $date2])
+                ->select('incomes.created_at as date', 'income_types.name as name', 'incomes.amount as amount')
+                ->get();
+            $incomes_sum = $incomes->sum('amount');
+            $expenses = DB::table('expenses')
+                ->leftjoin('expense_types', 'expense_types.id', '=', 'expenses.expense_type_id')
+                ->where('expenses.clinic_id', $this->getClinic()->id)
+                ->where('expenses.doctor_id', $request->doctor)
+                ->whereBetween('expenses.created_at', [$date1, $date2])
+                ->select('expenses.created_at as date', 'expense_types.name as name', 'expenses.amount as amount')
+                ->get();
+            $expenses_sum = $expenses->sum('amount');
+            $prescriptions = DB::table('prescriptions')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->where('doctor_id', $request->doctor)
+                ->whereBetween('created_at', [$date1, $date2])
+                ->select('fees')
+                ->get();
+            $prescriptions_examination_count = $prescriptions->where('type', '=', 0)->count();
+            $prescriptions_followup_count = $prescriptions->where('type', '=', 1)->count();
+            $prescriptions_examination_sum = $prescriptions->where('type', '=', 0)->sum('fees');
+            $prescriptions_followup_sum = $prescriptions->where('type', '=', 1)->sum('fees');
+            $prescriptions_total_sum = $prescriptions->sum('fees');
+
+                $sessions = DB::table('sessions_info')
+                    ->leftJoin('session_types','session_types.id','sessions_info.session_type_id')
+                    ->where('sessions_info.doctor_id', '=', $request->doctor)
+                    ->where('sessions_info.clinic_id', '=', $this->getClinic()->id)
+                    ->whereBetween('sessions_info.created_at', [$date1, $date2])
+                    ->selectRaw('session_types.name as session_type_name,SUM(fees) as fees,count(*) as sessions_count')
+                    ->groupBy('session_types.name')
+                    ->get();
+            $sessions_sum = $sessions->sum('fees');
+        } else {
+            $doctor = null;
+            $incomes = DB::table('incomes')
+                ->leftjoin('users', 'users.id', '=', 'incomes.doctor_id')
+                ->leftjoin('income_types', 'income_types.id', '=', 'incomes.income_type_id')
+                ->where('incomes.clinic_id', $this->getClinic()->id)
+                ->whereBetween('incomes.created_at', [$date1, $date2])
+                ->select('incomes.created_at as date', 'income_types.name as name', 'users.name as doctor_name', 'incomes.amount as amount')
+                ->get();
+            $incomes_sum = $incomes->sum('amount');
+            $expenses = DB::table('expenses')
+                ->leftjoin('users', 'users.id', '=', 'expenses.doctor_id')
+                ->leftjoin('expense_types', 'expense_types.id', '=', 'expenses.expense_type_id')
+                ->where('expenses.clinic_id', $this->getClinic()->id)
+                ->whereBetween('expenses.created_at', [$date1, $date2])
+                ->select('expenses.created_at as date', 'expense_types.name as name', 'users.name as doctor_name', 'expenses.amount as amount')
+                ->get();
+            $expenses_sum = $expenses->sum('amount');
+            $prescriptions = DB::table('prescriptions')
+                ->where('clinic_id', $this->getClinic()->id)
+                ->whereBetween('created_at', [$date1, $date2])
+                ->select('fees','type')
+                ->get();
+            $prescriptions_examination_count = $prescriptions->where('type', '=', 0)->count();
+            $prescriptions_followup_count = $prescriptions->where('type', '=', 1)->count();
+            $prescriptions_examination_sum = $prescriptions->where('type', '=', 0)->sum('fees');
+            $prescriptions_followup_sum = $prescriptions->where('type', '=', 1)->sum('fees');
+            $prescriptions_total_sum = $prescriptions->sum('fees');
+
+            $sessions = DB::table('sessions_info')
+                ->leftJoin('session_types','session_types.id','sessions_info.session_type_id')
+                ->where('sessions_info.clinic_id', '=', $this->getClinic()->id)
+                ->whereBetween('sessions_info.created_at', [$date1, $date2])
+                ->selectRaw('session_types.name as session_type_name,SUM(fees) as fees,count(*) as sessions_count')
+                ->groupBy('session_types.name')
+                ->get();
+            $sessions_sum = $sessions->sum('fees');
+        }
+
+        return view('reports.profit-report',
+            compact(
+                'doctor',
+                'expenses',
+                'expenses_sum',
+                'incomes',
+                'incomes_sum',
+                'prescriptions_examination_count',
+                'prescriptions_followup_count',
+                'prescriptions_examination_sum',
+                'prescriptions_total_sum',
+                'prescriptions_followup_sum',
+                'sessions',
+                'sessions_sum',
+                'clinicType'
+            ));
+    }
+
+    protected function getPatientRows($clinic_id, $user_id)
+    {
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('users')
                 ->join('patients', 'patients.user_id', '=', 'users.id')
@@ -226,7 +413,7 @@ class ReportController extends Controller
                 ->orderBy('users.id', 'desc')
                 ->get();
         }
-        if (auth()->user()->hasRole('doctor')){
+        if (auth()->user()->hasRole('doctor')) {
             $rows = DB::table('users')
                 ->join('patients', 'patients.user_id', '=', 'users.id')
                 ->where('users.clinic_id', '=', $clinic_id)
@@ -238,7 +425,8 @@ class ReportController extends Controller
         return $rows;
     }
 
-    protected function getDoctorRows($clinic_id, $user_id){
+    protected function getDoctorRows($clinic_id, $user_id)
+    {
         $rows = array();
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('users')
@@ -261,6 +449,7 @@ class ReportController extends Controller
             $rows = DB::table('users')
                 ->where('clinic_id', '=', $clinic_id)
                 ->where('id', '=', $user_id)
+                ->select('users.id as user_id')
                 ->get();
         }
         return $rows;

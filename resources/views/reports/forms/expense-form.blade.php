@@ -3,10 +3,10 @@
         @php $input = 'type' @endphp
         <div class="col-sm-4">
             <div class="form-group">
-                <label>Income Type</label>
+                <label>Expense Type</label>
                 <select name="{{$input}}" class="form-control select2 sel-company" style="width: 100%;">
                     <option selected="" disabled="">Select Type</option>
-                    @foreach($income_types as $row)
+                    @foreach($expense_types as $row)
                         <option value="{{$row->id}}"
                             {{old($input) == $row->id ? 'selected' : ''}}>{{$row->name}}</option>
                     @endforeach
