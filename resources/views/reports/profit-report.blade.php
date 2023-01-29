@@ -205,7 +205,7 @@
                     <div class="col-md-12 text-right text-bold mr-2">
                         <div class="col-md-8"></div>
                         <div class="col-md-4 float-right bg-secondary p-2">
-                            <strong> الإجمالي :&ensp;£</strong>&ensp;<span>{{$incomes_sum}}&ensp;</span>
+                            <strong> الإجمالي :&ensp;£</strong>&ensp;<span>{{$sessions_sum}}&ensp;</span>
                         </div>
                     </div>
                 </div>
