@@ -1,64 +1,36 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/KhaledMohamed72/clinic_system/public/assets/dist/img/pulpo-logo.png">
+    <img src="https://raw.githubusercontent.com/KhaledMohamed72/clinic_system/master/public/assets/dist/img/pulpo-logo.jpg" alt="Logo" width="80" height="80">
+  </a>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<h3 align="center">Pulpo Clinic</h3>
 
-## About Laravel
+  <p align="center">
+    Clinic Management Laravel System
+  </p>
+</div>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<!-- ABOUT THE PROJECT -->
+## About The Project
+# Pulpo Clinic
+is a super web app for the Doctors, Trust and Hospitals to maintain all doctors, patients and receptionists of the hospital or clinic. It is a complete solution for hospitals or clinics to manage appointments, prescriptions and invoices online. This system is completely built on the PHP Laravel framework and MySQL. It has a nice and attractive user interface which is very easy to use. This system has a lot of nice features which are needed for hospitals or clinics to manage their patients, doctors and receptionist.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![screencapture-itg-pulpopharma-online-dashboard-2023-01-31-10_50_38](https://user-images.githubusercontent.com/38916029/215715223-6111a751-d2ad-43a1-9dd4-77953ff58de3.png)
+![screencapture-itg-pulpopharma-online-appointments-2023-01-31-10_51_32](https://user-images.githubusercontent.com/38916029/215715269-17343e9e-9a36-47d7-ae16-bf9c10cb1210.png)
+![screencapture-itg-pulpopharma-online-prescriptions-create-2023-01-31-10_52_46](https://user-images.githubusercontent.com/38916029/215715323-5f068169-a135-477f-a62e-109e45937287.png)
+![screencapture-itg-pulpopharma-online-prescriptions-59-2023-01-31-10_54_14](https://user-images.githubusercontent.com/38916029/215715349-16d13a46-1555-4a88-b12b-a206f20194af.png)
+![screencapture-itg-pulpopharma-online-appointment-list-pending-appointment-2023-01-31-10_54_52](https://user-images.githubusercontent.com/38916029/215715378-41143ee3-9e4f-4bf8-9d4a-47c986b9dae0.png)
+![screencapture-itg-pulpopharma-online-reports-2023-01-31-11_03_05](https://user-images.githubusercontent.com/38916029/215715741-f0be52fa-61fc-4e1d-9f4c-5ec1671b22d3.png)
+![screencapture-itg-pulpopharma-online-profit-report-2023-01-31-11_03_42](https://user-images.githubusercontent.com/38916029/215715770-bdabcf7f-83ee-4531-8665-ba8491ac3903.png)
 
-## Learning Laravel
+# Doctors
+- can able to schedule an appointment and view the pending, upcoming, completed and cancelled appointments list, can view and add new patients and also be able to see the receptionist list. Can create, view and send an email of patients’ prescriptions and invoices. Able to view analytics on the dashboard about total appointments, total earnings and monthly earnings.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Receptionist
+- can add an appointment and view pending, upcoming, completed and cancelled appointments lists, create new patients, view the doctor’s profile, invoices and prescriptions. Also able to create invoices and send an email of invoices and prescriptions.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Admin
+- can able to add and manage doctors, patients and receptionists. Also able to see today’s, upcoming, pending, complete and cancel appointments for all doctors and patients, prescriptions and invoices. Can see the analytics on the dashboard about total appointments, total revenue, today’s earning, monthly registered user’s graph and total monthly earning of the hospital or clinic.
