@@ -45,6 +45,7 @@
                         <th>المريض</th>
                         <th>التاريخ</th>
                         <th>النوع</th>
+                        <th>القيمة</th>
                     </tr>
                     </thead>
 
@@ -55,6 +56,7 @@
                         <td>{{$prescription->name}}</td>
                         <td>{{date('Y-m-d',strtotime($prescription->created_at))}}</td>
                         <td>{{$prescription->type == 0 ? 'كشف' : 'إعادة'}}</td>
+                        <td>{{$prescription->fees ?? 0}}</td>
                     </tr>
                     @endforeach
                     <hr>
@@ -69,6 +71,8 @@
             <strong> اجمالي الكشوفات  : </strong><span>{{$prescriptions_examination_count}}</span>
             <br>
             <strong> اجمالي الاعادة  : </strong><span>{{$prescriptions_followup_count}}</span>
+            <br>
+            <strong> اجمالي القيمة  : </strong><span>{{$prescriptions_fees_sum}}</span>
         </div>
     </div>
 </div>
@@ -89,7 +93,7 @@
                         <th>النوع</th>
                         <th>السعر</th>
                         <th>الخصم</th>
-                        <th>الناتج</th>
+                        <th>القيمة</th>
 
                     </tr>
                     </thead>
@@ -115,7 +119,9 @@
 
     <div class="row">
         <div dir="rtl">
-            <strong> الاجمالي  : </strong><span>{{$sessions_count}}</span>
+            <strong> الاجمالي  : </strong><span>{{$sessions_fees_sum}}</span>
+            <br>
+            <strong> اجمالي القيمة  : </strong><span>{{$sessions_count}}</span>
         </div>
     </div>
 </div>
