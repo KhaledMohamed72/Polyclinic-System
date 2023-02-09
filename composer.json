@@ -15,6 +15,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.5",
+        "mcamara/laravel-localization": "^1.7",
         "mindscms/entrust": "^2.5",
         "mpdf/mpdf": "^8.1",
         "yoeunes/toastr": "^2.0"

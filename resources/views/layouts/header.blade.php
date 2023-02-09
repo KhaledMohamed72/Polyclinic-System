@@ -17,22 +17,26 @@
         </li>
     </ul>
 
-    <!-- SEARCH FORM -->
-{{--    <form class="form-inline ml-3">
-        <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-    </form>--}}
 
 <!-- Right navbar links -->
     <ul class="navbar-nav"
-        style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:70%; @else margin-left:auto; @endif">
-        <!-- Messages Dropdown Menu -->
+        style="@if(\Jenssegers\Agent\Facades\Agent::isMobile()) margin-left:40%; @else margin-left:auto; @endif">
+        <!-- Language Dropdown Menu -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="fa fa-language"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-lg-right">
+                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+
+                    <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                        {{ $properties['native'] }}
+                    </a>
+                @endforeach
+
+            </div>
+        </li>
+        <!-- User Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-user"></i>
@@ -96,32 +100,6 @@
         <form method="get" id="logout-form" action="{{route('logout')}}">
             @csrf
         </form>
-        <!-- Notifications Dropdown Menu -->
-        <li class="nav-item dropdown">
-            {{--<a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">0</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-item dropdown-header">15 Notifications</span>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-envelope mr-2"></i> 4 new messages
-                    <span class="float-right text-muted text-sm">3 mins</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-users mr-2"></i> 8 friend requests
-                    <span class="float-right text-muted text-sm">12 hours</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-file mr-2"></i> 3 new reports
-                    <span class="float-right text-muted text-sm">2 days</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-            </div>--}}
-        </li>
     </ul>
+
 </nav>
