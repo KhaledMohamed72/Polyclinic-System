@@ -40,6 +40,7 @@
 
         var roleAdminRecep = "<?php echo auth()->user()->hasRole(['admin', 'recep']) ?>";
         var date = dayDate.toLocaleDateString('en-CA');
+        console.log(date);
         $('#selected_date').html(date);
         $('#new_list').hide();
         $('#new_list').show();
@@ -49,6 +50,7 @@
             url: "{{url('/appointment/get-appointments-per-date?date=')}}" + date,
             dataType: 'json',
             success: function (response, textStatus, xhr) {
+                console.log(response);
                 if (response == '') {
                     $('#new_list').empty();
                     $('#no_list').append('No Available Appointments')

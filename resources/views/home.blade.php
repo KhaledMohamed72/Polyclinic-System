@@ -4,9 +4,9 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Home    @endsection
-@section('header-title')    Home   @endsection
-@section('header-title-one')    Home    @endsection
+@section('title')   {{ trans('main_trans.home') }}    @endsection
+@section('header-title')    {{ trans('main_trans.home') }}   @endsection
+@section('header-title-one')    {{ trans('main_trans.home') }}    @endsection
 
 @section('content')
     <div class="row">

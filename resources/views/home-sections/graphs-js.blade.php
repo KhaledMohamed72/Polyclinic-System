@@ -4,16 +4,16 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var months = ["{{ trans('main_trans.jun') }}", "{{ trans('main_trans.feb') }}", "{{ trans('main_trans.mar') }}", "{{ trans('main_trans.apr') }}", "{{ trans('main_trans.may') }}", "{{ trans('main_trans.jun') }}", "{{ trans('main_trans.jul') }}", "{{ trans('main_trans.aug') }}", "{{ trans('main_trans.sep') }}", "{{ trans('main_trans.oct') }}", "{{ trans('main_trans.nov') }}", "{{ trans('main_trans.dec') }}"];
         var data = google.visualization.arrayToDataTable([
-            ['Month', 'Patients'],
+            ['{{ trans('main_trans.month') }}', '{{ trans('main_trans.patients') }}'],
                 @foreach($monthly_patients_counts as $row)
             [months[{{$row->month}} - 1], {{$row->count}}],
             @endforeach
         ]);
 
         var options = {
-            title: 'patients growth rate',
+            title: '{{ trans('main_trans.patients_growth_rate') }}',
             legend: {position: 'bottom'}
         };
 
@@ -27,9 +27,9 @@
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var months = ["{{ trans('main_trans.jun') }}", "{{ trans('main_trans.feb') }}", "{{ trans('main_trans.mar') }}", "{{ trans('main_trans.apr') }}", "{{ trans('main_trans.may') }}", "{{ trans('main_trans.jun') }}", "{{ trans('main_trans.jul') }}", "{{ trans('main_trans.aug') }}", "{{ trans('main_trans.sep') }}", "{{ trans('main_trans.oct') }}", "{{ trans('main_trans.nov') }}", "{{ trans('main_trans.dec') }}"];
         var data = google.visualization.arrayToDataTable([
-            ['Month', 'Prescriptions'],
+            ['{{ trans('main_trans.month') }}', '{{ trans('main_trans.prescriptions') }}'],
                 @foreach($monthly_prescriptions_counts as $row)
             [months[{{$row->month}} - 1], {{$row->count}}],
             @endforeach
@@ -37,7 +37,7 @@
 
         var options = {
             chart: {
-                title: 'prescriptions rate',
+                title: '{{ trans('main_trans.prescriptions_rate') }}',
             }
         };
 
@@ -52,9 +52,9 @@
 
     function drawChart() {
         var data = google.visualization.arrayToDataTable([
-            ['Month', 'Earring per Month'],
-            ['Current Month', {{$current_monthly_earrings}}],
-            ['last Month', {{$last_monthly_earrings}}],
+            ['{{ trans('main_trans.month') }}', '{{ trans('main_trans.earning_per_month') }}'],
+            ['{{ trans('main_trans.current_month') }}', {{$current_monthly_earrings}}],
+            ['{{ trans('main_trans.last_month') }}', {{$last_monthly_earrings}}],
         ]);
 
         var options = {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Pulpo | Log in</title>
+    <title>Pulpo | {{ trans('main_trans.login') }}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -25,7 +25,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="card">
-        <div class="card-header">{{ __('Login') }}</div>
+        <div class="card-header">{{ trans('main_trans.login') }}</div>
         @if(session()->has('error'))
             <div class="alert alert-danger">
                 {{ session()->get('error') }}
@@ -72,13 +72,13 @@
                             <input class="form-check-input" type="checkbox" name="remember"
                                    id="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label for="remember">
-                                Remember Me
+                                {{ trans('main_trans.remember_me') }}
                             </label>
                         </div>
                     </div>
                     <!-- /.col -->
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{ __('Login') }}</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('main_trans.login') }}</button>
                     </div>
                     <!-- /.col -->
                 </div>
