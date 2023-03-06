@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
     @if (LaravelLocalization::getCurrentLocale() == 'ar')
         <!-- Bootstrap 4 RTL -->
-        <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ asset('assets/dist/css/bootstrap.min.css') }}">
         <!-- Custom style for RTL -->
         <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.css') }}">
     @endif
@@ -67,7 +67,7 @@
     <!-- ./wrapper -->
     @if (LaravelLocalization::getCurrentLocale() == 'ar')
         <!-- Bootstrap 4 rtl -->
-        <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
+        <script src="{{ asset('assets/dist/js/bootstrap.min.js') }}"></script>
     @endif
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->

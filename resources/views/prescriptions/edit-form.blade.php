@@ -162,7 +162,7 @@
                     @endforeach
                 </div>
                 <input data-repeater-create type="button" class="btn btn-success"
-                       value="Add Medicine"/>
+                       value="{{ trans('main_trans.add_medicine') }}"/>
             </div>
 
         </div>
@@ -272,7 +272,7 @@
                     @endforeach
                 </div>
                 <input data-repeater-create type="button" class="btn btn-success"
-                       value="Add Formula"/>
+                       value="{{ trans('main_trans.add_formula') }}"/>
             </div>
         </div>
     </div>
@@ -333,7 +333,7 @@
                     @endforeach
                 </div>
                 <input data-repeater-create type="button" class="btn btn-success"
-                       value="Add Test Report"/>
+                       value="{{ trans('main_trans.add_test_report') }}"/>
             </div>
         </div>
     </div>

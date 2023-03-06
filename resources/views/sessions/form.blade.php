@@ -86,7 +86,7 @@
         @php $input = 'note' @endphp
         <div class="col-md-6">
             <label for="exampleInput{{$input}}">{{ trans('main_trans.note') }}</label>
-            <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter {{ trans('main_trans.note') }}" spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
+            <textarea name="{{$input}}" class="form-control" rows="3" placeholder="{{ trans('main_trans.note') }}" spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
             @error($input)<span class="badge badge-danger"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
         </div>

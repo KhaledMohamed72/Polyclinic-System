@@ -16,8 +16,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        <a href="{{route('frequency-types.create')}}" class="btn btn-block bg-gradient-success">Add New
-                            Frequency Type</a>
+                        <a href="{{route('frequency-types.create')}}" class="btn btn-block bg-gradient-success">{{ trans('main_trans.add_new_frequency_type') }}</a>
                     </div>
                 </div>
                 <!-- /.card-header -->

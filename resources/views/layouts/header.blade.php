@@ -48,7 +48,7 @@
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 <span class="text-sm text-primary"><i class="fas fa-user-circle"></i></span>
-                                {{ __('Profile') }}
+                                {{ trans('main_trans.profile') }}
                             </h3>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     <span class="text-sm text-primary"><i class="fas fa-calendar-week"></i></span>
-                                    {{ __('Schedule') }}
+                                    {{ trans('main_trans.schedule') }}
                                 </h3>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 <span class="text-sm text-primary"><i class="fas fa-edit"></i></span>
-                                {{ __('Change Password') }}
+                                {{ trans('main_trans.change_password') }}
                             </h3>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                         <div class="media-body">
                             <h3 class="dropdown-item-title text-red">
                                 <span class="text-sm text-danger"><i class="fas fa-sign-out-alt"></i></span>
-                                {{ __('Logout') }}
+                                {{ trans('main_trans.logout') }}
                             </h3>
                         </div>
                     </div>

@@ -18,7 +18,7 @@
                     <div class="col-md-2 float-right">
                         @if(auth()->user()->hasRole('doctor'))
                             <a href="{{route('sessions.create')}}"
-                               class="btn btn-block bg-gradient-success">A{{ trans('main_trans.add_new_session') }}
+                               class="btn btn-block bg-gradient-success">{{ trans('main_trans.add_new_session') }}
                             </a>
                         @endif
                     </div>

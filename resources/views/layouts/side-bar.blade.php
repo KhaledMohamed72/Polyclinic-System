@@ -51,7 +51,7 @@
                         class="nav-link {{ request()->is('appointments/*') || request()->is('appointments') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-calendar-plus"></i>
                         <p>
-                            {{ trans('main_trans.appointment') }}
+                            {{ trans('main_trans.appointment_calendar') }}
                         </p>
                     </a>
                 </li>
@@ -139,15 +139,6 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('today-appointment') }}"
-                            class="nav-link {{ request()->is('appointment-list/*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-calendar"></i>
-                            <p>
-                                {{ trans('main_trans.appointment_list') }}
-                            </p>
-                        </a>
                     </li>
                 @endif
 

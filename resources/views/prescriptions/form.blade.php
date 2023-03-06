@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <input data-repeater-create type="button" class="btn btn-success"
-                       value="Add Medicine"/>
+                       value="{{ trans('main_trans.add_medicine') }}"/>
             </div>
         </div>
     </div>
@@ -119,12 +119,12 @@
         <div class="col-sm-12">
             <div class='repeater mb-4'>
                 <div data-repeater-list="formulas" class="form-group">
-                    <label>Formula <span class="text-danger">*</span></label>
+                    <label>{{ trans('main_trans.formulas') }} <span class="text-danger">*</span></label>
                     <div data-repeater-item class="mb-3 row">
                         @php $input = 'formula'; @endphp
                         <div class="col-sm-3 mt-1">
                             <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                                <option selected="" disabled="">Select Formula</option>
+                                <option selected="" disabled="">{{ trans('main_trans.select_formula') }}</option>
                                 @foreach($formulas as $formula)
                                     <option value="{{$formula->id}}"
                                         {{isset($row) && $row->id == $formula->id ? 'selected' : ''}}>{{$formula->name}}</option>
@@ -169,7 +169,7 @@
                     </div>
                 </div>
                 <input data-repeater-create type="button" class="btn btn-success"
-                       value="Add Formula"/>
+                       value="{{ trans('main_trans.add_formula') }}"/>
             </div>
         </div>
     </div>
@@ -202,7 +202,7 @@
                     </div>
                 </div>
                 <input data-repeater-create type="button" class="btn btn-success"
-                       value="Add Test Report"/>
+                       value="{{ trans('main_trans.add_test_report') }}"/>
             </div>
         </div>
     </div>
@@ -252,7 +252,7 @@
         @php $input = 'note' @endphp
         <div class="col-sm-6">
             <label for="exampleInput{{$input}}">{{ trans('main_trans.note') }}</label>
-            <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter {{ trans('main_trans.note') }}"
+            <textarea name="{{$input}}" class="form-control" rows="3" placeholder="{{ trans('main_trans.note') }}"
                       spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
             @error($input)<span class="badge badge-danger"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror

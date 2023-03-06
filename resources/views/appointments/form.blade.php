@@ -82,7 +82,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 form-group">
-            <label for="" class="d-block">{{ trans('main_trans.available_slot') }}</label>
+            <label for="" class="d-block">{{ trans('main_trans.time_slots') }}</label>
             <div class="btn-group btn-group-toggle available_slot d-block"
                  data-toggle="buttons">
             </div>

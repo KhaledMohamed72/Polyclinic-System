@@ -15,7 +15,13 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
-    <!-- Google Font: Source Sans Pro -->
+@if (LaravelLocalization::getCurrentLocale() == 'ar')
+    <!-- Bootstrap 4 RTL -->
+        <link rel="stylesheet" href="{{ asset('assets/dist/css/bootstrap.min.css') }}">
+        <!-- Custom style for RTL -->
+        <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.css') }}">
+@endif
+<!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition login-page">
@@ -39,7 +45,8 @@
                 @csrf
                 <div class="input-group mb-3">
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                           name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                           name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
+                           placeholder="{{ trans('main_trans.enter_email') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -54,7 +61,8 @@
                 </div>
                 <div class="input-group mb-3">
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                           name="password" required autocomplete="current-password">
+                           name="password" required autocomplete="current-password"
+                           placeholder="{{ trans('main_trans.enter_password') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -72,13 +80,14 @@
                             <input class="form-check-input" type="checkbox" name="remember"
                                    id="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label for="remember">
-                                {{ trans('main_trans.remember_me') }}
+                                &ensp;&ensp;&ensp;{{ trans('main_trans.remember_me') }}
                             </label>
                         </div>
                     </div>
                     <!-- /.col -->
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('main_trans.login') }}</button>
+                        <button type="submit"
+                                class="btn btn-primary btn-block btn-flat">{{ trans('main_trans.login') }}</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -92,7 +101,6 @@
 <!-- jQuery -->
 <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->
-<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
+<script src="{{asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>f
 </body>
 </html>

@@ -18,7 +18,6 @@
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <blockquote>{{ trans('main_trans.prescriptions') }}</blockquote>
         <form method="post" action="{{route('prescriptions.store')}}" enctype="multipart/form-data">
             @include('prescriptions.form')
             <div class="card-footer">

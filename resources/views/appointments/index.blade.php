@@ -127,7 +127,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <h4 class="card-title mb-4">{{ trans('main_trans.appointment_list') }} | <label
+                        <h4 class="card-title mb-4">{{ trans('main_trans.selected_date') }} | <label
                                 id="selected_date">{{date("Y-m-d")}}</label>
                         </h4>
                         <table id="example1" class="table table-bordered table-striped">

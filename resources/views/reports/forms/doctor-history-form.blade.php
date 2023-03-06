@@ -49,7 +49,7 @@
                     <input type="checkbox" name="sessions" value="1"
                            id="sessions-history">
                     <label for="sessions-history">
-                        Sessions
+                        {{ trans('main_trans.sessions') }}
                     </label>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                     <input type="checkbox" name="incomes" value="1"
                            id="incomes-history">
                     <label for="incomes-history">
-                        Incomes
+                        {{ trans('main_trans.incomes') }}
                     </label>
                 </div>
             </div>
