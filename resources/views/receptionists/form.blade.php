@@ -5,10 +5,10 @@
         @php $input = 'name' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Receptionist name</label>
+                <label for="exampleInput{{$input}}">{{ trans('main_trans.name') }}</label>
                 <input type="text" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
+                       placeholder="">
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -16,10 +16,10 @@
         @php $input = 'email' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Email</label>
+                <label for="exampleInput{{$input}}">{{ trans('main_trans.email') }}</label>
                 <input type="email" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
+                       placeholder="">
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -32,7 +32,7 @@
                 <label for="exampleInput{{$input}}">Password</label>
                 <input type="password" name="{{$input}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
+                       placeholder="">
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -53,10 +53,10 @@
         @php $input = 'phone' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Contact No</label>
+                <label for="exampleInput{{$input}}">{{ trans('main_trans.contactno') }}</label>
                 <input type="text" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
+                       placeholder="">
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -64,7 +64,7 @@
         @php $input = 'image' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <p><label for="exampleInput{{$input}}">Profile Photo</label></p>
+                <p><label for="exampleInput{{$input}}">{{ trans('main_trans.profile_photo') }}</label></p>
 
                 <img class="rounded-circle" src="
                 {{isset($row) && $row->profile_photo_path != '' ? asset('images/users/'.$row->profile_photo_path) : asset('assets/dist/img/noimage.png')}}" style="width: 20%;margin-left: 100px;" id="profile_display"

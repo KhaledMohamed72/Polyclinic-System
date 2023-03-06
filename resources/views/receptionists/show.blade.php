@@ -4,10 +4,10 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Receptionist Profile    @endsection
-@section('header-title')    Receptionist Profile    @endsection
-@section('header-title-one')    Receptionists    @endsection
-@section('header-title-two')    Profile   @endsection
+@section('title')   {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title')    {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.profile') }}   @endsection
 
 @section('content')
     <div class="row">
@@ -31,11 +31,11 @@
             <!-- About Me Box -->
             <div class="card card-white">
                 <div class="card-header mb-6">
-                    <h3 class="card-title">Personal Information</h3>
+                    <h3 class="card-title">{{ trans('main_trans.personal_information') }}</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <strong><i class="fas fa-star mr-1"></i> Contact No</strong>
+                    <strong><i class="fas fa-star mr-1"></i> {{ trans('main_trans.contactno') }}</strong>
 
                     <p class="text-muted">
                         {{$row->phone}}
@@ -43,7 +43,7 @@
 
                     <hr>
 
-                    <strong><i class="fas fa-graduation-cap mr-1"></i> Email</strong>
+                    <strong><i class="fas fa-graduation-cap mr-1"></i> {{ trans('main_trans.email') }}</strong>
 
                     <p class="text-muted">{{$row->email}}</p>
 
@@ -52,7 +52,7 @@
             </div>
             <div class="card card-white">
                 <div class="card-header mb-6">
-                    <h3 class="card-title">Assign Doctor Information</h3>
+                    <h3 class="card-title">{{ trans('main_trans.assign_doctor_information') }}</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -77,7 +77,7 @@
                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-check-circle"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Appointments</span>
+                            <span class="info-box-text">{{ trans('main_trans.appointments') }}</span>
                             <span class="info-box-number">
                   {{$appointments_count}}
                 </span>
@@ -92,7 +92,7 @@
                         <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-file"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Prescriptions</span>
+                            <span class="info-box-text">{{ trans('main_trans.prescriptions') }}</span>
                             <span class="info-box-number">{{$prescriptions_count}}</span>
                         </div>
                         <!-- /.info-box-content -->
@@ -108,7 +108,7 @@
                     <div class="info-box mb-3">
                         <span class="info-box-icon material-icons bg-success">settings_accessibility</span>
                         <div class="info-box-content">
-                            <span class="info-box-text">Sessions</span>
+                            <span class="info-box-text">{{ trans('main_trans.sessions') }}</span>
                             <span class="info-box-number">{{$sessions_count}}</span>
                         </div>
                         <!-- /.info-box-content -->
@@ -148,13 +148,13 @@
                                 <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
                                    href="#custom-content-below-appointment" role="tab"
                                    aria-controls="custom-content-below-appointment" aria-selected="true">
-                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Appointments&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
+                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{{ trans('main_trans.appointments') }}&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-content-below-prescription-tab" data-toggle="pill"
                                    href="#custom-content-below-prescription" role="tab"
                                    aria-controls="custom-content-below-prescription" aria-selected="false">
-                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Prescription List&ensp;&ensp;&ensp;&ensp;&ensp;
+                                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{{ trans('main_trans.prescription_list') }}&ensp;&ensp;&ensp;&ensp;&ensp;
                                 </a>
                             </li>
                             {{--                            <li class="nav-item">
@@ -178,14 +178,14 @@
                                             <table id="" class="display table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Patient</th>
-                                                    <th>Doctor</th>
-                                                    <th>Phone</th>
-                                                    <th>Date</th>
-                                                    <th>time</th>
-                                                    <th>status</th>
-                                                    <th>action</th>
+                                                    <th>{{ trans('main_trans.id') }}</th>
+                                                    <th>{{ trans('main_trans.patient') }}</th>
+                                                    <th>{{ trans('main_trans.doctor') }}</th>
+                                                    <th>{{ trans('main_trans.phone') }}</th>
+                                                    <th>{{ trans('main_trans.date') }}</th>
+                                                    <th>{{ trans('main_trans.time') }}</th>
+                                                    <th>{{ trans('main_trans.status') }}</th>
+                                                    <th>{{ trans('main_trans.action') }}</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -247,11 +247,11 @@
                                             <table id="" class="display table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Patient</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th>action</th>
+                                                    <th>{{ trans('main_trans.id') }}</th>
+                                                    <th>{{ trans('main_trans.patient') }}</th>
+                                                    <th>{{ trans('main_trans.date') }}</th>
+                                                    <th>{{ trans('main_trans.time') }}</th>
+                                                    <th>{{ trans('main_trans.action') }}</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>

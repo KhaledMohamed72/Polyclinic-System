@@ -6,22 +6,22 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset('assets/plugins/summernote/summernote-bs4.min.css')}}">
 @endsection
-@section('title')   Prescription Design    @endsection
-@section('header-title')    Prescription Design    @endsection
-@section('header-title-one')    Prescription Design    @endsection
-@section('header-title-two')    Create   @endsection
+@section('title')   {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title')    {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.create') }}   @endsection
 
 @section('content')
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Add New Design</h3>
+            <h3 class="card-title">{{ trans('main_trans.add_new_design') }}</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
         <form method="post" action="{{route('prescription-designs.store')}}">
             @include('prescription-designs.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="create">Submit</button>
+                <button type="submit" class="btn btn-primary" name="create">{{ trans('main_trans.submit') }}</button>
             </div>
         </form>
     </div>

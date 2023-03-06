@@ -18,7 +18,7 @@
     <!-- /.card -->
     <div class="card card-white">
         <div class="card-header mb-6">
-            <h3 class="card-title font-weight-bold">Monthly Earning</h3>
+            <h3 class="card-title font-weight-bold">{{ trans('main_trans.monthly_earning') }}</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -27,12 +27,12 @@
                     <div id="month_earring_rate"></div>
                 </div>
                 <div class="col-sm-12">
-                    <p class="text-muted">This month</p>
+                    <p class="text-muted">{{ trans('main_trans.this_month') }}</p>
                     <h3>{{$current_monthly_earrings}}£</h3>
                     <p class="text-muted">
                             <span class=" text-success  mr-2">
                                 {{number_format($earring_percentage, 2, '.', '')}}% <i class="fa fa-arrow-up"></i>
-                            </span>From previous month
+                            </span>{{ trans('main_trans.from_previous_month') }}
                     </p>
                 </div>
 
@@ -43,11 +43,11 @@
     <!-- About Me Box -->
     <div class="card card-white">
         <div class="card-header mb-6">
-            <h3 class="card-title">Personal Information</h3>
+            <h3 class="card-title">{{ trans('main_trans.personal_information') }} </h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <strong><i class="fas fa-star mr-1"></i> Specialist</strong>
+            <strong><i class="fas fa-star mr-1"></i> {{ trans('main_trans.specialist') }} </strong>
 
             <p class="text-muted">
                 {{$row->specialist}}
@@ -55,13 +55,13 @@
 
             <hr>
 
-            <strong><i class="fas fa-graduation-cap mr-1"></i> Title</strong>
+            <strong><i class="fas fa-graduation-cap mr-1"></i> {{ trans('main_trans.title') }} </strong>
 
             <p class="text-muted">{{$row->title}}</p>
 
             <hr>
 
-            <strong><i class="fas fa-pencil-alt mr-1"></i> Biography</strong>
+            <strong><i class="fas fa-pencil-alt mr-1"></i> {{ trans('main_trans.biography') }} </strong>
 
             <p class="text-muted">
                 {{str_limit(strip_tags($row->bio),100)}}
@@ -73,7 +73,7 @@
     <!-- /.card -->
     <div class="card card-white">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-calendar mr-1"></i>Available Days & Time</h3>
+            <h3 class="card-title"><i class="fas fa-calendar mr-1"></i>{{ trans('main_trans.available_days_&_time') }} </h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">

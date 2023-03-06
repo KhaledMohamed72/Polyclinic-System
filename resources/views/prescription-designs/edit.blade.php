@@ -6,10 +6,11 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset('assets/plugins/summernote/summernote-bs4.min.css')}}">
 @endsection
-@section('title')   Prescription Design    @endsection
-@section('header-title')    Prescription Design    @endsection
-@section('header-title-one')    Prescription Design    @endsection
-@section('header-title-two')    Edit   @endsection
+@section('title')   {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title')    {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.edit') }}   @endsection
+
 @section('styles')
     <!-- Select2 -->
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
@@ -27,7 +28,7 @@
             {{ method_field('put') }}
             @include('prescription-designs.edit_form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="update">Submit</button>
+                <button type="submit" class="btn btn-primary" name="update">{{ trans('main_trans.submit') }}</button>
             </div>
         </form>
     </div>

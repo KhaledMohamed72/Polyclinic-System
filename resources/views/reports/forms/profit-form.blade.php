@@ -4,9 +4,9 @@
         @if(auth()->user()->hasRole('admin') && $clinicType == 1)
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label>Doctor<small>( <b style="color: red">Hint: </b>If no doctor chosen, The Report will be general)</small></label>
+                    <label>{{ trans('main_trans.doctor') }}<small>{{ trans('main_trans.doctor_hintR') }}</small></label>
                     <select name="{{$input}}" class="form-control select2 sel-doctor" style="width: 100%;">
-                        <option selected="" disabled="">Select Doctor</option>
+                        <option selected="" disabled="">{{ trans('main_trans.select_doctor') }}</option>
                         @foreach($doctor_rows as $doctor_row)
                             <option value="{{$doctor_row->user_id}}"
                                 {{old($input) == $doctor_row->user_id? 'selected' : ''}}>{{$doctor_row->doctor_name}}</option>
@@ -21,7 +21,7 @@
         @endif
         @php $input = 'from' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
-            <label class="control-label">From</label>
+            <label class="control-label">{{ trans('main_trans.from') }}</label>
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="{{$input}}" value="{{old('from')}}" id="date" data-provide="datepicker"
@@ -32,7 +32,7 @@
         </div>
         @php $input = 'to' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
-            <label class="control-label">To</label>
+            <label class="control-label">{{ trans('main_trans.to') }}</label>
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="{{$input}}" value="{{old('to')}}" id="date" data-provide="datepicker"

@@ -4,16 +4,16 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Insurance Companies    @endsection
-@section('header-title')    Insurance Companies   @endsection
-@section('header-title-one')    Insurance Companies    @endsection
-@section('header-title-two')    Edit   @endsection
+@section('title')   {{ trans('main_trans.insurance_companies') }}    @endsection
+@section('header-title')    {{ trans('main_trans.insurance_companies') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.insurance_companies') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.edit') }}   @endsection
 
 @section('content')
 
     <div class="card card-primary">
         <div class="card-header">
-            <div class="card-title">Edit Session</div>
+            <div class="card-title">{{ trans('main_trans.edit_company') }}</div>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
@@ -21,7 +21,7 @@
             {{ method_field('put') }}
             @include('insurance-companies.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="update">Submit</button>
+                <button type="submit" class="btn btn-primary" name="update">{{ trans('main_trans.submit') }}</button>
             </div>
         </form>
     </div>

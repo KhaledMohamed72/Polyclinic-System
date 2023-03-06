@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Receptionists    @endsection
-@section('header-title')    Receptionists    @endsection
-@section('header-title-one')    Receptionists    @endsection
-@section('header-title-two')    Main   @endsection
+@section('title')   {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title')    {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.main') }}   @endsection
 
 @section('content')
     <div class="row">
@@ -18,8 +18,7 @@
                     <div class="col-md-2 float-right">
                         @if(auth()->user()->hasRole('admin'))
                             @if(($clinicType == 0 && $receptionists < 1) || $clinicType == 1)
-                                <a href="{{route('receptionists.create')}}" class="btn btn-block bg-gradient-success">Add
-                                    Receptionist</a>
+                                <a href="{{route('receptionists.create')}}" class="btn btn-block bg-gradient-success">{{ trans('main_trans.add_receptionist') }}</a>
                             @endif
                         @endif
                     </div>
@@ -29,12 +28,13 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Receptionist Name</th>
-                            <th>Contact No</th>
-                            <th>Email</th>
-                            <th>Action</th>
+                            <th>{{ trans('main_trans.id') }}</th>
+                            <th>{{ trans('main_trans.name') }}</th>
+                            <th>{{ trans('main_trans.contactno') }}</th>
+                            <th>{{ trans('main_trans.email') }}</th>
+                            <th>{{ trans('main_trans.action') }}</th>
                         </tr>
+
                         </thead>
                         <tbody>
                         @foreach($rows as $row)

@@ -80,12 +80,13 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
     public function appointmentsRowsPerDayDataTable(Request $request)
     {
         // admin
+        $date = date("Y-m-d",strtotime($request->date));
         if (auth()->user()->hasRole('admin')) {
             $rows = DB::table('appointments')
                 ->join('users as t1', 't1.id', '=', 'appointments.doctor_id')
                 ->join('users as t2', 't2.id', '=', 'appointments.patient_id')
                 ->where('appointments.clinic_id', '=', $this->getClinic()->id)
-                ->whereDate('appointments.date', '=', $request->date)
+                ->whereDate('appointments.date', '=', $date)
                 ->select('appointments.*', 't1.name as doctor_name', 't2.name as patient_name', 't2.phone')
                 ->orderBy('appointments.id', 'desc')->get();
         }
@@ -96,7 +97,7 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
                 ->join('users as t2', 't2.id', '=', 'appointments.patient_id')
                 ->where('appointments.clinic_id', '=', $this->getClinic()->id)
                 ->where('appointments.doctor_id', '=', auth()->user()->id)
-                ->whereDate('appointments.date', '=', $request->date)
+                ->whereDate('appointments.date', '=', $date)
                 ->select('appointments.*', 't1.name as doctor_name', 't2.name as patient_name', 't2.phone')
                 ->orderBy('appointments.id', 'desc')->get();
         }
@@ -107,7 +108,7 @@ class AppointmentRepository extends Controller implements AppointmentRepositoryI
                 ->join('users as t2', 't2.id', '=', 'appointments.patient_id')
                 ->where('appointments.clinic_id', '=', $this->getClinic()->id)
                 ->where('appointments.receptionist_id', '=', auth()->user()->id)
-                ->whereDate('appointments.date', '=', $request->date)
+                ->whereDate('appointments.date', '=', $date)
                 ->select('appointments.*', 't1.name as doctor_name', 't2.name as patient_name', 't2.phone')
                 ->orderBy('appointments.id', 'desc')->get();
         }

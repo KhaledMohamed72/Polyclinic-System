@@ -11,10 +11,10 @@
         }
     </style>
 @endsection
-@section('title')   PRESCRIPTION DETAILS    @endsection
-@section('header-title')    PRESCRIPTION DETAILS    @endsection
-@section('header-title-one')    PRESCRIPTIONS     @endsection
-@section('header-title-two')    PRESCRIPTION DETAILS   @endsection
+@section('title')   {{ trans('main_trans.prescription_details') }}    @endsection
+@section('header-title')    {{ trans('main_trans.prescription_details') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.prescriptions') }}     @endsection
+@section('header-title-two')    {{ trans('main_trans.prescription_details') }}    @endsection
 
 @section('content')
     <div class="row d-print-none">

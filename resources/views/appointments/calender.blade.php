@@ -53,7 +53,7 @@
                 console.log(response);
                 if (response == '') {
                     $('#new_list').empty();
-                    $('#no_list').append('No Available Appointments')
+                    $('#no_list').append('{{ trans('main_trans.no_appointments') }}')
                 } else {
                     $('#new_list').empty();
                     $('#no_list').empty();
@@ -72,11 +72,11 @@
                             prescription_link = '';
                         }
                         if (response[i].type == 0) {
-                            type = '<span class="badge badge-info">Examination</span>';
+                            type = '<span class="badge badge-info">{{ trans('main_trans.examination') }}</span>';
                         } else if (response[i].type == 1) {
-                            type = '<span class="badge badge-warning">Followup</span>';
+                            type = '<span class="badge badge-warning">{{ trans('main_trans.followup') }}</span>';
                         } else if (response[i].type == 2) {
-                            type = '<span class="badge badge-secondary">Session</span>';
+                            type = '<span class="badge badge-secondary">{{ trans('main_trans.session') }}</span>';
                         } else {
                             type = 'Unknown';
                         }

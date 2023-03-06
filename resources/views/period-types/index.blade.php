@@ -5,9 +5,9 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Period Types    @endsection
-@section('header-title')    Period Types    @endsection
-@section('header-title-one')    Period Types    @endsection
+@section('title')  {{ trans('main_trans.period_types') }}    @endsection
+@section('header-title')    {{ trans('main_trans.period_types') }}    @endsection
+@section('header-title-one')   {{ trans('main_trans.period_types') }}   @endsection
 @section('header-title-two')    Main   @endsection
 
 @section('content')
@@ -16,8 +16,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        <a href="{{route('period-types.create')}}" class="btn btn-block bg-gradient-success">Add New
-                            Period Type</a>
+                        <a href="{{route('period-types.create')}}" class="btn btn-block bg-gradient-success">A{{ trans('main_trans.add_new_period_type') }}</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -25,10 +24,11 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Period Type Name</th>
-                            <th>Action</th>
+                            <th>{{ trans('main_trans.id') }}</th>
+                            <th>{{ trans('main_trans.name') }}</th>
+                            <th>{{ trans('main_trans.action') }}</th>
                         </tr>
+
                         </thead>
                         <tbody>
                         @foreach($rows as $row)

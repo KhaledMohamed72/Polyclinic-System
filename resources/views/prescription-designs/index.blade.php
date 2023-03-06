@@ -5,10 +5,11 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Prescription Design    @endsection
-@section('header-title')    Prescription Design    @endsection
-@section('header-title-one')    Prescription Design    @endsection
-@section('header-title-two')    Main   @endsection
+@section('title')   {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title')    {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.prescription_design') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.main') }}   @endsection
+
 
 @section('content')
     <div class="row">
@@ -30,9 +31,9 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Doctor Name</th>
-                            <th>Action</th>
+                            <th>{{ trans('main_trans.id') }}</th>
+                            <th>{{ trans('main_trans.doctor') }}</th>
+                            <th>{{ trans('main_trans.action') }}</th>
                         </tr>
                         </thead>
                         <tbody>

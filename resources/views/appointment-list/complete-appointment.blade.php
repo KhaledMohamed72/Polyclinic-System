@@ -7,10 +7,10 @@
     <!-- fullCalendar -->
     <link rel="stylesheet" href="{{asset('assets/plugins/fullcalendar/main.css')}}">
 @endsection
-@section('title')   Appointment List    @endsection
-@section('header-title')    Appointment List    @endsection
-@section('header-title-one')    Appointment List    @endsection
-@section('header-title-two')    Main   @endsection
+@section('title')   {{ trans('main_trans.appointment_list') }}    @endsection
+@section('header-title')    {{ trans('main_trans.appointment_list') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.appointment_list') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.main') }}   @endsection
 
 @php $roleAdminNRecep = auth()->user()->hasRole(['admin','recep']); @endphp
 @section('content')
@@ -27,15 +27,14 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
                                         @if($roleAdminNRecep)
-                                            <th>Doctor</th>
+                                            <th>{{ trans('main_trans.doctor') }}</th>
                                         @endif
-                                        <th>Patient</th>
-                                        <th>Contact No</th>
-                                        <th>Date</th>
-                                        <th>time</th>
-
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.contactno') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>

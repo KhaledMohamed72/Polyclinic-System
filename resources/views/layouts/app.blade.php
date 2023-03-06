@@ -65,7 +65,10 @@
         @include('layouts.footer')
     </div>
     <!-- ./wrapper -->
-
+    @if (LaravelLocalization::getCurrentLocale() == 'ar')
+        <!-- Bootstrap 4 rtl -->
+        <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
+    @endif
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <!-- it makes a conflict with calender libs so i have to disable it on this page -->
@@ -77,6 +80,7 @@
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- overlayScrollbars -->
     <script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+
     <!-- PAGE SCRIPTS -->
     @yield('scripts')
     <!-- AdminLTE App -->
@@ -89,10 +93,7 @@
             $('.selectpicker').selectpicker();
         });
     </script>
-    @if (LaravelLocalization::getCurrentLocale() == 'ar')
-        <!-- Bootstrap 4 rtl -->
-        <script src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"></script>
-    @endif
+
 </body>
 
 </html>

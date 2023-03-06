@@ -20,10 +20,10 @@
         }
     </style>
 @endsection
-@section('title')   Appointments    @endsection
-@section('header-title')    Appointments    @endsection
-@section('header-title-one')    Appointments    @endsection
-@section('header-title-two')    Calender   @endsection
+@section('title')   {{ trans('main_trans.appointments') }}    @endsection
+@section('header-title')    {{ trans('main_trans.appointments') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.appointments') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.calendar') }}   @endsection
 
 @section('content')
     @php
@@ -45,8 +45,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="col-md-6 float-right">
-                            <a href="{{route('appointments.create')}}" class="btn btn-block bg-gradient-success">Add
-                                Appointment</a>
+                            <a href="{{route('appointments.create')}}" class="btn btn-block bg-gradient-success">{{ trans('main_trans.add_appointment') }}</a>
                         </div>
                     </div>
 
@@ -57,14 +56,14 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Patient</th>
+                                    <th>{{ trans('main_trans.id') }}</th>
+                                    <th>{{ trans('main_trans.patient') }}</th>
                                     @if($hasRoleAdminNRecep)
-                                        <th>doctor</th>
+                                        <th>{{ trans('main_trans.doctor') }}</th>
                                     @endif
-                                    <th>type</th>
-                                    <th>Time</th>
-                                    <th>action</th>
+                                    <th>{{ trans('main_trans.type') }}</th>
+                                    <th>{{ trans('main_trans.time') }}</th>
+                                    <th>{{ trans('main_trans.action') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody id="new_list">
@@ -77,11 +76,11 @@
                                         @endif
                                         <td>
                                             @if($row->type == 0)
-                                                <span class="badge badge-info">Examination</span>
+                                                <span class="badge badge-info">{{ trans('main_trans.examination') }}</span>
                                             @elseif($row->type == 1)
-                                                <span class="badge badge-warning">Followup</span>
+                                                <span class="badge badge-warning">{{ trans('main_trans.followup') }}</span>
                                             @elseif($row->type == 2)
-                                                <span class="badge badge-secondary">Session</span>
+                                                <span class="badge badge-secondary">{{ trans('main_trans.session') }}</span>
                                             @else
                                                 Unknown
                                             @endif
@@ -123,26 +122,25 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="col-md-6 float-right">
-                            <a href="{{route('appointments.create')}}" class="btn btn-block bg-gradient-success">Add
-                                Appointment</a>
+                            <a href="{{route('appointments.create')}}" class="btn btn-block bg-gradient-success">{{ trans('main_trans.add_appointment') }}</a>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <h4 class="card-title mb-4">Appointment List | <label
+                        <h4 class="card-title mb-4">{{ trans('main_trans.appointment_list') }} | <label
                                 id="selected_date">{{date("Y-m-d")}}</label>
                         </h4>
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Patient</th>
+                                <th>{{ trans('main_trans.id') }}</th>
+                                <th>{{ trans('main_trans.patient') }}</th>
                                 @if($hasRoleAdminNRecep)
-                                    <th>Doctor</th>
+                                    <th>{{ trans('main_trans.doctor') }}</th>
                                 @endif
-                                <th>Type</th>
-                                <th>Time</th>
-                                <th>action</th>
+                                <th>{{ trans('main_trans.type') }}</th>
+                                <th>{{ trans('main_trans.time') }}</th>
+                                <th>{{ trans('main_trans.action') }}</th>
                             </tr>
                             </thead>
                             <tbody id="new_list">
@@ -156,11 +154,11 @@
                                     @endif
                                     <td>
                                         @if($row->type == 0)
-                                            <span class="badge badge-info">Examination</span>
+                                            <span class="badge badge-info">{{ trans('main_trans.examination') }}</span>
                                         @elseif($row->type == 1)
-                                            <span class="badge badge-warning">Followup</span>
+                                            <span class="badge badge-warning">{{ trans('main_trans.followup') }}</span>
                                         @elseif($row->type == 2)
-                                            <span class="badge badge-secondary">Session</span>
+                                            <span class="badge badge-secondary">{{ trans('main_trans.session') }}</span>
                                         @else
                                             Unknown
                                         @endif

@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Patients    @endsection
-@section('header-title')    Patients    @endsection
-@section('header-title-one')    Patients    @endsection
-@section('header-title-two')    Main   @endsection
+@section('title')   {{ trans('main_trans.patients') }}    @endsection
+@section('header-title')    {{ trans('main_trans.patients') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.patients') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.main') }}   @endsection
 
 @section('content')
     <div class="row">
@@ -16,7 +16,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        <a href="{{route('patients.create')}}" class="btn btn-block bg-gradient-success">Add Patient</a>
+                        <a href="{{route('patients.create')}}" class="btn btn-block bg-gradient-success">{{ trans('main_trans.add_patient') }}</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -24,13 +24,13 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Patient</th>
+                            <th>{{ trans('main_trans.id') }}</th>
+                            <th>{{ trans('main_trans.patient') }}</th>
                             @if(auth()->user()->hasRole(['admin','recep']) && $clinicType == 1)
-                                <th>Doctor</th>
+                                <th>{{ trans('main_trans.doctor') }}</th>
                             @endif
-                            <th>Contact No</th>
-                            <th>Action</th>
+                            <th>{{ trans('main_trans.contactno') }}</th>
+                            <th>{{ trans('main_trans.action') }}</th>
                         </tr>
                         </thead>
                         <tbody>

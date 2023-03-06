@@ -26,16 +26,16 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
                                         @if($roleAdminNRecep)
-                                            <th>Doctor</th>
+                                            <th>{{ trans('main_trans.doctor') }}</th>
                                         @endif
-                                        <th>Patient</th>
-                                        <th>Contact No</th>
-                                        <th>Date</th>
-                                        <th>time</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.contactno') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
+                                        <th>{{ trans('main_trans.status') }}</th>
+                                        <th>{{ trans('main_trans.action') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -51,11 +51,11 @@
                                             <td>{{date("g:i A", strtotime($row->time))}}</td>
                                             <td>
                                                 @if($row->status == 'pending')
-                                                    <span class="badge badge-info">pending</span>
+                                                    <span class="badge badge-info">{{ trans('main_trans.pending') }}</span>
                                                 @elseif($row->status == 'cancel')
-                                                    <span class="badge badge-danger">cancel</span>
+                                                    <span class="badge badge-danger">{{ trans('main_trans.cancel') }}</span>
                                                 @elseif($row->status == 'complete')
-                                                    <span class="badge badge-primary">complete</span>
+                                                    <span class="badge badge-primary">{{ trans('main_trans.complete') }}</span>
                                                 @else
 
                                                 @endif
@@ -66,14 +66,14 @@
                                                         <a class="btn btn-primary btn-sm"
                                                            href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
                                                            title="Complete">
-                                                            Create Prescription
+                                                            {{ trans('main_trans.create_prescription') }}
                                                         </a>
                                                     @endif
 
                                                     <a class="btn btn-danger btn-sm"
                                                        href="{{route('cancel-action',$row->id)}}"
                                                        title="Complete">
-                                                        Cancel
+                                                        {{ trans('main_trans.cancel') }}
                                                     </a>
                                                 @endif
                                             </td>

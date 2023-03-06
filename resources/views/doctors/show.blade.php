@@ -5,14 +5,14 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 @endsection
 @if(auth()->user()->hasRole(['admin','recep']))
-@section('title')   Doctor Profile    @endsection
-@section('header-title')    Doctor Profile    @endsection
-@section('header-title-one')    Doctors    @endsection
-@section('header-title-two')    Profile   @endsection
+@section('title')   {{ trans('main_trans.doctor_profile') }}    @endsection
+@section('header-title')    {{ trans('main_trans.doctor_profile') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.doctor_profile') }}   @endsection
+@section('header-title-two')    {{ trans('main_trans.profile') }}   @endsection
 @else
-@section('title')   Home    @endsection
-@section('header-title')    Home    @endsection
-@section('header-title-one')    home    @endsection
+@section('title')   {{ trans('main_trans.home') }}    @endsection
+@section('header-title')    {{ trans('main_trans.home') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.home') }}    @endsection
 @endif
 
 @section('content')

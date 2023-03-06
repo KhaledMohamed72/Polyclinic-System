@@ -3,9 +3,9 @@
         @php $input = 'company' @endphp
         <div class="col-sm-4">
             <div class="form-group">
-                <label>Company</label>
+                <label>{{ trans('main_trans.company') }}</label>
                 <select name="{{$input}}" class="form-control select2 sel-company" style="width: 100%;">
-                    <option selected="" disabled="">Select Company</option>
+                    <option selected="" disabled="">{{ trans('main_trans.select_company') }}</option>
                     @foreach($company_rows as $company_row)
                         <option value="{{$company_row->id}}"
                             {{old($input) == $company_row->id ? 'selected' : ''}}>{{$company_row->name}}</option>
@@ -17,7 +17,7 @@
         </div>
         @php $input = 'from' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
-            <label class="control-label">From</label>
+            <label class="control-label">{{ trans('main_trans.from') }}</label>
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="{{$input}}" value="{{old('from')}}" id="date" data-provide="datepicker"
@@ -28,7 +28,7 @@
         </div>
         @php $input = 'to' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
-            <label class="control-label">To</label>
+            <label class="control-label">{{ trans('main_trans.to') }}</label>
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="{{$input}}" value="{{old('to')}}" id="date" data-provide="datepicker"
@@ -45,7 +45,7 @@
                     <input type="checkbox" name="sessions" value="1"
                            id="sessions-history">
                     <label for="sessions-history">
-                         Sessions
+                        {{ trans('main_trans.sessions') }}
                     </label>
                 </div>
             </div>

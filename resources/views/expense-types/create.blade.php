@@ -11,14 +11,14 @@
 
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Add New Expense Type</h3>
+            <h3 class="card-title">{{ trans('main_trans.add_new_expense_type') }}</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
         <form method="post" action="{{route('expense-types.store')}}" enctype="multipart/form-data">
             @include('expense-types.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="create">Submit</button>
+                <button type="submit" class="btn btn-primary" name="create">{{ trans('main_trans.submit') }}</button>
             </div>
         </form>
     </div>

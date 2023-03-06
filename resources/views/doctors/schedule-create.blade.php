@@ -22,10 +22,10 @@
     <!-- dropzonejs -->
     <link rel="stylesheet" href="{{asset('assets/plugins/dropzone/min/dropzone.min.css')}}">
 @endsection
-@section('title')   Doctors    @endsection
-@section('header-title')    Doctors    @endsection
-@section('header-title-one')    Doctors    @endsection
-@section('header-title-two')    Create Schedule   @endsection
+@section('title')   {{ trans('main_trans.doctors') }}    @endsection
+@section('header-title')    {{ trans('main_trans.doctors') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.doctors') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.create_schedule') }}  @endsection
 
 @section('content')
     @if (\Session::has('success'))
@@ -86,7 +86,7 @@
                                                 <a class="nav-link active" id="custom-tabs-three-f{{$i}}-tab"
                                                    data-toggle="pill" href="#custom-tabs-three-f{{$i}}" role="tab"
                                                    aria-controls="custom-tabs-three-f{{$i}}" aria-selected="true">&ensp;
-                                                    Period</a>
+                                                    {{ trans('main_trans.period') }}</a>
                                             </li>
                                             {{--<li class="nav-item">
                                                 <a class="nav-link" id="custom-tabs-three-s{{$i}}-tab"
@@ -105,7 +105,7 @@
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <label for="first_from{{$i}}"><small>From</small> &ensp;</label>
+                                                        <label for="first_from{{$i}}"><small>{{ trans('main_trans.from') }}</small> &ensp;</label>
                                                         <input type="time" name="first_start_time[]"
                                                                value="{{isset($row[$i]) ? $row[$i]->first_start_time : ''}}"
                                                                class="form-control" id="first_from{{$i}}"/>
@@ -121,7 +121,7 @@
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <label for="first_to{{$i}}"><small>To</small> &ensp;</label>
+                                                        <label for="first_to{{$i}}"><small>{{ trans('main_trans.to') }}</small> &ensp;</label>
                                                         <input type="time" name="first_end_time[]"
                                                                value="{{isset($row[$i]) ? $row[$i]->first_end_time : ''}}"
                                                                class="form-control" id="first_to{{$i}}"/>
@@ -140,7 +140,7 @@
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <label for="second_from{{$i}}"><small>From</small>
+                                                        <label for="second_from{{$i}}"><small>{{ trans('main_trans.from') }}</small>
                                                             &ensp;</label>
                                                         <input type="time" name="second_start_time[]"
                                                                value="{{isset($row[$i]) ? $row[$i]->second_start_time : ''}}"
@@ -156,7 +156,7 @@
                                                 <!-- time Picker -->
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <label for="second_to{{$i}}"><small>To</small> &ensp;</label>
+                                                        <label for="second_to{{$i}}"><small>{{ trans('main_trans.to') }}</small> &ensp;</label>
                                                         <input type="time" name="second_end_time[]"
                                                                value="{{isset($row[$i]) ? $row[$i]->second_end_time : ''}}"
                                                                class="form-control" id="second_to{{$i}}"/>
@@ -178,7 +178,7 @@
             <!-- /.card-body -->
             <!-- /.card -->
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="create">Submit</button>
+                <button type="submit" class="btn btn-primary" name="create">{{ trans('main_trans.submit') }}</button>
             </div>
         </form>
     </div>

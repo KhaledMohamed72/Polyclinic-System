@@ -27,15 +27,15 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
                                         @if($roleAdminNRecep)
-                                        <th>Doctor</th>
+                                            <th>{{ trans('main_trans.doctor') }}</th>
                                         @endif
-                                        <th>Patient</th>
-                                        <th>Contact No</th>
-                                        <th>Date</th>
-                                        <th>time</th>
-                                        <th>action</th>
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.contactno') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
+                                        <th>{{ trans('main_trans.action') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -54,13 +54,13 @@
                                                 <a class="btn btn-primary btn-sm"
                                                    href="{{route('prescriptions.create') . '?date='. $row->date . '&patient_id=' . $row->patient_id}}"
                                                    title="Complete">
-                                                    Create Prescription
+                                                    {{ trans('main_trans.create_prescription') }}
                                                 </a>
                                                 @endif
                                                     <a class="btn btn-danger btn-sm"
                                                        href="{{route('cancel-action',$row->id)}}"
                                                        title="Cancel">
-                                                        Cancel
+                                                        {{ trans('main_trans.cancel') }}
                                                     </a>
                                             </td>
                                         </tr>

@@ -3,7 +3,7 @@
     <div class="row">
         @php $input = 'header' @endphp
         <div class="col-md-8">
-            <label for="exampleInput{{$input}}">Prescription Header</label>
+            <label for="exampleInput{{$input}}">{{ trans('main_trans.prescription_header') }}</label>
             <textarea id="summernote1" name="{{$input}}">
                 {{isset($row) ? $row->$input : old($input)}}
               </textarea>
@@ -14,7 +14,7 @@
     <div class="row">
         @php $input = 'footer' @endphp
         <div class="col-md-8">
-            <label for="exampleInput{{$input}}">Prescription Footer</label>
+            <label for="exampleInput{{$input}}">{{ trans('main_trans.prescription_footer') }}</label>
             <textarea id="summernote2" name="{{$input}}">
                 {{isset($row) ? $row->$input : old($input)}}
               </textarea>

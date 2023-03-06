@@ -4,23 +4,23 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Sessions    @endsection
-@section('header-title')    Sessions   @endsection
-@section('header-title-one')    Sessions    @endsection
-@section('header-title-two')    Create   @endsection
+@section('title')   {{ trans('main_trans.sessions') }}    @endsection
+@section('header-title')    {{ trans('main_trans.sessions') }}   @endsection
+@section('header-title-one')    {{ trans('main_trans.sessions') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.create') }}   @endsection
 
 @section('content')
 
     <div class="card card-primary">
         <div class="card-header">
-            <div class="card-title">Book Session</div>
+            <div class="card-title">{{ trans('main_trans.book_session') }}</div>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
         <form method="post" action="{{route('sessions.store')}}">
             @include('sessions.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="create">Submit</button>
+                <button type="submit" class="btn btn-primary" name="create">{{ trans('main_trans.submit') }}</button>
             </div>
         </form>
     </div>

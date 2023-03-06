@@ -4,10 +4,10 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Receptionists    @endsection
-@section('header-title')    Receptionists    @endsection
-@section('header-title-one')    Receptionists    @endsection
-@section('header-title-two')    Edit   @endsection
+@section('title')   {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title')    {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.receptionists') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.edit') }}   @endsection
 @section('styles')
     <!-- Select2 -->
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
@@ -18,7 +18,7 @@
 @section('content')
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Edit Receptionist</h3>
+            <h3 class="card-title">{{ trans('main_trans.edit_receptionist') }}</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
@@ -27,7 +27,7 @@
             {{ method_field('put') }}
             @include('receptionists.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="update">Submit</button>
+                <button type="submit" class="btn btn-primary" name="update"><h3 class="card-title">{{ trans('main_trans.submit') }}</h3></button>
             </div>
         </form>
     </div>

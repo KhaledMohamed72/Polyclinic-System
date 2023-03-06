@@ -124,12 +124,6 @@
                                 <table id="" class="display table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Patient</th>
-                                            <th>Doctor</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
-                                            <th>action</th>
                                             <th>{{ trans('main_trans.id') }}</th>
                                             <th>{{ trans('main_trans.patient') }}</th>
                                             <th>{{ trans('main_trans.doctor') }}</th>

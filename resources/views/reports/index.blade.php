@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Reports    @endsection
-@section('header-title')    Reports    @endsection
-@section('header-title-one')    Reports    @endsection
-@section('header-title-two')    Main   @endsection
+@section('title')   {{ trans('main_trans.reports') }}    @endsection
+@section('header-title')    {{ trans('main_trans.reports') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.reports') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.main') }}   @endsection
 
 @section('content')
     <div class="row">
@@ -24,38 +24,35 @@
                             <li class="nav-item">
                                 <a class="nav-link active" id="custom-tabs-three-patient-history-tab" data-toggle="pill"
                                    href="#custom-tabs-three-patient-history" role="tab"
-                                   aria-controls="custom-tabs-three-patient-history" aria-selected="false">Patient
-                                    History</a>
+                                   aria-controls="custom-tabs-three-patient-history" aria-selected="false">{{ trans('main_trans.patient_history') }}</a>
                             </li>
                             {{-- Doctor history --}}
                             <li class="nav-item">
                                 <a class="nav-link"
                                    id="custom-tabs-three-doctor-history-tab" data-toggle="pill"
                                    href="#custom-tabs-three-doctor-history" role="tab"
-                                   aria-controls="custom-tabs-three-doctor-history" aria-selected="true">Doctor
-                                    History</a>
+                                   aria-controls="custom-tabs-three-doctor-history" aria-selected="true">{{ trans('main_trans.doctor_history') }}</a>
                             </li>
                             {{--Insurance Companies--}}
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-patient-insurance_company-tab"
                                    data-toggle="pill"
                                    href="#custom-tabs-three-insurance_company" role="tab"
-                                   aria-controls="custom-tabs-three-insurance_company" aria-selected="false">Insurance
-                                    Companies</a>
+                                   aria-controls="custom-tabs-three-insurance_company" aria-selected="false">{{ trans('main_trans.insurance_companies') }}</a>
                             </li>
                             {{--Income--}}
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-income-tab" data-toggle="pill"
                                    href="#custom-tabs-three-income" role="tab"
                                    aria-controls="custom-tabs-three-income" aria-selected="false">
-                                    Income Report</a>
+                                    {{ trans('main_trans.income_report') }}</a>
                             </li>
                             {{--Expenses--}}
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-tabs-three-expenses-tab" data-toggle="pill"
                                    href="#custom-tabs-three-expenses" role="tab"
                                    aria-controls="custom-tabs-three-expenses" aria-selected="false">
-                                    Expenses Report</a>
+                                    {{ trans('main_trans.expenses_report') }}</a>
                             </li>
                         @endif
                         @if(auth()->user()->hasRole(['admin','doctor']))
@@ -63,7 +60,7 @@
                                 <a class="nav-link" id="custom-tabs-three-profit-tab" data-toggle="pill"
                                    href="#custom-tabs-three-profit" role="tab"
                                    aria-controls="custom-tabs-three-profit" aria-selected="false">
-                                    Profit Report</a>
+                                    {{ trans('main_trans.profit_report') }}</a>
                             </li>
                         @endif
                     </ul>
@@ -78,7 +75,7 @@
                                     @include('reports.forms.patient-history-form')
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
-                                                name="get-patient-history">Submit
+                                                name="get-patient-history">{{ trans('main_trans.submit') }}
                                         </button>
                                     </div>
                                 </form>
@@ -91,7 +88,7 @@
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
                                                 name="get-doctor-history">
-                                            Submit
+                                            {{ trans('main_trans.submit') }}
                                         </button>
                                     </div>
                                 </form>
@@ -104,7 +101,7 @@
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
                                                 name="get-insurance_company">
-                                            Submit
+                                            {{ trans('main_trans.submit') }}
                                         </button>
                                     </div>
                                 </form>
@@ -116,7 +113,7 @@
                                     @include('reports.forms.income-form')
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right" name="get-insurance_company">
-                                            Submit
+                                            {{ trans('main_trans.submit') }}
                                         </button>
                                     </div>
                                 </form>
@@ -129,7 +126,7 @@
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
                                                 name="get-insurance_company">
-                                            Submit
+                                            {{ trans('main_trans.submit') }}
                                         </button>
                                     </div>
                                 </form>
@@ -144,7 +141,7 @@
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary float-right"
                                                 name="get-profit">
-                                            Submit
+                                            {{ trans('main_trans.submit') }}
                                         </button>
                                     </div>
                                 </form>

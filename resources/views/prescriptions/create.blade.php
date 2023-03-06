@@ -4,25 +4,25 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @endsection
-@section('title')   Prescriptions    @endsection
-@section('header-title')    Prescriptions    @endsection
-@section('header-title-one')    Prescriptions    @endsection
+@section('title')   {{ trans('main_trans.prescriptions') }}    @endsection
+@section('header-title')    {{ trans('main_trans.prescriptions') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.prescriptions') }}    @endsection
 @section('header-title-one-link')    {{route('prescriptions.index')}}    @endsection
-@section('header-title-two')    Create   @endsection
+@section('header-title-two')    {{ trans('main_trans.create') }}   @endsection
 
 @section('content')
 
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Add New Prescription</h3>
+            <h3 class="card-title">{{ trans('main_trans.add_new_prescription') }}</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
-        <blockquote>Prescription Details</blockquote>
+        <blockquote>{{ trans('main_trans.prescriptions') }}</blockquote>
         <form method="post" action="{{route('prescriptions.store')}}" enctype="multipart/form-data">
             @include('prescriptions.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="create">Create Prescription</button>
+                <button type="submit" class="btn btn-primary" name="create">{{ trans('main_trans.create_prescription') }}</button>
             </div>
         </form>
     </div>

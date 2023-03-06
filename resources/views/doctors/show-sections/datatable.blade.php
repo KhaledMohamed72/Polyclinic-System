@@ -30,13 +30,13 @@
                     <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
                        href="#custom-content-below-appointment" role="tab"
                        aria-controls="custom-content-below-appointment" aria-selected="true">
-                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Today's Appointment&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
+                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{{ trans('main_trans.todays_appointment') }}&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="custom-content-below-prescription-tab" data-toggle="pill"
                        href="#custom-content-below-prescription" role="tab"
                        aria-controls="custom-content-below-prescription" aria-selected="false">
-                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Prescription List&ensp;&ensp;&ensp;&ensp;&ensp;
+                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{{ trans('main_trans.prescription_list') }}&ensp;&ensp;&ensp;&ensp;&ensp;
                     </a>
                 </li>
                 {{--                            <li class="nav-item">
@@ -60,13 +60,13 @@
                                 <table id="" class="display table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Patient Name</th>
-                                        <th>Phone</th>
-                                        <th>Date</th>
-                                        <th>time</th>
-                                        <th>status</th>
-                                        <th>action</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.phone') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
+                                        <th>{{ trans('main_trans.status') }}</th>
+                                        <th>{{ trans('main_trans.action') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -79,11 +79,11 @@
                                             <td>{{date("g:i A", strtotime($row->time))}}</td>
                                             <td>
                                                 @if($row->status == 'pending')
-                                                    <span class="badge badge-info">pending</span>
+                                                    <span class="badge badge-info">{{ trans('main_trans.pending') }}</span>
                                                 @elseif($row->status == 'cancel')
-                                                    <span class="badge badge-danger">cancel</span>
+                                                    <span class="badge badge-danger">{{ trans('main_trans.cancel') }}</span>
                                                 @elseif($row->status == 'complete')
-                                                    <span class="badge badge-primary">complete</span>
+                                                    <span class="badge badge-primary">{{ trans('main_trans.complete') }}</span>
                                                 @else
 
                                                 @endif
@@ -132,11 +132,11 @@
                                 <table id="" class="display table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Patient</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>action</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
+                                        <th>{{ trans('main_trans.action') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>

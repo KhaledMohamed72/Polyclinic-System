@@ -6,10 +6,10 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset('assets/plugins/summernote/summernote-bs4.min.css')}}">
 @endsection
-@section('title')   Doctors    @endsection
-@section('header-title')    Doctors    @endsection
-@section('header-title-one')    Doctors    @endsection
-@section('header-title-two')    Edit   @endsection
+@section('title')   {{ trans('main_trans.doctors') }}    @endsection
+@section('header-title')    {{ trans('main_trans.doctors') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.doctors') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.edit') }}   @endsection
 @section('styles')
     <!-- Select2 -->
     <link rel="stylesheet" href="{{asset('assets/plugins/select2/css/select2.min.css')}}">
@@ -20,7 +20,7 @@
 @section('content')
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Edit Doctor</h3>
+            <h3 class="card-title">{{ trans('main_trans.edit_doctor') }}</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
@@ -29,7 +29,7 @@
             {{ method_field('put') }}
             @include('doctors.form')
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary" name="update">Submit</button>
+                <button type="submit" class="btn btn-primary" name="update">{{ trans('main_trans.submit') }}</button>
             </div>
         </form>
     </div>

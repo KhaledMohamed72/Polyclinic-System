@@ -4,10 +4,10 @@
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 @endsection
-@section('title')   Patient Profile    @endsection
-@section('header-title')    Patient Profile    @endsection
-@section('header-title-one')    Patients    @endsection
-@section('header-title-two')    Profile   @endsection
+@section('title')   {{ trans('main_trans.patients') }}    @endsection
+@section('header-title')    {{ trans('main_trans.patients') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.patients') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.profile') }}   @endsection
 
 @section('content')
     <div class="row">

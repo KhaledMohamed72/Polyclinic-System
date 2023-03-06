@@ -27,14 +27,14 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
                                         @if($roleAdminNRecep)
-                                            <th>Doctor</th>
+                                            <th>{{ trans('main_trans.doctor') }}</th>
                                         @endif
-                                        <th>Patient</th>
-                                        <th>Contact No</th>
-                                        <th>Date</th>
-                                        <th>time</th>
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.contactno') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>

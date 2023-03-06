@@ -7,9 +7,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Doctor</label>
+                    <label>{{ trans('main_trans.doctor') }}</label>
                     <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                        <option selected="" disabled="">Select Doctor</option>
+                        <option selected="" disabled="">{{ trans('main_trans.select_doctor') }}</option>
                         @foreach($rows as $doctor_row)
                             <option value="{{$doctor_row->id}}"
                                 {{isset($row) && $row->doctor_id == $doctor_row->id ? 'selected' : ''}}>{{$doctor_row->name}}</option>
@@ -27,10 +27,10 @@
         @php $input = 'name' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Company Name</label>
+                <label for="exampleInput{{$input}}">{{ trans('main_trans.name') }}</label>
                 <input type="text" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
+                       placeholder="">
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -39,7 +39,7 @@
     <div class="row">
         @php $input = 'from' @endphp
         <div class="col-md-6 form-group datepickerdiv">
-            <label class="control-label">Date From</label>
+            <label class="control-label">{{ trans('main_trans.from') }}</label>
             <div class="form-group">
                 <input type="date" value="{{isset($row) ? $row->$input : old($input)}}" class="form-control session-date"
                        name="{{$input}}" id="date" data-provide="datepicker"
@@ -52,7 +52,7 @@
     <div class="row">
         @php $input = 'to' @endphp
         <div class="col-md-6 form-group datepickerdiv">
-            <label class="control-label">Date To</label>
+            <label class="control-label">{{ trans('main_trans.to') }}</label>
             <div class="form-group">
                 <input type="date" value="{{isset($row) ? $row->$input : old($input)}}" class="form-control session-date"
                        name="{{$input}}" id="date" data-provide="datepicker"
@@ -66,10 +66,10 @@
         @php $input = 'discount_rate' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Discount Rate</label>
+                <label for="exampleInput{{$input}}">{{ trans('main_trans.discount_rate') }}</label>
                 <input type="number" min="1" max="100" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
+                       placeholder="">
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -78,7 +78,7 @@
     <div class="row">
         @php $input = 'note' @endphp
         <div class="col-md-6">
-            <label for="exampleInput{{$input}}">Note</label>
+            <label for="exampleInput{{$input}}">{{ trans('main_trans.note') }}</label>
             <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note" spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
             @error($input)<span class="badge badge-danger"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror

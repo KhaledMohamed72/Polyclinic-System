@@ -30,20 +30,20 @@
                     <a class="nav-link active" id="custom-content-below-appointment-tab" data-toggle="pill"
                        href="#custom-content-below-appointment" role="tab"
                        aria-controls="custom-content-below-appointment" aria-selected="true">
-                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Appointment&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
+                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{{ trans('main_trans.appointments') }}&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="custom-content-below-prescription-tab" data-toggle="pill"
                        href="#custom-content-below-prescription" role="tab"
                        aria-controls="custom-content-below-prescription" aria-selected="false">
-                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Prescription List&ensp;&ensp;&ensp;&ensp;&ensp;
+                        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;{{ trans('main_trans.prescription_list') }}&ensp;&ensp;&ensp;&ensp;&ensp;
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="custom-content-below-sessions-tab" data-toggle="pill"
                        href="#custom-content-below-sessions" role="tab"
                        aria-controls="custom-content-below-sessions" aria-selected="false">
-                        &ensp;&ensp;&ensp;&ensp;Sessions&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                        &ensp;&ensp;&ensp;&ensp;{{ trans('main_trans.sessions') }}&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
                     </a>
                 </li>
             @endif
@@ -60,13 +60,13 @@
                                 <table id="" class="display table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Patient Name</th>
-                                        <th>Phone</th>
-                                        <th>Date</th>
-                                        <th>time</th>
-                                        <th>status</th>
-                                        <th>action</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.phone') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
+                                        <th>{{ trans('main_trans.status') }}</th>
+                                        <th>{{ trans('main_trans.action') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -127,11 +127,11 @@
                                 <table id="" class="display table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Patient</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>action</th>
+                                        <th>{{ trans('main_trans.id') }}</th>
+                                        <th>{{ trans('main_trans.patient') }}</th>
+                                        <th>{{ trans('main_trans.date') }}</th>
+                                        <th>{{ trans('main_trans.time') }}</th>
+                                        <th>{{ trans('main_trans.action') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -202,6 +202,17 @@
                                         <th>Fees</th>
                                         @if(auth()->user()->hasRole('doctor'))
                                             <th>action</th>
+                                        @endif
+                                    </tr>
+                                    <tr>
+                                        <th>{{ trans('main_trans.id') }}</th>
+                                        @if(auth()->user()->hasRole(['admin', 'recep']))
+                                            <th>{{ trans('main_trans.doctor') }}</th>
+                                        @endif
+                                        <th>{{ trans('main_trans.type') }}</th>
+                                        <th>{{ trans('main_trans.fees') }}</th>
+                                        @if(auth()->user()->hasRole('doctor'))
+                                            <th>{{ trans('main_trans.action') }}</th>
                                         @endif
                                     </tr>
                                     </thead>

@@ -2,31 +2,31 @@
 <div class="card-body">
     <div class="row">
         <div class="col-sm-6 form-group">
-            <label class="control-label">Type <span
+            <label class="control-label">{{ trans('main_trans.type') }} <span
                     class="text-danger">*</span></label>
             @php $input = 'examination'; @endphp
             <div class="col-sm-3 form-check form-check-inline" style="margin-left: 10%">
                 <input class="form-check-input" type="radio" name="type" id="chkYes" onclick="ShowHideDiv()"
                        {{isset($prescription) && $prescription->type == 0 ? 'checked' : ''}} value="0">
-                <label class="form-check-label" for="chkYes">Examination</label>
+                <label class="form-check-label" for="chkYes">{{ trans('main_trans.examination') }}</label>
             </div>
             @php $input = 'followup'; @endphp
             <div class="col-sm-3 form-check form-check-inline ml-4">
                 <input class="form-check-input" type="radio" name="type" id="chkNo" onclick="ShowHideDiv()"
                        {{isset($prescription) && $prescription->type == 1 ? 'checked' : ''}} value="1">
-                <label class="form-check-label" for="chkNo">Followup</label>
+                <label class="form-check-label" for="chkNo">{{ trans('main_trans.followup') }}</label>
             </div>
         </div>
     </div>
     <div class="row">
         @php $input = 'patient'; @endphp
         <div class="col-md-6 form-group">
-            <label class="control-label">Patient <span
+            <label class="control-label">{{ trans('main_trans.patient') }} <span
                     class="text-danger">*</span></label>
             <select
                 class="form-control select2 sel_patient"
                 name="{{$input}}" id="patient">
-                <option disabled selected>Select Patient</option>
+                <option disabled selected>{{ trans('main_trans.select_patient') }}</option>
                 @foreach($patients as $patient)
                     <option value="{{$patient->user_id}}"
                         {{ isset($prescription) && $prescription->patient_id ==  $patient->user_id ? 'selected' : ''}}>
@@ -38,12 +38,12 @@
         </div>
         @php $input = 'date'; @endphp
         <div class="col-md-6 form-group">
-            <label class="control-label">Appointment <span
+            <label class="control-label">{{ trans('main_trans.appointment') }} <span
                     class="text-danger">*</span></label>
             <select
                 class="form-control select2 sel_appointment "
                 name="{{$input}}" id="appointment">
-                <option disabled selected>Select Appointment</option>
+                <option disabled selected>{{ trans('main_trans.select_appointment') }}</option>
                 <option value="{{$prescription->date}}" selected>{{{$prescription->date}}}</option>
             </select>
             @error($input)<span class="badge badge-danger"
@@ -51,19 +51,19 @@
         </div>
     </div>
 
-    <blockquote>Medication &amp; Test Reports Details</blockquote>
+    <blockquote>{{ trans('main_trans.medication_&_test_reports_details') }}</blockquote>
     <div class="row">
         <div class="col-sm-12">
             <div class='repeater mb-4'>
                 <div data-repeater-list="medicines" class="form-group">
-                    <label>Medicines</label>
+                    <label>{{ trans('main_trans.medicines') }}</label>
                     @if($medicines->isEmpty())
                         <div data-repeater-item class="mb-3 row">
                             @php $input = 'medicine'; @endphp
                             <div class="col-sm-3 mt-1">
                                 <input type="text" list="myMediciness" name="{{$input}}"
                                        value="{{$row->medicine_name ?? ''}}" class="form-control medicine"
-                                       placeholder="Medicine Name"/>
+                                       placeholder="{{ trans('main_trans.medicine_name') }}"/>
                                 <datalist id="myMediciness">
                                     @foreach($suggested_medicines as $suggested_medicine)
                                         <option value="{{$suggested_medicine->name}}">
@@ -75,7 +75,7 @@
                                 <select
                                     class="form-control select2 frequency"
                                     name="{{$input}}" id="frequency">
-                                    <option disabled selected>Frequency</option>
+                                    <option disabled selected>{{ trans('main_trans.frequency') }}</option>
                                     @foreach($frequencies as $frequency)
                                         <option
                                             value="{{$frequency->id}}">
@@ -88,7 +88,7 @@
                                 <select
                                     class="form-control select2 period"
                                     name="{{$input}}" id="period">
-                                    <option disabled selected>Period</option>
+                                    <option disabled selected>{{ trans('main_trans.period') }}</option>
                                     @foreach($periods as $period)
                                         <option
                                             value="{{$period->id}}">
@@ -99,7 +99,7 @@
                             @php $input = 'note'; @endphp
                             <div class="col-sm-4 mt-1">
                                             <textarea type="text" name="{{$input}}" class="form-control"
-                                                      placeholder="Notes...">{{$row->note ?? ''}}</textarea>
+                                                      placeholder="{{ trans('main_trans.note') }}...">{{$row->note ?? ''}}</textarea>
                             </div>
                             <div class="col-sm-1">
                                 <input data-repeater-delete type="button"
@@ -115,7 +115,7 @@
                             <div class="col-sm-3 mt-1">
                                 <input type="text" list="myMediciness" name="{{$input}}"
                                        value="{{$row->medicine_name ?? ''}}" class="form-control medicine"
-                                       placeholder="Medicine Name"/>
+                                       placeholder=""/>
                                 <datalist id="myMediciness">
                                     @foreach($suggested_medicines as $suggested_medicine)
                                         <option value="{{$suggested_medicine->name}}">
@@ -127,7 +127,7 @@
                                 <select
                                     class="form-control select2 frequency"
                                     name="{{$input}}" id="frequency">
-                                    <option disabled selected>Frequency</option>
+                                    <option disabled selected>{{ trans('main_trans.frequency') }}</option>
                                     @foreach($frequencies as $frequency)
                                         <option
                                             value="{{$frequency->id}}" {{ $row->frequency_id == $frequency->id ? 'selected' : ''}}>
@@ -140,7 +140,7 @@
                                 <select
                                     class="form-control select2 period"
                                     name="{{$input}}" id="period">
-                                    <option disabled selected>Period</option>
+                                    <option disabled selected>{{ trans('main_trans.period') }}</option>
                                     @foreach($periods as $period)
                                         <option
                                             value="{{$period->id}}" {{ $row->period_id == $period->id ? 'selected' : ''}}>
@@ -151,7 +151,7 @@
                             @php $input = 'note'; @endphp
                             <div class="col-sm-4 mt-1">
                                             <textarea type="text" name="{{$input}}" class="form-control"
-                                                      placeholder="Notes...">{{$row->note ?? ''}}</textarea>
+                                                      placeholder="{{ trans('main_trans.note') }}...">{{$row->note ?? ''}}</textarea>
                             </div>
                             <div class="col-sm-1">
                                 <input data-repeater-delete type="button"
@@ -172,13 +172,13 @@
 
             <div class='repeater mb-4'>
                 <div data-repeater-list="formulas" class="form-group">
-                    <label>Formulas</label>
+                    <label>{{ trans('main_trans.formulas') }}</label>
                     @if($formulas->isEmpty())
                         <div data-repeater-item class="mb-3 row">
                             @php $input = 'formula'; @endphp
                             <div class="col-sm-3 mt-1">
                                 <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                                    <option selected="" disabled="">Select Formula</option>
+                                    <option selected="" disabled="">{{ trans('main_trans.select_formula') }}</option>
                                     @foreach($all_formulas as $formula)
                                         <option value="{{$formula->id}}">{{$formula->name}}</option>
                                     @endforeach
@@ -189,7 +189,7 @@
                                 <select
                                     class="form-control select2 frequency"
                                     name="{{$input}}" id="frequency">
-                                    <option disabled selected>Frequency</option>
+                                    <option disabled selected>{{ trans('main_trans.frequency') }}</option>
                                     @foreach($frequencies as $frequency)
                                         <option
                                             value="{{$frequency->id}}">
@@ -202,7 +202,7 @@
                                 <select
                                     class="form-control select2 period"
                                     name="{{$input}}" id="period">
-                                    <option disabled selected>Period</option>
+                                    <option disabled selected>{{ trans('main_trans.period') }}</option>
                                     @foreach($periods as $period)
                                         <option value="{{$period->id}}">{{$period->name}}</option>
                                     @endforeach
@@ -211,7 +211,7 @@
                             <div class="col-sm-4 mt-1">
                                 @php $input = 'note'; @endphp
                                 <textarea type="text" name="{{$input}}" class="form-control"
-                                          placeholder="Notes...">{{$row->note ?? ''}}</textarea>
+                                          placeholder="{{ trans('main_trans.note') }}...">{{$row->note ?? ''}}</textarea>
                             </div>
                             <div class="col-sm-1">
                                 <input data-repeater-delete type="button"
@@ -225,7 +225,7 @@
                             @php $input = 'formula'; @endphp
                             <div class="col-sm-3 mt-1">
                                 <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                                    <option selected="" disabled="">Select Formula</option>
+                                    <option selected="" disabled="">{{ trans('main_trans.select_formula') }}</option>
                                     @foreach($all_formulas as $formula)
                                         <option value="{{$formula->id}}"
                                             {{isset($row) && $row->formula_id == $formula->id ? 'selected' : ''}}>{{$formula->name}}</option>
@@ -237,7 +237,7 @@
                                 <select
                                     class="form-control select2 frequency"
                                     name="{{$input}}" id="frequency">
-                                    <option disabled selected>Frequency</option>
+                                    <option disabled selected>{{ trans('main_trans.frequency') }}</option>
                                     @foreach($frequencies as $frequency)
                                         <option
                                             value="{{$frequency->id}}" {{ isset($row) && $row->formula_id == $frequency->id ? 'selected' : ''}}>
@@ -250,7 +250,7 @@
                                 <select
                                     class="form-control select2 period"
                                     name="{{$input}}" id="period">
-                                    <option disabled selected>Period</option>
+                                    <option disabled selected>{{ trans('main_trans.period') }}</option>
                                     @foreach($periods as $period)
                                         <option
                                             value="{{$period->id}}" {{ isset($row) && $row->period_id == $period->id ? 'selected' : ''}}>
@@ -261,7 +261,7 @@
                             <div class="col-sm-4 mt-1">
                                 @php $input = 'note'; @endphp
                                 <textarea type="text" name="{{$input}}" class="form-control"
-                                          placeholder="Notes...">{{$row->note ?? ''}}</textarea>
+                                          placeholder="{{ trans('main_trans.note') }}...">{{$row->note ?? ''}}</textarea>
                             </div>
                             <div class="col-sm-1">
                                 <input data-repeater-delete type="button"
@@ -280,14 +280,14 @@
         <div class="col-sm-9">
             <div class='repeater mb-4'>
                 <div data-repeater-list="tests" class="form-group">
-                    <label>Test Reports </label>
+                        <label>{{ trans('main_trans.test_reports') }} </label>
                     @if($tests->isEmpty())
                         <div data-repeater-item class="mb-3 row">
                             @php $input = 'test'; @endphp
                             <div class="col-sm-3 mt-1">
                                 <input type="text" list="myTest" value="{{$row->name ?? ''}}" name="{{$input}}"
                                        class="form-control medicine"
-                                       placeholder="Test Name"/>
+                                       placeholder=""/>
                                 <datalist id="myTest">
                                     @foreach($tests as $test)
                                         <option value="{{$test->name}}">
@@ -297,7 +297,7 @@
                             @php $input = 'note'; @endphp
                             <div class="col-sm-5 mt-1">
                                                     <textarea type="text" name="{{$input}}" class="form-control"
-                                                              placeholder="Notes...">{{$row->$input ?? ''}}</textarea>
+                                                              placeholder="{{ trans('main_trans.note') }}...">{{$row->$input ?? ''}}</textarea>
                             </div>
                             <div class="col-sm-1">
                                 <input data-repeater-delete type="button"
@@ -312,7 +312,7 @@
                             <div class="col-sm-3 mt-1">
                                 <input type="text" list="myTest" value="{{$row->name ?? ''}}" name="{{$input}}"
                                        class="form-control medicine"
-                                       placeholder="Test Name"/>
+                                       placeholder=""/>
                                 <datalist id="myTest">
                                     @foreach($tests as $test)
                                         <option value="{{$test->name}}">
@@ -322,7 +322,7 @@
                             @php $input = 'note'; @endphp
                             <div class="col-sm-5 mt-1">
                                                     <textarea type="text" name="{{$input}}" class="form-control"
-                                                              placeholder="Notes...">{{$row->$input ?? ''}}</textarea>
+                                                              placeholder="{{ trans('main_trans.note') }}...">{{$row->$input ?? ''}}</textarea>
                             </div>
                             <div class="col-sm-1">
                                 <input data-repeater-delete type="button"
@@ -340,12 +340,12 @@
     @if(!$insurance_companies->isEmpty())
         <div class="row">
             <div class="col-sm-6 form-group">
-                <label class="control-label">Insurance Companies</label>
+                <label class="control-label">{{ trans('main_trans.insurance_companies') }}</label>
                 @php $input = 'insurance_company_id'; @endphp
                 <select
                     class="form-control select2"
                     name="{{$input}}">
-                    <option disabled selected>Select Company</option>
+                    <option disabled selected>{{ trans('main_trans.select_company') }}</option>
                     @foreach($insurance_companies as $company)
                         <option value="{{$company->id}}"
                             {{$prescription->insurance_company_id == $company->id ? 'selected' : ''}}>{{$company->name}}</option>
@@ -359,7 +359,7 @@
     <div class="row" id="date">
         @php $input = 'followup_date' @endphp
         <div class="col-sm-6">
-            <label class="control-label">Followup Date</label>
+            <label class="control-label">{{ trans('main_trans.followup_date') }}</label>
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="{{$input}}" value="{{$prescription->followup_date}}" id="date" data-provide="datepicker"
@@ -370,11 +370,11 @@
     <div class="row">
         @php $input = 'file[]' @endphp
         <div class="col-sm-6">
-            <label class="control-label">Attachment</label>
+            <label class="control-label">{{ trans('main_trans.attachment') }}</label>
             <div class="form-group">
                 <div class="custom-file mb-2">
                     <input type="file" name="{{$input}}" class="custom-file-input" id="customFile" multiple>
-                    <label class="custom-file-label" for="customFile">Choose Files</label>
+                    <label class="custom-file-label" for="customFile">{{ trans('main_trans.choose_files') }}</label>
                 </div>
                 @if(!$attachments->isEmpty())
                     @foreach($attachments as $row)
@@ -400,7 +400,7 @@
     <div class="row">
         @php $input = 'note' @endphp
         <div class="col-sm-6">
-            <label for="exampleInput{{$input}}">Note</label>
+            <label for="exampleInput{{$input}}">{{ trans('main_trans.note') }}</label>
             <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note"
                       spellcheck="false">{{isset($prescription) ? $prescription->$input : old($input)}}</textarea>
             @error($input)<span class="badge badge-danger"

@@ -3,9 +3,9 @@
         @php $input = 'patient' @endphp
         <div class="col-sm-4">
             <div class="form-group">
-                <label>Patient</label>
+                <label>{{ trans('main_trans.patient') }}</label>
                 <select name="{{$input}}" class="form-control select2 sel-doctor" style="width: 100%;">
-                    <option selected="" disabled="">Select Patient</option>
+                    <option selected="" disabled="">{{ trans('main_trans.select_company') }}</option>
                     @foreach($patient_rows as $patient_row)
                         <option value="{{$patient_row->user_id}}"
                             {{old($input) == $patient_row->user_id ? 'selected' : ''}}>{{$patient_row->patient_name}}</option>
@@ -17,7 +17,7 @@
         </div>
         @php $input = 'from' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
-            <label class="control-label">From</label>
+            <label class="control-label">{{ trans('main_trans.from') }}</label>
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="{{$input}}" value="{{old('from')}}" id="date" data-provide="datepicker"
@@ -28,7 +28,7 @@
         </div>
         @php $input = 'to' @endphp
         <div class="col-sm-4 form-group datepickerdiv">
-            <label class="control-label">To</label>
+            <label class="control-label">{{ trans('main_trans.to') }}</label>
             <div class="form-group">
                 <input type="date" class="form-control appointment-date"
                        name="{{$input}}" value="{{old('to')}}" id="date" data-provide="datepicker"
@@ -45,7 +45,7 @@
                     <input type="checkbox" name="sessions" value="1"
                            id="checkboxPrimarypatient-history">
                     <label for="checkboxPrimarypatient-history">
-                        Include Sessions
+                        {{ trans('main_trans.sessions') }}
                     </label>
                 </div>
             </div>

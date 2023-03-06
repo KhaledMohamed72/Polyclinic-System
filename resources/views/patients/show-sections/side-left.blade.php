@@ -18,11 +18,11 @@
     <!-- About Me Box -->
     <div class="card card-white">
         <div class="card-header mb-6">
-            <h3 class="card-title">Personal Information</h3>
+            <h3 class="card-title">{{ trans('main_trans.personal_information') }}</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <strong><i class="fas fa-star mr-1"></i> Contact No</strong>
+            <strong><i class="fas fa-star mr-1"></i>{{ trans('main_trans.contactno') }}</strong>
 
             <p class="text-muted">
                 {{$row->phone}}
@@ -33,7 +33,7 @@
     </div>
     <div class="card card-white">
         <div class="card-header mb-6">
-            <h3 class="card-title">Assign Doctor Information</h3>
+            <h3 class="card-title">{{ trans('main_trans.assign_doctor_information') }}</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">

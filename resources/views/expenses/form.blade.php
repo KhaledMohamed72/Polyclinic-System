@@ -5,7 +5,7 @@
         @php $input = 'type' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label>Type</label>
+                <label>{{ trans('main_trans.tupe') }}</label>
                 <select name="{{$input}}" class="form-control select2" style="width: 100%;">
                     <option selected="" disabled="">Select Type</option>
                     @foreach($type_rows as $type_row)
@@ -24,9 +24,9 @@
             @php $input = 'doctor_id' @endphp
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Doctor<small>( <b style="color: red">Hint: </b>If you don't choose a doctor, The expense will be general)</small></label>
+                    <label>{{ trans('main_trans.doctor') }}<small>{{ trans('main_trans.doctor_hintE') }}</small></label>
                     <select name="{{$input}}" class="form-control select2" style="width: 100%;">
-                        <option selected="" disabled="">Select Doctor</option>
+                        <option selected="" disabled="">{{ trans('main_trans.select_doctor') }}</option>
                         @foreach($doctor_rows as $doctor_row)
                             <option value="{{$doctor_row->id}}"
                                 {{isset($row) && $row->doctor_id == $doctor_row->id ? 'selected' : ''}}>{{$doctor_row->name}}</option>
@@ -44,7 +44,7 @@
         @php $input = 'date' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Date</label>
+                <label for="exampleInput{{$input}}">{{ trans('main_trans.date') }}</label>
                 <input type="date" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}">
                 @error($input)<span class="invalid-feedback"
@@ -56,10 +56,10 @@
         @php $input = 'amount' @endphp
         <div class="col-md-6">
             <div class="form-group">
-                <label for="exampleInput{{$input}}">Amount</label>
+                <label for="exampleInput{{$input}}">{{ trans('main_trans.amount') }}</label>
                 <input type="number" name="{{$input}}" value="{{isset($row) ? $row->$input : old($input)}}"
                        class="form-control @error($input) is-invalid @enderror" id="exampleInput{{$input}}"
-                       placeholder="Enter {{$input}}">
+                       placeholder="">
                 @error($input)<span class="invalid-feedback"
                                     role="alert"><strong>{{ $message }}</strong></span>@enderror
             </div>
@@ -68,7 +68,7 @@
     <div class="row">
         @php $input = 'note' @endphp
         <div class="col-md-6">
-            <label for="exampleInput{{$input}}">Note</label>
+            <label for="exampleInput{{$input}}">{{ trans('main_trans.note') }}</label>
             <textarea name="{{$input}}" class="form-control" rows="3" placeholder="Enter Note" spellcheck="false">{{isset($row) ? $row->$input : old($input)}}</textarea>
             @error($input)<span class="badge badge-danger"
                                 role="alert"><strong>{{ $message }}</strong></span>@enderror
