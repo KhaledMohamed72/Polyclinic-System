@@ -20,8 +20,9 @@
                         @if(($clinicType == 0 && $prescriptions < 1) || $clinicType == 1)
                             @if(!(auth()->user()->hasRole('doctor') && !$rows->isEmpty()))
                                 <a href="{{route('prescription-designs.create')}}"
-                                   class="btn btn-block bg-gradient-success">Add New
-                                    Design</a>
+                                   class="btn btn-block bg-gradient-success">
+                                    {{ trans('main_trans.add_new_design') }}
+                                </a>
                             @endif
                         @endif
                     </div>

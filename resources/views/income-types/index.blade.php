@@ -16,7 +16,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="col-md-2 float-right">
-                        <a href="{{route('income-types.create')}}" class="btn btn-block bg-gradient-success">A{{ trans('main_trans.add_new_income_type') }}</a>
+                        <a href="{{route('income-types.create')}}" class="btn btn-block bg-gradient-success">{{ trans('main_trans.add_new_income_type') }}</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
