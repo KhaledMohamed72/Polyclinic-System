@@ -251,4 +251,5 @@ return [
     'time_slots' => 'Available Time Slots',
     'earning_per_month' => 'Earning Per Month',
     'current_month' => 'Current Month',
+    'no_appointments' => 'No available appointments',
 ];

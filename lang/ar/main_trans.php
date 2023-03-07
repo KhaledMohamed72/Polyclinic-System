@@ -254,5 +254,5 @@ return [
     'time_slots' => 'الفترات الزمنية المتاحة',
     'earning_per_month' => 'ارباح الشهر',
     'current_month' => 'الشهر الحالي',
-
+    'no_appointments' => 'لا توجد مواعيد متاحة',
 ];
