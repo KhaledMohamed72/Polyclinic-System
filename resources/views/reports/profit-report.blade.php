@@ -8,10 +8,10 @@
         }
     </style>
 @endsection
-@section('title')   Profit Report    @endsection
-@section('header-title')    Profit Report   @endsection
-@section('header-title-one')    Reports    @endsection
-@section('header-title-two')    Profit   @endsection
+@section('title')   {{ trans('main_trans.profit_report') }}    @endsection
+@section('header-title')    {{ trans('main_trans.profit_report') }}   @endsection
+@section('header-title-one')    {{ trans('main_trans.reports') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.profit_report') }}   @endsection
 
 @section('content')
     <div class="row d-print-none">
@@ -27,15 +27,15 @@
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="text-center">
-                <h2><u>Profit Report</u></h2>
+                <h2><u>{{ trans('main_trans.profit_report') }}</u></h2>
                 @if(request()->get('doctor') != null)
                     <p>
-                         Doctor: <strong>{{$doctor}}</strong>
+                        {{ trans('main_trans.doctor') }}: <strong>{{$doctor}}</strong>
                     </p>
                 @endif
                 @if(request()->get('from') != null)
                     <p>
-                        <strong>{{request()->get('to').' '}}</strong><span> من  </span><strong>{{request()->get('from').' '}}</strong><span>الي</span>
+                        <span>{{ trans('main_trans.from') . " "}}</span><strong>{{request()->get('to').' '}}</strong><span>{{ trans('main_trans.to')." " }}</span><strong>{{request()->get('from').' '}}</strong>
                     </p>
                 @endif
             </div>
@@ -45,19 +45,19 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title text-bold"><u>Incomes</u></h3>
+                    <h3 class="card-title text-bold"><u>{{ trans('main_trans.incomes')}}</u></h3>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>النوع</th>
+                            <th>{{ trans('main_trans.type') }}</th>
                             @if(auth()->user()->hasRole('admin') && $clinicType == 1)
-                                <th>الدكتور</th>
+                                <th>{{ trans('main_trans.doctor') }}</th>
                             @endif
-                            <th>التاريخ</th>
-                            <th>القيمة</th>
+                            <th>{{ trans('main_trans.date') }}</th>
+                            <th>{{ trans('main_trans.value') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -66,7 +66,7 @@
                                 <td>{{++ $key}}</td>
                                 <td>{{$row->name}}</td>
                                 @if(auth()->user()->hasRole('admin') && $clinicType == 1)
-                                    <td>{{$row->doctor_name  ?? 'عام'}}</td>
+                                    <td>{{$row->doctor_name  ?? trans('main_trans.general')}}</td>
                                 @endif
                                 <td>{{date('Y-m-d',strtotime($row->date))}}</td>
                                 <td>{{$row->amount.' £'}}</td>
@@ -79,7 +79,7 @@
                     <div class="col-md-12 text-right text-bold mr-2">
                         <div class="col-md-8"></div>
                         <div class="col-md-4 float-right bg-secondary p-2">
-                            <strong> الإجمالي :&ensp;£</strong>&ensp;<span>{{$incomes_sum}}&ensp;</span>
+                            <strong> {{ trans('main_trans.total') }} :&ensp;£</strong>&ensp;<span>{{$incomes_sum}}&ensp;</span>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title text-bold"><u>Expenses</u></h3>
+                    <h3 class="card-title text-bold"><u>{{ trans('main_trans.expenses') }}</u></h3>
                 </div>
 
                 <div class="card-body table-responsive p-0">
@@ -97,12 +97,12 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>النوع</th>
+                            <th>{{ trans('main_trans.type') }}</th>
                             @if(auth()->user()->hasRole('admin') && $clinicType == 1)
-                                <th>الدكتور</th>
+                                <th>{{ trans('main_trans.doctor') }}</th>
                             @endif
-                            <th>التاريخ</th>
-                            <th>القيمة</th>
+                            <th>{{ trans('main_trans.date') }}</th>
+                            <th>{{ trans('main_trans.value') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -111,7 +111,7 @@
                                 <td>{{++ $key}}</td>
                                 <td>{{$row->name}}</td>
                                 @if(auth()->user()->hasRole('admin') && $clinicType == 1)
-                                    <td>{{$row->doctor_name  ?? 'عام'}}</td>
+                                    <td>{{$row->doctor_name  ?? trans('main_trans.general')}}</td>
                                 @endif
                                 <td>{{date('Y-m-d',strtotime($row->date))}}</td>
                                 <td>{{$row->amount.' £'}}</td>
@@ -124,7 +124,7 @@
                     <div class="col-md-12 text-right text-bold mr-2">
                         <div class="col-md-8"></div>
                         <div class="col-md-4 float-right bg-secondary p-2">
-                            <strong> الإجمالي :&ensp;£</strong>&ensp;<span>{{$expenses_sum}}&ensp;</span>
+                            <strong> {{ trans('main_trans.total') }} :&ensp;£</strong>&ensp;<span>{{$expenses_sum}}&ensp;</span>
                         </div>
                     </div>
                 </div>
@@ -135,20 +135,20 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title text-bold"><u>Prescriptions</u></h3>
+                    <h3 class="card-title text-bold"><u>{{ trans('main_trans.prescriptions') }}</u></h3>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>النوع</th>
-                            <th>العدد</th>
-                            <th>الاجمالي</th>
+                            <th>{{ trans('main_trans.type') }}</th>
+                            <th>{{ trans('main_trans.count') }}</th>
+                            <th>{{ trans('main_trans.total') }}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>الكشوفات</td>
+                            <td>{{ trans('main_trans.prescriptions') }}</td>
                             <td>{{$prescriptions_examination_count}}</td>
                             <td>
                                 <bold>{{$prescriptions_examination_sum.' £'}}</bold>
@@ -168,7 +168,7 @@
                     <div class="col-md-12 text-right text-bold mr-2">
                         <div class="col-md-7"></div>
                         <div class="col-md-5 float-right bg-secondary p-2">
-                            <strong> الإجمالي :&ensp;£</strong>&ensp;<span>{{$prescriptions_total_sum}}&ensp;</span>
+                            <strong> {{ trans('main_trans.total') }} :&ensp;£</strong>&ensp;<span>{{$prescriptions_total_sum}}&ensp;</span>
                         </div>
                     </div>
                 </div>
@@ -177,15 +177,15 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title text-bold"><u>Sessions</u></h3>
+                    <h3 class="card-title text-bold"><u>{{ trans('main_trans.sessions') }}</u></h3>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>النوع</th>
-                            <th>العدد</th>
-                            <th>الاجمالي</th>
+                            <th>{{ trans('main_trans.type') }}</th>
+                            <th>{{ trans('main_trans.count') }}</th>
+                            <th>{{ trans('main_trans.total') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -205,7 +205,7 @@
                     <div class="col-md-12 text-right text-bold mr-2">
                         <div class="col-md-8"></div>
                         <div class="col-md-4 float-right bg-secondary p-2">
-                            <strong> الإجمالي :&ensp;£</strong>&ensp;<span>{{$sessions_sum}}&ensp;</span>
+                            <strong> {{ trans('main_trans.total') }} :&ensp;£</strong>&ensp;<span>{{$sessions_sum}}&ensp;</span>
                         </div>
                     </div>
                 </div>
@@ -217,26 +217,26 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title text-bold"><u>Profit</u></h3>
+                    <h3 class="card-title text-bold"><u>{{ trans('main_trans.profit') }}</u></h3>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
                         <tr>
-                            <th>إجمالي الكشوفات</th>
-                            <th>إجمالي الجلسات</th>
-                            <th><small>(incomes)</small>إجمالي الدخل</th>
-                            <th>إجمالي المصروفات</th>
-                            <th>صافي الأرباح</th>
+                            <th>{{ trans('main_trans.total_prescriptions') }}</th>
+                            <th>{{ trans('main_trans.total_sessions') }}</th>
+                            <th>{{ trans('main_trans.total_incomes') }}</th>
+                            <th>{{ trans('main_trans.total_expenses') }}</th>
+                            <th>{{ trans('main_trans.net_profit') }}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="text-center">
-                            <td>{{$prescriptions_total_sum}}</td>
-                            <td>{{$sessions_sum}}</td>
-                            <td>{{$incomes_sum}}</td>
-                            <td>{{$expenses_sum}}</td>
-                            <td>{{($prescriptions_total_sum+$sessions_sum+$incomes_sum)-($expenses_sum).' £'}}</td>
+                            <td>{{$prescriptions_total_sum ?? 0 }}</td>
+                            <td>{{$sessions_sum ?? 0 }}</td>
+                            <td>{{$incomes_sum ?? 0 }}</td>
+                            <td>{{$expenses_sum ?? 0}}</td>
+                            <td>{{($prescriptions_total_sum+$sessions_sum+$incomes_sum)-($expenses_sum).' £' ?? 0}}</td>
                         </tr>
                         </tbody>
                     </table>

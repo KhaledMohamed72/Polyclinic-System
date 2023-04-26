@@ -5,7 +5,7 @@
             <div class="form-group">
                 <label>{{ trans('main_trans.patient') }}</label>
                 <select name="{{$input}}" class="form-control select2 sel-doctor" style="width: 100%;">
-                    <option selected="" disabled="">{{ trans('main_trans.select_company') }}</option>
+                    <option selected="" disabled="">{{ trans('main_trans.select_patient') }}</option>
                     @foreach($patient_rows as $patient_row)
                         <option value="{{$patient_row->user_id}}"
                             {{old($input) == $patient_row->user_id ? 'selected' : ''}}>{{$patient_row->patient_name}}</option>

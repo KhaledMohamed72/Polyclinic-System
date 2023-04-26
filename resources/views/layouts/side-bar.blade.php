@@ -84,7 +84,6 @@
                         </ul>
                     </li>
                 @endability
-
                 @if ($user->hasRole('admin'))
                     <li class="nav-item {{ request()->routeIS('receptionists.*') ? 'menu-open' : '' }}">
                         <a href="#"
@@ -141,7 +140,15 @@
                         </ul>
                     </li>
                 @endif
-
+                <li class="nav-item">
+                    <a href="{{ route('today-appointment') }}"
+                        class="nav-link {{ request()->routeIs('today-appointment') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-calendar"></i>
+                        <p>
+                            {{ trans('main_trans.appointments_list') }}
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item {{ request()->routeIS('prescriptions.*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ request()->routeIs('prescriptions.*') ? 'active' : '' }}">
                         <span class="nav-icon material-icons">edit_document</span>
