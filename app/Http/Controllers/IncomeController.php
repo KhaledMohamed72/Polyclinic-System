@@ -26,7 +26,7 @@ class IncomeController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return view('incomes.index', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -50,7 +50,7 @@ class IncomeController extends Controller
             return view('incomes.create',
                 compact('doctor_rows', 'count_doctors', 'type_rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -89,10 +89,10 @@ class IncomeController extends Controller
         ]);
 
         if ($row) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('incomes.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('incomes.index');
         }
     }
@@ -119,7 +119,7 @@ class IncomeController extends Controller
                 compact('row', 'type_rows', 'doctor_rows','count_doctors')
             );
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -161,7 +161,7 @@ class IncomeController extends Controller
             toastr()->success('Updated Successfully');
             return redirect()->route('incomes.index');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('incomes.index');
         }
     }

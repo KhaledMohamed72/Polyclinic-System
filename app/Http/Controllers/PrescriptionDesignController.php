@@ -118,10 +118,10 @@ class PrescriptionDesignController extends Controller
         ]);
 
         if ($row) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('prescription-designs.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('prescription-designs.index');
         }
     }
@@ -156,10 +156,10 @@ class PrescriptionDesignController extends Controller
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
             ]);
         if ($row) {
-            toastr()->success('Successfully Updated');
+            toastr()->success(trans('main_trans.successfully_updated'));
             return redirect()->route('prescription-designs.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('prescription-designs.index');
         }
     }

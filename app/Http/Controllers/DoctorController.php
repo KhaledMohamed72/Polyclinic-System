@@ -28,7 +28,7 @@ class DoctorController extends Controller
         if (auth()->user()->hasRole(['admin', 'recep'])) {
             return view('doctors.index', compact('rows', 'clinicType', 'doctors'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -51,7 +51,7 @@ class DoctorController extends Controller
                 }
 
             } else {
-                toastr()->warning('Something went wrong!');
+                toastr()->warning(trans('main_trans.something_went_wrong'));
                 return redirect()->route('doctors.index');
             }
             //if multiple
@@ -65,7 +65,7 @@ class DoctorController extends Controller
                     return redirect()->route('receptionists.create');
                 }
             } else {
-                toastr()->warning('Something went wrong!');
+                toastr()->warning(trans('main_trans.something_went_wrong'));
                 return redirect()->route('doctors.index');
             }
         } else {
@@ -77,15 +77,15 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         if (!auth()->user()->hasRole('admin')) {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('doctors.index');
         }
         $doctor_store = $this->doctorRepository->storeDoctor($request);
         if ($doctor_store) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('doctors.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('doctors.index');
         }
     }
@@ -98,7 +98,7 @@ class DoctorController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return view('doctors.edit', compact('row', 'rows'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('doctors.index');
         }
     }
@@ -107,10 +107,10 @@ class DoctorController extends Controller
     {
         $doctor_update = $this->doctorRepository->updateDoctor($request,$id);
         if ($doctor_update) {
-            toastr()->success('Successfully Updated');
+            toastr()->success(trans('main_trans.successfully_updated'));
             return redirect()->route('doctors.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('doctors.index');
         }
 
@@ -129,10 +129,10 @@ class DoctorController extends Controller
             return redirect()->route('doctors.index');
         }
         if ($user) {
-            toastr()->success('Successfully Deleted');
+            toastr()->success(trans('main_trans.successfully_deleted'));
             return redirect()->route('doctors.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('doctors.index');
         }
     }
@@ -164,7 +164,7 @@ class DoctorController extends Controller
                 return redirect()->route('doctors.index');
             }
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('doctors.index');
         }
     }
@@ -188,7 +188,7 @@ class DoctorController extends Controller
     {
         $updateSchedule = $this->doctorRepository->updateSchedule($request,$id);
         if ($updateSchedule) {
-            toastr()->success('Successfully Updated');
+            toastr()->success(trans('main_trans.successfully_updated'));
             return redirect()->route('home');
         }
     }

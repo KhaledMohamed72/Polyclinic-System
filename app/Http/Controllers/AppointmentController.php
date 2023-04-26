@@ -29,7 +29,7 @@ class AppointmentController extends Controller
         if ($rows) {
             return response()->json($rows);
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('appointments.index');
         }
     }
@@ -40,7 +40,7 @@ class AppointmentController extends Controller
         if ($rows) {
             return response()->json($rows);
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('appointments.index');
         }
     }
@@ -80,10 +80,10 @@ class AppointmentController extends Controller
         }
         $appointment = $this->appointmentRepository->storeAppointment($request);
         if ($appointment) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('appointments.create');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('appointments.index');
         }
     }

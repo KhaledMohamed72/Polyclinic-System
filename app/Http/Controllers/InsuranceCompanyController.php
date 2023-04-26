@@ -30,7 +30,7 @@ class InsuranceCompanyController extends Controller
         if (auth()->user()->hasRole(['doctor', 'recep', 'admin'])) {
             return view('insurance-companies.index', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -46,7 +46,7 @@ class InsuranceCompanyController extends Controller
         if (auth()->user()->hasRole(['doctor', 'recep', 'admin'])) {
             return view('insurance-companies.create', compact('rows','count_rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -54,7 +54,7 @@ class InsuranceCompanyController extends Controller
     public function store(Request $request)
     {
         if (!auth()->user()->hasRole(['doctor', 'recep', 'admin'])) {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
         $this->validate($request, [
@@ -80,10 +80,10 @@ class InsuranceCompanyController extends Controller
                 'note' => $request->note,
             ]);
         if ($row) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('insurance-companies.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('insurance-companies.index');
         }
     }
@@ -104,7 +104,7 @@ class InsuranceCompanyController extends Controller
         if (auth()->user()->hasRole(['doctor', 'recep', 'admin'])) {
             return view('insurance-companies.edit', compact('row','rows','count_rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -112,7 +112,7 @@ class InsuranceCompanyController extends Controller
     public function update(Request $request, $id)
     {
         if (!auth()->user()->hasRole(['doctor', 'recep', 'admin'])) {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
         $this->validate($request, [
@@ -139,10 +139,10 @@ class InsuranceCompanyController extends Controller
             ]);
 
         if ($row) {
-            toastr()->success('Successfully Updated');
+            toastr()->success(trans('main_trans.successfully_updated'));
             return redirect()->route('insurance-companies.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('insurance-companies.index');
         }
     }
@@ -155,10 +155,10 @@ class InsuranceCompanyController extends Controller
             ->delete();
 
         if ($row) {
-            toastr()->success('Successfully Deleted');
+            toastr()->success(trans('main_trans.successfully_deleted'));
             return redirect()->route('insurance-companies.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('insurance-companies.index');
         }
     }

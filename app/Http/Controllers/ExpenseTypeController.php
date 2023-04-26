@@ -23,7 +23,7 @@ class ExpenseTypeController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return view('expense-types.index',compact('rows'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -38,7 +38,7 @@ class ExpenseTypeController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return view('expense-types.create');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -67,7 +67,7 @@ class ExpenseTypeController extends Controller
             toastr()->success('Created Successfully');
 
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('expense-types.index');
         }
     }
@@ -99,7 +99,7 @@ class ExpenseTypeController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return view('expense-types.edit',compact('row'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('expense-types.index');
         }
     }
@@ -128,7 +128,7 @@ class ExpenseTypeController extends Controller
             toastr()->success('Updated Successfully');
             return redirect()->route('expense-types.index');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('expense-types.index');
         }
     }
@@ -149,7 +149,7 @@ class ExpenseTypeController extends Controller
             return redirect()->route('expense-types.index');
 
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('expense-types.index');
         }
     }

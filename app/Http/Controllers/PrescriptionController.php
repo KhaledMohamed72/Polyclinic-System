@@ -115,10 +115,10 @@ class PrescriptionController extends Controller
             $row = $row->delete();
         }
         if ($row) {
-            toastr()->success('Successfully Deleted');
+            toastr()->success(trans('main_trans.successfully_deleted'));
             return redirect()->route('prescriptions.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('prescriptions.index');
         }
     }
@@ -138,7 +138,7 @@ class PrescriptionController extends Controller
             unlink(public_path('images/prescriptions/' . $attachment));
             return redirect()->back()->with('success', 'Attachment Deleted Successfully');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->back();
         }
     }

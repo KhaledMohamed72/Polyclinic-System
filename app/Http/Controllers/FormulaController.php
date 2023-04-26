@@ -22,7 +22,7 @@ class FormulaController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('formulas.index',compact('rows'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -37,7 +37,7 @@ class FormulaController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('formulas.create');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -66,7 +66,7 @@ class FormulaController extends Controller
             toastr()->success('Created Successfully');
 
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('formulas.index');
         }
     }
@@ -98,7 +98,7 @@ class FormulaController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('formulas.edit',compact('row'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('formulas.index');
         }
     }
@@ -127,7 +127,7 @@ class FormulaController extends Controller
             toastr()->success('Updated Successfully');
             return redirect()->route('formulas.index');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('formulas.index');
         }
     }
@@ -148,7 +148,7 @@ class FormulaController extends Controller
             return redirect()->route('formulas.index');
 
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('formulas.index');
         }
     }

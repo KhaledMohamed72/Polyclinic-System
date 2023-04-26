@@ -21,7 +21,7 @@
         <div class="col-12">
             <div class="float-left">
                 <a href="{{route('prescriptions.index')}}" class="btn btn-primary waves-effect waves-light mb-4">
-                    <i class="fa fa-arrow-left mr-2"></i>Back to Prescription List
+                    <i class="fa fa-arrow-left mr-2"></i>{{ trans('main_trans.back_to_prescription_list') }}
                 </a>
             </div>
             <div class="text-center">
@@ -30,7 +30,7 @@
                     <i class="fa fa-print"></i>
                 </a>
                 <a href="{{route('prescription-pdf',$prescription->id)}}"
-                   class="btn btn-warning waves-effect waves-light mb-4" title="Print">
+                   class="btn btn-warning waves-effect waves-light mb-4" title="Print PDF">
                     <i class="fa fa-file-pdf"></i>
                 </a>
             </div>
@@ -41,7 +41,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="invoice-title">
-                        <strong class="float-right font-size-16">Prescription #{{$prescription->id}}</strong>
+                        <strong class="float-right font-size-16">{{ trans('main_trans.prescription') }} #{{$prescription->id}}</strong>
 
                         <img src="{{asset('assets/dist/img/pulpo-logo.jpg')}}" alt="logo"
                              height="30"/>
@@ -52,15 +52,15 @@
                     <div class="row">
                         <div class="col-4 text-center">
                             <address>
-                                <strong>المريض</strong>
+                                <strong>{{ trans('main_trans.patient') }}</strong>
                                 <div>
-                                    <span>{{$patient->name}}</span><strong> : الاسم </strong>
+                                    <strong>  {{ trans('main_trans.name') }} :</strong><span>{{$patient->name}}</span>
                                 </div>
                                 <div>
-                                    <span>{{$prescription->date}}</span><strong> : التاريخ </strong>
+                                    <strong>  {{ trans('main_trans.date') }} :</strong><span>{{$prescription->date}}</span>
                                 </div>
                                 <div>
-                                    <span>{{$patient->address}}</span><strong> : العنوان </strong>
+                                    <strong>  {{ trans('main_trans.address') }} :</strong><span>{{$patient->address}}</span>
                                 </div>
                             </address>
                         </div>
@@ -75,7 +75,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="py-2 mt-3">
-                                    <h3 class="font-size-15 font-weight-bold">Medicines</h3>
+                                    <h3 class="font-size-15 font-weight-bold">{{ trans('main_trans.medicines') }}</h3>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
@@ -97,7 +97,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="py-2 mt-3">
-                                    <h3 class="font-size-15 font-weight-bold">Test Reports</h3>
+                                    <h3 class="font-size-15 font-weight-bold">{{ trans('main_trans.reports') }}</h3>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
@@ -118,7 +118,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="py-2 mt-3">
-                                    <h3 class="font-size-15 font-weight-bold">Formulas</h3>
+                                    <h3 class="font-size-15 font-weight-bold">{{ trans('main_trans.formulas') }}</h3>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
@@ -140,7 +140,7 @@
                         <div class="row no-print">
                             <div class="col-md-12">
                                 <div class="py-2 mt-3">
-                                    <h3 class="font-size-15 font-weight-bold">Attachments</h3>
+                                    <h3 class="font-size-15 font-weight-bold">{{ trans('main_trans.attachments') }}</h3>
                                 </div>
                                 @foreach($attachments as $row)
                                     <a class="btn btn-default mt-2 mr-3" target="_blank"
@@ -156,7 +156,7 @@
                         <div class="row no-print">
                             <div class="col-md-12">
                                 <div class="py-2 mt-3">
-                                    <h3 class="font-size-15 font-weight-bold">Attachment</h3>
+                                    <h3 class="font-size-15 font-weight-bold">{{ trans('main_trans.attachment') }}</h3>
                                 </div>
                                 <a class="btn btn-default mt-2 mr-3" target="_blank"
                                    href="{{asset('images/prescriptions/'.$prescription->file)}}">
@@ -169,7 +169,7 @@
                         <div class="row no-print">
                             <div class="col-md-12">
                                 <div class="py-2 mt-3">
-                                    <h3 class="font-size-15 font-weight-bold">Note</h3>
+                                    <h3 class="font-size-15 font-weight-bold">{{ trans('main_trans.note') }}</h3>
                                 </div>
                                 <p>{{$prescription->note}}</p>
                             </div>

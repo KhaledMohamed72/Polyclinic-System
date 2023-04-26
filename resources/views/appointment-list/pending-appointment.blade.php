@@ -7,10 +7,10 @@
     <!-- fullCalendar -->
     <link rel="stylesheet" href="{{asset('assets/plugins/fullcalendar/main.css')}}">
 @endsection
-@section('title')   Appointment List    @endsection
-@section('header-title')    Appointment List    @endsection
-@section('header-title-one')    Appointment List    @endsection
-@section('header-title-two')    Main   @endsection
+@section('title')   {{ trans('main_trans.appointments_list') }}    @endsection
+@section('header-title')    {{ trans('main_trans.appointments_list') }}    @endsection
+@section('header-title-one')    {{ trans('main_trans.appointments_list') }}    @endsection
+@section('header-title-two')    {{ trans('main_trans.main') }}   @endsection
 
 @php $roleAdminNRecep = auth()->user()->hasRole(['admin','recep']); @endphp
 @section('content')

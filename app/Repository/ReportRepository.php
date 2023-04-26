@@ -15,7 +15,7 @@ class ReportRepository extends Controller implements ReportRepositoryInterface
     public function main()
     {
         if (!auth()->user()->hasRole(['admin', 'doctor', 'recep'])) {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             abort(203);
         }
 

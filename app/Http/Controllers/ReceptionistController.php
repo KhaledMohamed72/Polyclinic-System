@@ -27,7 +27,7 @@ class ReceptionistController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return view('receptionists.index', compact('rows','clinicType','receptionists'));
         }else{
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -47,7 +47,7 @@ class ReceptionistController extends Controller
             if(auth()->user()->hasRole('admin')) {
                 return view('receptionists.create',compact('doctors'));
             }else{
-                toastr()->warning('Something went wrong!');
+                toastr()->warning(trans('main_trans.something_went_wrong'));
                 return redirect()->route('receptionists.index');
             }
             // if multiple
@@ -55,7 +55,7 @@ class ReceptionistController extends Controller
             if(auth()->user()->hasRole('admin')) {
                 return view('receptionists.create',compact('doctors'));
             }else{
-                toastr()->warning('Something went wrong!');
+                toastr()->warning(trans('main_trans.something_went_wrong'));
                 return redirect()->route('receptionists.index');
             }
         } else {
@@ -67,7 +67,7 @@ class ReceptionistController extends Controller
     public function store(Request $request)
     {
         if(!auth()->user()->hasRole('admin')) {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
         $this->validate($request, [
@@ -108,10 +108,10 @@ class ReceptionistController extends Controller
             throw $e;
         }
         if ($user && $receptionist && $role_user) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('receptionists.index');
         }else{
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('receptionists.index');
         }
     }
@@ -127,7 +127,7 @@ class ReceptionistController extends Controller
         if(auth()->user()->hasRole('admin')) {
             return view('receptionists.edit', compact('row'));
         }else{
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('receptionists.index');
         }
 
@@ -163,10 +163,10 @@ class ReceptionistController extends Controller
             ]);
 
         if ($user){
-            toastr()->success('Successfully Updated');
+            toastr()->success(trans('main_trans.successfully_updated'));
             return redirect()->route('receptionists.index');
         }else{
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('receptionists.index');
         }
 
@@ -179,10 +179,10 @@ class ReceptionistController extends Controller
         }
         $user = $user->delete();
         if ($user){
-            toastr()->success('Successfully Deleted');
+            toastr()->success(trans('main_trans.successfully_deleted'));
             return redirect()->route('receptionists.index');
         }else{
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('receptionists.index');
         }
     }
@@ -247,7 +247,7 @@ class ReceptionistController extends Controller
                 return redirect()->route('patients.index');
             }
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('patients.index');
         }
 
@@ -255,11 +255,11 @@ class ReceptionistController extends Controller
             if(auth()->user()->hasRole('admin')) {
                 return view('receptionists.show', compact('row'));
             }else{
-                toastr()->warning('Something went wrong!');
+                toastr()->warning(trans('main_trans.something_went_wrong'));
                 return redirect()->route('home');
             }
         }else{
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('receptionists.index');
         }
     }

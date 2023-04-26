@@ -38,10 +38,10 @@ class PatientController extends Controller
     {
         $store_patient = $this->patientRepository->storePatient($request);
         if ($store_patient) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('patients.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('patients.index');
         }
     }
@@ -58,10 +58,10 @@ class PatientController extends Controller
     {
         $update_patient = $this->patientRepository->updatePatient($id, $request);
         if ($update_patient) {
-            toastr()->success('Successfully Updated');
+            toastr()->success(trans('main_trans.successfully_updated'));
             return redirect()->route('patients.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('patients.index');
         }
     }
@@ -71,10 +71,10 @@ class PatientController extends Controller
         $user = User::where('id', '=', $id)->first();
         $user = $user->delete();
         if ($user) {
-            toastr()->success('Successfully Deleted');
+            toastr()->success(trans('main_trans.successfully_deleted'));
             return redirect()->route('patients.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('patients.index');
         }
     }
@@ -99,7 +99,7 @@ class PatientController extends Controller
                 return redirect()->route('patients.index');
             }
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('patients.index');
         }
     }

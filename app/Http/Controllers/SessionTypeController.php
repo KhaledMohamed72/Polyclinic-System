@@ -23,7 +23,7 @@ class SessionTypeController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('session-types.index',compact('rows'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -38,7 +38,7 @@ class SessionTypeController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('session-types.create');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -67,7 +67,7 @@ class SessionTypeController extends Controller
             toastr()->success('Created Successfully');
 
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('session-types.index');
         }
     }
@@ -99,7 +99,7 @@ class SessionTypeController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('session-types.edit',compact('row'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('session-types.index');
         }
     }
@@ -128,7 +128,7 @@ class SessionTypeController extends Controller
             toastr()->success('Updated Successfully');
             return redirect()->route('session-types.index');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('session-types.index');
         }
     }
@@ -149,7 +149,7 @@ class SessionTypeController extends Controller
             return redirect()->route('session-types.index');
 
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('session-types.index');
         }
     }

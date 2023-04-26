@@ -71,7 +71,7 @@ class SessionController extends Controller
             $insurance_companies_rows = $this->getInsuranceCompaniessBasedOnRole($this->getClinic()->id, auth()->user()->id);
             return view('sessions.create', compact('patient_rows', 'session_rows', 'insurance_companies_rows'));
         } else {
-            toastr()->success('Something went wrong!');
+            toastr()->success(trans('main_trans.something_went_wrong'));
             return redirect()->route('sessions.index');
         }
     }
@@ -124,10 +124,10 @@ class SessionController extends Controller
                 'status' => 'complete'
             ]);
         if ($row || $updateAppointmentStatus) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('sessions.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('sessions.index');
         }
     }
@@ -162,7 +162,7 @@ class SessionController extends Controller
 
             return view('sessions.edit', compact('patient_rows', 'session_rows', 'row', 'insurance_companies_rows'));
         } else {
-            toastr()->success('Something went wrong!');
+            toastr()->success(trans('main_trans.something_went_wrong'));
             return redirect()->route('sessions.index');
         }
     }
@@ -218,7 +218,7 @@ class SessionController extends Controller
             toastr()->success('Successfully Update');
             return redirect()->route('sessions.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('sessions.index');
 
         }
@@ -242,7 +242,7 @@ class SessionController extends Controller
                 return redirect()->route('sessions.index');
             }
         } else {
-            toastr()->success('Something went wrong!');
+            toastr()->success(trans('main_trans.something_went_wrong'));
             return redirect()->route('sessions.index');
         }
     }

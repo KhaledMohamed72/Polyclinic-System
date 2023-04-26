@@ -20,7 +20,7 @@ class AppointmentListController extends Controller
         if ($rows) {
             return view('appointment-list.today-appointment', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -31,7 +31,7 @@ class AppointmentListController extends Controller
         if ($rows) {
             return view('appointment-list.pending-appointment', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -42,7 +42,7 @@ class AppointmentListController extends Controller
         if ($rows) {
             return view('appointment-list.upcomming-appointment', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -53,7 +53,7 @@ class AppointmentListController extends Controller
         if ($rows) {
             return view('appointment-list.complete-appointment', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -64,7 +64,7 @@ class AppointmentListController extends Controller
         if ($rows) {
             return view('appointment-list.cancel-appointment', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }

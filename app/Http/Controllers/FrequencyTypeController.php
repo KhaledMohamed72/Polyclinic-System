@@ -23,7 +23,7 @@ class FrequencyTypeController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('frequency-types.index',compact('rows'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -38,7 +38,7 @@ class FrequencyTypeController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('frequency-types.create');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -66,7 +66,7 @@ class FrequencyTypeController extends Controller
             toastr()->success('Created Successfully');
             return redirect()->route('frequency-types.index');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('frequency-types.index');
         }
     }
@@ -98,7 +98,7 @@ class FrequencyTypeController extends Controller
         if (auth()->user()->hasRole('doctor')) {
             return view('frequency-types.edit',compact('row'));
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('frequency-types.index');
         }
     }
@@ -127,7 +127,7 @@ class FrequencyTypeController extends Controller
             toastr()->success('Updated Successfully');
             return redirect()->route('frequency-types.index');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('frequency-types.index');
         }
     }
@@ -148,7 +148,7 @@ class FrequencyTypeController extends Controller
             return redirect()->route('frequency-types.index');
 
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('frequency-types.index');
         }
     }

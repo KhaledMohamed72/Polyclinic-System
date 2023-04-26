@@ -26,7 +26,7 @@ class ExpenseController extends Controller
         if (auth()->user()->hasRole('admin')) {
             return view('expenses.index', compact('rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -50,7 +50,7 @@ class ExpenseController extends Controller
             return view('expenses.create',
                 compact('doctor_rows', 'count_doctors', 'type_rows'));
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -90,10 +90,10 @@ class ExpenseController extends Controller
         ]);
 
         if ($row) {
-            toastr()->success('Successfully Created');
+            toastr()->success(trans('main_trans.successfully_created'));
             return redirect()->route('expenses.index');
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('expenses.index');
         }
     }
@@ -120,7 +120,7 @@ class ExpenseController extends Controller
                 compact('row', 'type_rows', 'doctor_rows','count_doctors')
             );
         } else {
-            toastr()->error('Something went wrong!');
+            toastr()->error(trans('main_trans.something_went_wrong'));
             return redirect()->route('home');
         }
     }
@@ -162,7 +162,7 @@ class ExpenseController extends Controller
             toastr()->success('Updated Successfully');
             return redirect()->route('expenses.index');
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('expenses.index');
         }
     }

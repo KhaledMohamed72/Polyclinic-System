@@ -266,4 +266,11 @@ return [
     'total_expenses' => 'إجمالي المصروفات',
     'total_sessions' => 'إجمالي الجلسات',
     'net_profit' => 'صافي الارباح',
+    'back_to_prescription_list' => 'رجوع لقائمة الروشتات',
+    'attachments' => 'المرفقات',
+    'prescription' => 'روشتة',
+    'successfully_created' => 'تم الاضافة بنجاح',
+    'successfully_updated' => 'تم التعديل بنجاح',
+    'successfully_deleted' => 'تم الحذف بنجاح',
+    'something_went_wrong' => 'حدث خطأ',
 ];

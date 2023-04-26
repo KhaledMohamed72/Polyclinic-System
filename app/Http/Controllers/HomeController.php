@@ -38,7 +38,7 @@ class HomeController extends Controller
         } elseif (auth()->user()->hasRole('recep')) {
             return redirect()->route('receptionists.show', auth()->user()->id);
         } else {
-            toastr()->warning('Something went wrong!');
+            toastr()->warning(trans('main_trans.something_went_wrong'));
             return redirect()->route('home.index');
         }
     }
