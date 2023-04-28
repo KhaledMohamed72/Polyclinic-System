@@ -3,24 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Pulpo | {{ trans('main_trans.login') }}</title>
+    <title>Pulpo | Login</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{asset('assets/plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="{{asset('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
-@if (LaravelLocalization::getCurrentLocale() == 'ar')
-    <!-- Bootstrap 4 RTL -->
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/bootstrap.min.css') }}">
-        <!-- Custom style for RTL -->
-        <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.css') }}">
-@endif
 <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -31,7 +27,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="card">
-        <div class="card-header">{{ trans('main_trans.login') }}</div>
+        <div class="card-header">Login</div>
         @if(session()->has('error'))
             <div class="alert alert-danger">
                 {{ session()->get('error') }}
@@ -46,7 +42,7 @@
                 <div class="input-group mb-3">
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                            name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
-                           placeholder="{{ trans('main_trans.enter_email') }}">
+                           placeholder="Enter Email">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -62,7 +58,7 @@
                 <div class="input-group mb-3">
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                            name="password" required autocomplete="current-password"
-                           placeholder="{{ trans('main_trans.enter_password') }}">
+                           placeholder="Enter Password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -80,14 +76,14 @@
                             <input class="form-check-input" type="checkbox" name="remember"
                                    id="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label for="remember">
-                                &ensp;&ensp;&ensp;{{ trans('main_trans.remember_me') }}
+                                &ensp;&ensp;&ensp;Remember me
                             </label>
                         </div>
                     </div>
                     <!-- /.col -->
                     <div class="col-12">
                         <button type="submit"
-                                class="btn btn-primary btn-block btn-flat">{{ trans('main_trans.login') }}</button>
+                                class="btn btn-primary btn-block btn-flat">Login</button>
                     </div>
                     <!-- /.col -->
                 </div>
