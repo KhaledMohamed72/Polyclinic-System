@@ -267,8 +267,8 @@ return [
     'back_to_prescription_list' => 'Back to Prescription List',
     'attachments' => 'Attachments',
     'prescription' => 'Prescription',
-    'successfully_created' => trans('main_trans.successfully_created'),
-    'successfully_updated' => trans('main_trans.successfully_updated'),
-    'successfully_deleted' => trans('main_trans.successfully_deleted'),
-    'something_went_wrong' => trans('main_trans.something_went_wrong'),
+    'successfully_created' => 'Successfully Created',
+    'successfully_updated' => 'Successfully Updated',
+    'successfully_deleted' => 'Successfully Deleted',
+    'something_went_wrong' => 'Something went wrong',
 ];

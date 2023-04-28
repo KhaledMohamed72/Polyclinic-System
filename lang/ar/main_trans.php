@@ -1,8 +1,6 @@
 <?php
 
 return [
-    'login' => 'تسجيل الدخول',
-    'remember_me' => 'تذكرني',
     'enter_email' => 'ادخل البريد الالكتروني',
     'enter_password' => 'ادخل كلمة المرور',
     'profile' => 'الحساب',
@@ -207,7 +205,6 @@ return [
     'followup_date' => 'تاريخ المتابعة',
     'attachment' => 'المرفق',
     'note_enter_note' => 'ملاحظة، أدخل ملاحظة',
-    'home' => 'الصفحة الرئيسية',
     'tomorrow_appt' => 'مواعيد الغد',
     'upcoming_appt' => 'المواعيد القادمة',
     'jun' => 'يونيو',
