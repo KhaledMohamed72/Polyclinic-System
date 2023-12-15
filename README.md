@@ -16,7 +16,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 # Pulpo Clinic
-is a super web app for the Doctors, Trust and Hospitals to maintain all doctors, patients and receptionists of the hospital or clinic. It is a complete solution for hospitals or clinics to manage appointments, prescriptions and invoices online. This system is completely built on the PHP Laravel framework and MySQL. It has a nice and attractive user interface which is very easy to use. This system has a lot of nice features which are needed for hospitals or clinics to manage their patients, doctors and receptionist.
+Pulpo Clinic is a super web app for the Doctors, Trust and Hospitals to maintain all doctors, patients and receptionists of the hospital or clinic. It is a complete solution for hospitals or clinics to manage appointments, prescriptions and invoices online. This system is completely built on the PHP Laravel framework and MySQL. It has a nice and attractive user interface which is very easy to use. This system has a lot of nice features which are needed for hospitals or clinics to manage their patients, doctors and receptionist.
 
 ![screencapture-itg-pulpopharma-online-dashboard-2023-01-31-10_50_38](https://user-images.githubusercontent.com/38916029/215715223-6111a751-d2ad-43a1-9dd4-77953ff58de3.png)
 ![screencapture-itg-pulpopharma-online-appointments-2023-01-31-10_51_32](https://user-images.githubusercontent.com/38916029/215715269-17343e9e-9a36-47d7-ae16-bf9c10cb1210.png)
